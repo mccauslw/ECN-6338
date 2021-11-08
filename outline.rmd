@@ -17,6 +17,9 @@ Livres gratuits supplémentaires
 - Devroye (1986), "Non-Uniform Random Number Generation"
 - Train (2009), "Discrete Choice Methods with Simulation", 2nd edition
 
+Manuels sur les prélables économiques et statistiques
+
+- Avinash K. Dixit (1990), "Optimization in Economic Theory"
 Papiers
 
 - Geweke and Durham (2019), "Sequentially adaptive Bayesian learning algorithms for inference and optimization"
@@ -27,9 +30,9 @@ Divers pages Wikipédia et les diapos du professeur
 
 Les éléments de l'évaluation sont
 
-1. Autour de douze quiz sur les lectures (15\%)
-1. Des exercices computationelles (40\%)
-1. Un projet computationel (20\%)
+1. Environ dix intérrogations de dix minutes (20\%)
+1. Quatres exercices computationelles (40\%)
+1. Un projet computationnel (15\%)
 1. Un examen final (25\%)
 
 # Matière organisée par cours
@@ -151,7 +154,20 @@ Les éléments de l'évaluation sont
 
 
 
-## Cours 7, la génération de variables aléatoires univariées
+## Cours 7, quelques sujets prélalables
+
+### Matières
+
+1. Maximum de vraisemblance
+1. Inférence bayésienne
+1. Programmation dynamique
+
+### Lectures
+
+1. 
+
+
+## Cours 8, la génération de variables aléatoires univariées
 
 ### Matières
 
@@ -174,7 +190,7 @@ Les éléments de l'évaluation sont
 
 
 
-## Cours 8, la génération de variables aléatoires multivariées
+## Cours 9, la génération de variables aléatoires multivariées
 
 ### Matières
 
@@ -192,7 +208,7 @@ Les éléments de l'évaluation sont
 
 
 
-## Cours 9, la simulation Monte Carlo séquentielle
+## Cours 10, la simulation Monte Carlo séquentielle
 
 ### Matières
 
@@ -211,24 +227,13 @@ Les éléments de l'évaluation sont
 
 
 
-## Cours 10, la solution des équations différentielles
+## Cours 11, la solution des équations différentielles
 
 ### Matières
 
 ### Lectures
 
 1. Judd, Chapitre 10
-
-
-
-
-## Cours 11, des méthods de projection pour les équations différentielles
-
-### Matières
-
-### Lectures
-
-1. Judd, Chapitre 11
 
 
 
