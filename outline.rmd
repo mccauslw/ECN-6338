@@ -1,0 +1,258 @@
+---
+title: "Plan de cours détaillé pour ECN 6338: Analyse numérique en économie"
+author: "William McCausland"
+date: "19/10/2021"
+output: pdf_document
+urlcolor: blue
+---
+
+# Documents obligatoires
+
+Manuel principal
+
+- Kenneth Judd, "Numerical Methods in Economics"
+
+Livres gratuits supplémentaires
+
+- Devroye (1986), "Non-Uniform Random Number Generation"
+- Train (2009), "Discrete Choice Methods with Simulation", 2nd edition
+
+Papiers
+
+- Geweke and Durham (2019), "Sequentially adaptive Bayesian learning algorithms for inference and optimization"
+
+Divers pages Wikipédia et les diapos du professeur
+
+# Évaluation
+
+Les éléments de l'évaluation sont
+
+1. Autour de douze quiz sur les lectures (15\%)
+1. Des exercices computationelles (40\%)
+1. Un projet computationel (20\%)
+1. Un examen final (25\%)
+
+# Matière organisée par cours
+
+## Cours 1, Introduction
+
+### Matières
+
+1. Le gradient et les matrices hessienne et jacobienne
+1. La décomposition de Jordan
+1. L'analyse (de la complexité) des algorithmes
+1. L'analyse des erreurs numériques
+1. Le parallélisme
+
+### Lectures
+
+1. Judd, Chapitre 1
+1. Judd, Chapitre 2
+1. Page Wikipédia sur [P et NP](https://en.wikipedia.org/wiki/P_versus_NP_problem)
+1. Page Wikipédia sur [l'algorithme de Strassen](https://fr.wikipedia.org/wiki/Algorithme_de_Strassen)
+
+
+
+
+## Cours 2, La résolution de systèmes d'équation linéaires
+
+### Matières
+
+1. Les décompositions $LU$, $QR$ et Cholesky d'une matrice
+1. Conditionnement
+1. Méthodes directe pour la résolution de systèmes linéaires
+1. Méthodes itératives pour la résolution de systèmes linéaires
+1. Applications
+    a. Rotation des matrices de coefficients de pondération
+    a. Génération de variables aléatoires gaussiennes multivariées
+    a. Computation de la loi stationnaire d'une chain
+
+### Lectures
+
+1. Judd: 3.1, 3.2, 3.5, 3.6, 3.8, 3.11
+1. Diapos sur la génération de variablees aléatoires gaussiennes multivariées
+1. Diapos sur l'identification and les rotations dans les modèles à facteurs
+
+
+
+
+## Cours 3, L'optimisation statique
+
+### Matières
+
+1. Problèmes unidimensionels
+1. Méthodes de comparaison
+1. Méthode de Newton et ses raffinements
+1. Programmation linéare
+1. Programmation non-linéaire avec et sans contraintes
+1. Applications:
+    a. la résolution de problèmes principal-agent
+    a. la computation d'équilibre de Nash equilibria des jeux du type action-discrète
+    a. maximisation de la vraisemblance pour un modèle GARCH
+
+### Lectures
+
+1. Judd: 4.1, 4.2, 4.3, 4.4, 4.6, 4.7, 4.8, 4.9
+1. Diapos sur la méthode maximimum de vraisemblance
+
+
+
+
+## Cours 4, la résolution de systèmes d'équation non-linéaires
+
+### Matières
+
+1. La résolution d'équations univariées
+    a. la méthode de bisection
+    a. la méthode de Newton, la convergence, des règles d'arrêt
+1. La résolution de systèmes d'équation
+    a. Itération Gauss-Jacobi et Gauss-Seidel
+    a. Itération point fixe
+    a. la méthodes de Newton et Broydon
+1. Application: la computation d'équilibre de duopolie
+
+### Lectures
+
+1. Judd: 5.1, 5.2, 5.3, 5.4, 5.5
+
+
+
+
+## Cours 5, des méthodes d'approximation des fonctions
+
+### Matières
+
+1. Approximation locale, développement de Taylor, approximant de Padé
+1. Suites de polynômes orthogonaux, approximation de moindres carrés
+1. Approximation uniforme
+1. Interpolation
+1. Interpolation par morceaux, splines
+1. Application: ?
+
+### Lectures
+
+1. Judd: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.8, 6.9
+
+
+
+
+## Cours 6, les méthodes déterministes d'intégration et de différentiation
+
+### Matières
+
+1. Newton-Cotes
+1. La quadrature unidimensionelle et multidimensionelle
+1. Application : choix optimal de portefeuille
+
+### Lectures
+
+1. Judd: 7.1, 7.2, 7.3, 7.5, 7.6, 8.2
+
+
+
+
+## Cours 7, la génération de variables aléatoires univariées
+
+### Matières
+
+1. La génération de nombres pseudo-aléatoires et le Mersenne Twister
+1. La génération de variables aléatoire non-uniformes
+    a. méthode de l'inverse de la fonction de répartition (avec exemple Weibull)
+    a. méthode de rejet (avec exemple gamma)
+    a. l'algorithme Ziggurat (avec exemple gaussien)
+1. Les nombres quasi-aléatoires et les suites à discrépance faible
+1. La génération directe faisable de quelques variables aléatoires multivariées (gaussiennes, dirichlet, wishart)
+1. Application : intégration numérique
+
+### Lectures
+
+1. Judd: 8.1, 8.2, 8.3
+1. Page Wikipédia sur le [Mersenne Twister](https://en.wikipedia.org/wiki/Mersenne_Twister)
+1. Page Wikipédia sur l'algorithme Ziggurat(https://en.wikipedia.org/wiki/Ziggurat_algorithm)
+1. Devroye II.2 and II.3 (méthode de l'inverse de la fonction de répartition, méthode de rejet)
+
+
+
+
+## Cours 8, la génération de variables aléatoires multivariées
+
+### Matières
+
+1. L'échantillonage préférentiel (importance sampling)
+1. L'algorithme Metropolis-Hastings
+1. L'échantillonage de Gibbs
+1. Applications :
+    a. simulation postérieure
+    a. simulation de la valeur d'un vraisemblance du type mixed-logit
+
+### Lectures
+
+1. Diapos
+1. (Train?)
+
+
+
+## Cours 9, la simulation Monte Carlo séquentielle
+
+### Matières
+
+1. La simulation séquentiel Monte Carlo
+1. Familles d'algorithmes reliées
+    a. le recuit simulé (simulated annealing)
+    a. le filtre particulaire (particle filter)
+1. Applications
+    a. maximum de vraisemblance pour un modèle GARCH avec un vraisemblance autrement infaisable.
+    a. inférence bayésienne pour le même modèle.
+
+### Lectures
+
+1. Geweke et Durham (2019)
+
+
+
+
+## Cours 10, la solution des équations différentielles
+
+### Matières
+
+### Lectures
+
+1. Judd, Chapitre 10
+
+
+
+
+## Cours 11, des méthods de projection pour les équations différentielles
+
+### Matières
+
+### Lectures
+
+1. Judd, Chapitre 11
+
+
+
+
+## Cours 12, programmation dynamique en temps discret
+
+### Matières
+
+### Lectures
+
+1. Judd, Chapitre 12
+
+
+
+
+## Cours 13, programmation dynamique en temps continu
+
+### Matières
+
+### Lectures
+
+1. Judd, Chapitre 12
+
+
+
+
+
