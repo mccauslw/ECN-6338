@@ -6,33 +6,42 @@ output: pdf_document
 urlcolor: blue
 ---
 
-# Documents obligatoires
+# Documents
+
+### Documents obligatoires
 
 Manuel principal
 
 - Kenneth Judd, "Numerical Methods in Economics"
 
-Livres gratuits supplémentaires
+Livres gratuits (fournis par les auteurs) supplémentaires
 
 - Devroye (1986), "Non-Uniform Random Number Generation"
-- Train (2009), "Discrete Choice Methods with Simulation", 2nd edition
+- Train (2009), "Discrete Choice Methods with Simulation", 2e édition
 
-Manuels sur les prélables économiques et statistiques
-
-- Avinash K. Dixit (1990), "Optimization in Economic Theory"
-Papiers
+Papiers scientifiques
 
 - Geweke and Durham (2019), "Sequentially adaptive Bayesian learning algorithms for inference and optimization"
+- Creal (2012), "A Survey of Sequential Monte Carlo Methods for Economics and Finance"
 
-Divers pages Wikipédia et les diapos du professeur
+Autres documents
+
+- Diverses pages Wikipédia
+- Notes et diapositives du professeur
+
+### Documents recommandés sur les matières prélalables
+
+- Avinash K. Dixit (1990), "Optimization in Economic Theory"
+
+
 
 # Évaluation
 
 Les éléments de l'évaluation sont
 
-1. Environ dix intérrogations de dix minutes (20\%)
-1. Quatres exercices computationelles (40\%)
-1. Un projet computationnel (15\%)
+1. Environ dix interrogations de dix minutes (20\%)
+1. Quatre exercices de computation (40\%)
+1. Un projet de computation (15\%)
 1. Un examen final (25\%)
 
 # Matière organisée par cours
@@ -41,16 +50,15 @@ Les éléments de l'évaluation sont
 
 ### Matières
 
-1. Le gradient et les matrices hessienne et jacobienne
-1. La décomposition de Jordan
-1. L'analyse (de la complexité) des algorithmes
-1. L'analyse des erreurs numériques
-1. Le parallélisme
+1. Dérivées multivariées, vecteur gradient, matrices jacobienne et hessienne
+1. Valeurs propres de matrices carrées
+1. Analyse (de la complexité) d'algorithmes
+1. Analyse des erreurs numériques
+1. Parallélisme
 
 ### Lectures
 
-1. Judd, Chapitre 1
-1. Judd, Chapitre 2
+1. Judd, Chapitres 1 et 2
 1. Page Wikipédia sur [P et NP](https://en.wikipedia.org/wiki/P_versus_NP_problem)
 1. Page Wikipédia sur [l'algorithme de Strassen](https://fr.wikipedia.org/wiki/Algorithme_de_Strassen)
 
@@ -61,58 +69,81 @@ Les éléments de l'évaluation sont
 
 ### Matières
 
-1. Les décompositions $LU$, $QR$ et Cholesky d'une matrice
+1. Décompositions $LU$, $QR$ et Cholesky d'une matrice
 1. Conditionnement
-1. Méthodes directe pour la résolution de systèmes linéaires
+1. Méthodes directes pour la résolution de systèmes linéaires
 1. Méthodes itératives pour la résolution de systèmes linéaires
 1. Applications
-    a. Rotation des matrices de coefficients de pondération
-    a. Génération de variables aléatoires gaussiennes multivariées
-    a. Computation de la loi stationnaire d'une chain
+    a. rotation des matrices de coefficients de pondération
+    a. génération de variables aléatoires gaussiennes multivariées
+    a. computation de la loi stationnaire d'une chaîne markovienne à espace-état fini
 
 ### Lectures
 
 1. Judd: 3.1, 3.2, 3.5, 3.6, 3.8, 3.11
-1. Diapos sur la génération de variablees aléatoires gaussiennes multivariées
-1. Diapos sur l'identification and les rotations dans les modèles à facteurs
+1. Notes du professeur sur la génération de variables aléatoires gaussiennes multivariées
+1. Notes du professeur sur l'identification et les rotations dans les modèles à facteurs
 
 
 
 
-## Cours 3, L'optimisation statique
+## Cours 3, Quelques sujets préalables
 
 ### Matières
 
-1. Problèmes unidimensionels
+1. Optimisation sous contraintes, conditions de Karush-Kuhn-Tucker
+1. Programmation dynamique
+1. Maximum de vraisemblance
+1. Inférence bayésienne
+1. Applications : (cas simples où les méthodes numériques ne sont pas nécessaires)
+    a. un problème de consommateur avec rationnement
+    a. un problème d'épargne sous incertitude
+    a. analyse maximum de vraisemblance d'un modèle Poisson de comptes de transactions
+    a. analyse bayésienne du même modèle 
+
+### Lectures
+
+1. Notes du professeur basées sur les exemples 3.1 "Rationing" et 11.1 "Search" de Dixit (1990).
+1. Page Wikipédia sur l'[estimation maximum de vraisemblance](https://en.wikipedia.org/wiki/Maximum_likelihood_estimation), Sections "Principles", "Properties" et "Examples"
+1. Page Wikipédia sur l'[inférence bayésienne](https://en.wikipedia.org/wiki/Bayesian_inference), Sections "Introduction to Bayes' Rule" and "Formal Description of Bayesian Inference".
+
+
+
+
+## Cours 4, L'optimisation statique
+
+### Matières
+
+1. Problèmes unidimensionnels
 1. Méthodes de comparaison
 1. Méthode de Newton et ses raffinements
-1. Programmation linéare
+1. Programmation linéaire
 1. Programmation non-linéaire avec et sans contraintes
 1. Applications:
     a. la résolution de problèmes principal-agent
-    a. la computation d'équilibre de Nash equilibria des jeux du type action-discrète
-    a. maximisation de la vraisemblance pour un modèle GARCH
+    a. la computation d'équilibre de Nash des jeux du type action-discrète
+    a. maximisation de vraisemblance pour un modèle GEV (Generalized Extreme Value) du choix de mode de transport
 
 ### Lectures
 
 1. Judd: 4.1, 4.2, 4.3, 4.4, 4.6, 4.7, 4.8, 4.9
-1. Diapos sur la méthode maximimum de vraisemblance
+1. Train: chapitre 4
 
 
 
 
-## Cours 4, la résolution de systèmes d'équation non-linéaires
+## Cours 5, La résolution de systèmes d'équation non-linéaires
 
 ### Matières
 
 1. La résolution d'équations univariées
-    a. la méthode de bisection
+    a. la méthode de bissection
     a. la méthode de Newton, la convergence, des règles d'arrêt
 1. La résolution de systèmes d'équation
-    a. Itération Gauss-Jacobi et Gauss-Seidel
-    a. Itération point fixe
-    a. la méthodes de Newton et Broydon
-1. Application: la computation d'équilibre de duopolie
+    a. itération Gauss-Jacobi et Gauss-Seidel
+    a. itération point fixe
+    a. les méthodes de Newton et Broydon
+1. Application: la computation d'équilibre d'oligopole
 
 ### Lectures
 
@@ -121,7 +152,7 @@ Les éléments de l'évaluation sont
 
 
 
-## Cours 5, des méthodes d'approximation des fonctions
+## Cours 6, L'approximation de fonctions
 
 ### Matières
 
@@ -130,7 +161,7 @@ Les éléments de l'évaluation sont
 1. Approximation uniforme
 1. Interpolation
 1. Interpolation par morceaux, splines
-1. Application: ?
+1. Application : approximation de la courbe des contrats dans une économie à deux personnes et deux biens
 
 ### Lectures
 
@@ -139,125 +170,129 @@ Les éléments de l'évaluation sont
 
 
 
-## Cours 6, les méthodes déterministes d'intégration et de différentiation
+## Cours 7, L'intégration et la dérivation (méthodes déterministes)
 
 ### Matières
 
 1. Newton-Cotes
-1. La quadrature unidimensionelle et multidimensionelle
-1. Application : choix optimal de portefeuille
+1. La quadrature unidimensionnelle et multidimensionnelle
+1. Dérivation numérique
+1. Dérivation automatique
+1. Application : évaluation d'utilité actualisée en temps continu
+
 
 ### Lectures
 
-1. Judd: 7.1, 7.2, 7.3, 7.5, 7.6, 8.2
+1. Judd: 7.1, 7.2, 7.3, 7.5, 7.6, 7.7
+1. Page Wikipédia sur [la dérivation automatique](https://fr.wikipedia.org/wiki/Dérivation_automatique)
 
 
 
 
-## Cours 7, quelques sujets prélalables
-
-### Matières
-
-1. Maximum de vraisemblance
-1. Inférence bayésienne
-1. Programmation dynamique
-
-### Lectures
-
-1. 
-
-
-## Cours 8, la génération de variables aléatoires univariées
+## Cours 8, La génération de variables aléatoires univariées
 
 ### Matières
 
 1. La génération de nombres pseudo-aléatoires et le Mersenne Twister
-1. La génération de variables aléatoire non-uniformes
+1. La génération de variables aléatoires non-uniformes
     a. méthode de l'inverse de la fonction de répartition (avec exemple Weibull)
     a. méthode de rejet (avec exemple gamma)
     a. l'algorithme Ziggurat (avec exemple gaussien)
 1. Les nombres quasi-aléatoires et les suites à discrépance faible
 1. La génération directe faisable de quelques variables aléatoires multivariées (gaussiennes, dirichlet, wishart)
-1. Application : intégration numérique
+1. Application : intégration stochastique dans l'exemple de l'évaluation d'utilité actualisée en temps continu
 
 ### Lectures
 
 1. Judd: 8.1, 8.2, 8.3
 1. Page Wikipédia sur le [Mersenne Twister](https://en.wikipedia.org/wiki/Mersenne_Twister)
-1. Page Wikipédia sur l'algorithme Ziggurat(https://en.wikipedia.org/wiki/Ziggurat_algorithm)
+1. Page Wikipédia sur l'algorithme [Ziggurat](https://en.wikipedia.org/wiki/Ziggurat_algorithm)
 1. Devroye II.2 and II.3 (méthode de l'inverse de la fonction de répartition, méthode de rejet)
+1. Page Wikipédia sur la [méthode de rejet](https://en.wikipedia.org/wiki/Rejection_sampling),
+Sections "Description", "Theory" et "Algorithm"
 
 
 
 
-## Cours 9, la génération de variables aléatoires multivariées
+
+## Cours 9, La génération de variables aléatoires multivariées
 
 ### Matières
 
-1. L'échantillonage préférentiel (importance sampling)
+1. L'échantillonnage préférentiel (importance sampling)
 1. L'algorithme Metropolis-Hastings
-1. L'échantillonage de Gibbs
+1. L'échantillonnage de Gibbs
 1. Applications :
-    a. simulation postérieure
-    a. simulation de la valeur d'un vraisemblance du type mixed-logit
+    a. simulation postérieure pour un modèle probit du choix discret
+    a. maximum de vraisemblance simulée pour un modèle mixed-logit du choix discret
 
 ### Lectures
 
-1. Diapos
-1. (Train?)
+1. Judd: 8.1, 8.2, 8.3, 8.4, 8.5
+1. Page Wikipédia sur l'[échantillonage préférentiel](https://en.wikipedia.org/wiki/Importance_sampling), Sections "Basic Theory" et "Application to Simulation"
+1. Page Wikipédia sur l'algorithme [Metropolis-Hastings](https://en.wikipedia.org/wiki/Metropolis–Hastings_algorithm),
+Sections "Intuition" et "Formal Derivation"
+1. Page Wikipédia sur l'[échantillonage de Gibbs](https://en.wikipedia.org/wiki/Gibbs_sampling), Section "Implementation"
+1. Train: chapitres 5, 6, 10
 
 
 
-## Cours 10, la simulation Monte Carlo séquentielle
+
+## Cours 10, La simulation Monte Carlo séquentielle
 
 ### Matières
 
-1. La simulation séquentiel Monte Carlo
+1. La simulation Monte Carlo séquentielle 
 1. Familles d'algorithmes reliées
     a. le recuit simulé (simulated annealing)
     a. le filtre particulaire (particle filter)
 1. Applications
-    a. maximum de vraisemblance pour un modèle GARCH avec un vraisemblance autrement infaisable.
-    a. inférence bayésienne pour le même modèle.
+    a. maximum de vraisemblance pour un modèle EGARCH avec un vraisemblance autrement infaisable
+    a. inférence bayésienne pour le même modèle
 
 ### Lectures
 
 1. Geweke et Durham (2019)
+1. Creal (2012)
+1. Judd: 8.3, section "Simulated Annealing"
 
 
 
 
-## Cours 11, la solution des équations différentielles
-
-### Matières
-
-### Lectures
-
-1. Judd, Chapitre 10
-
-
-
-
-## Cours 12, programmation dynamique en temps discret
+## Cours 11, La résolution des équations différentielles
 
 ### Matières
 
+1. Équations différentielles avec conditions au bord
+1. La résolution de systèmes d'équations différentielles linéaires
+1. Les méthodes du type Runge-Kutta pour les équations différentielles non-linéaires
+1. Applications :
+    a. Calcul de l'équilibre d'un modèle de signalisation de Spence
+    a. Problèmes de commande optimale (optimal control) dans un modèle "cycle de vie" avec consommation et offre de travail
+
 ### Lectures
 
-1. Judd, Chapitre 12
+1. Judd: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7
 
 
 
 
-## Cours 13, programmation dynamique en temps continu
+## Cours 12 et 13, La programmation dynamique
 
 ### Matières
 
+1. Le problème canonique de programmation en temps discret
+1. Le problème canonique de programmation en temps continu
+1. Problèmes avec horizon fini, problèmes avec horizon infini
+1. Problèmes avec transitions déterministes, problèmes avec transitions stochastiques
+1. Problèmes avec espace-état fini
+1. Itération de la fonction de valeur
+1. Itération de la fonction de politique
+1. Discrétisation de problèmes avec espace-état continu
+1. Application : problèmes d'accumulation stochastiques
+
 ### Lectures
 
-1. Judd, Chapitre 12
-
-
-
+1. Judd: 12.1, 12.2, 12.3, 12.4, 12.5
 
 
