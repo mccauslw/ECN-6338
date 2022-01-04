@@ -1,0 +1,44 @@
+---
+title: "ECN 6338 Cours 1"
+subtitle: "Introduction"
+author: "William McCausland"
+date: "`r Sys.Date()`"
+output: beamer_presentation
+---
+
+## Documents et Communication
+
+### Site Github du cours
+
+1. Diapos (code source, pdf)
+1. Démonstrations
+1. Lectures, exercices
+1. Devoirs avec computation
+
+### Site StudiUM du cours
+
+1. Messages
+1. Forums (possiblement)
+1. Documents avec droit d'auteur
+1. Chargement des devoirs
+
+## Analyse de l'erreur
+
+L'epsilon de la machine
+
+Troncation des sommes infinies
+
+## P, NP et NP Complete
+
+Programmation linéaire et programmation par entiers
+
+## L'évaluation des polynomes avec la méthode de Horner
+
+## L'algorithme Strassen pour la multiplication des matrices
+
+## Parallelisme
+
+### L'embarras du parallelisme
+
+### Architechtures SIMD (Single Instruction, Multiple Data)
+

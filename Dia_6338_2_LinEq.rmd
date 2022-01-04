@@ -1,0 +1,10 @@
+---
+title: "ECN 6338 Cours 2"
+subtitle: "La résolution de systèmes d'équations linéaires"
+author: "William McCausland"
+date: "`r Sys.Date()`"
+output: beamer_presentation
+---
+
+## Comment éviter l'inversion d'une matrice
+

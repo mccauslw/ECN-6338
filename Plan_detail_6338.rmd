@@ -12,7 +12,7 @@ urlcolor: blue
 
 Manuel principal
 
-- Kenneth Judd, "Numerical Methods in Economics"
+- Judd (1998), "Numerical Methods in Economics"
 
 Livres gratuits (fournis par les auteurs) supplémentaires
 
@@ -31,9 +31,13 @@ Autres documents
 
 ### Documents recommandés sur les matières prélalables
 
-- Avinash K. Dixit (1990), "Optimization in Economic Theory"
+- Avinash K. Dixit (1990), "Optimization in Economic Theory" (2e édition)
+- Ljungqvist and Sargent (2018), "Recursive Macroeconomic Theory" (4e édition)
 
+### Autres documents et sites internet
 
+- Site web [QuantEcon](https://quantecon.org)
+- Site Github du cours [CompEcon2020](https://github.com/KennethJudd/CompEcon2020) de Judd
 
 # Évaluation
 
@@ -46,7 +50,7 @@ Les éléments de l'évaluation sont
 
 # Matière organisée par cours
 
-## Cours 1, Introduction
+## Cours 1. Introduction
 
 ### Matières
 
@@ -65,7 +69,7 @@ Les éléments de l'évaluation sont
 
 
 
-## Cours 2, La résolution de systèmes d'équation linéaires
+## Cours 2. La résolution de systèmes d'équations linéaires
 
 ### Matières
 
@@ -87,7 +91,7 @@ Les éléments de l'évaluation sont
 
 
 
-## Cours 3, Quelques sujets préalables
+## Cours 3. Quelques sujets préalables
 
 ### Matières
 
@@ -98,7 +102,7 @@ Les éléments de l'évaluation sont
 1. Applications : (cas simples où les méthodes numériques ne sont pas nécessaires)
     a. un problème de consommateur avec rationnement
     a. un problème d'épargne sous incertitude
-    a. analyse maximum de vraisemblance d'un modèle Poisson de comptes de transactions
+    a. analyse maximum de vraisemblance d'un modèle poissonien de comptes de transactions
     a. analyse bayésienne du même modèle 
 
 ### Lectures
@@ -110,7 +114,7 @@ Les éléments de l'évaluation sont
 
 
 
-## Cours 4, L'optimisation statique
+## Cours 4. L'optimisation statique
 
 ### Matières
 
@@ -122,7 +126,7 @@ Les éléments de l'évaluation sont
 1. Applications:
     a. la résolution de problèmes principal-agent
     a. la computation d'équilibre de Nash des jeux du type action-discrète
-    a. maximisation de vraisemblance pour un modèle GEV (Generalized Extreme Value) du choix de mode de transport
+    a. maximisation de vraisemblance pour un modèle GEV (Generalized Extreme Value) de choix de mode de transport
 
 ### Lectures
 
@@ -132,7 +136,7 @@ Les éléments de l'évaluation sont
 
 
 
-## Cours 5, La résolution de systèmes d'équation non-linéaires
+## Cours 5. La résolution de systèmes d'équations non-linéaires
 
 ### Matières
 
@@ -152,12 +156,12 @@ Les éléments de l'évaluation sont
 
 
 
-## Cours 6, L'approximation de fonctions
+## Cours 6. L'approximation de fonctions
 
 ### Matières
 
 1. Approximation locale, développement de Taylor, approximant de Padé
-1. Suites de polynômes orthogonaux, approximation de moindres carrés
+1. Suites de polynômes orthogonaux, approximation des moindres carrés
 1. Approximation uniforme
 1. Interpolation
 1. Interpolation par morceaux, splines
@@ -170,7 +174,7 @@ Les éléments de l'évaluation sont
 
 
 
-## Cours 7, L'intégration et la dérivation (méthodes déterministes)
+## Cours 7. L'intégration et la dérivation (méthodes déterministes)
 
 ### Matières
 
@@ -189,7 +193,7 @@ Les éléments de l'évaluation sont
 
 
 
-## Cours 8, La génération de variables aléatoires univariées
+## Cours 8. La génération de variables aléatoires univariées
 
 ### Matières
 
@@ -215,7 +219,7 @@ Sections "Description", "Theory" et "Algorithm"
 
 
 
-## Cours 9, La génération de variables aléatoires multivariées
+## Cours 9. La génération de variables aléatoires multivariées
 
 ### Matières
 
@@ -223,8 +227,8 @@ Sections "Description", "Theory" et "Algorithm"
 1. L'algorithme Metropolis-Hastings
 1. L'échantillonnage de Gibbs
 1. Applications :
-    a. simulation postérieure pour un modèle probit du choix discret
-    a. maximum de vraisemblance simulée pour un modèle mixed-logit du choix discret
+    a. simulation postérieure pour un modèle probit de choix discret
+    a. maximum de vraisemblance simulée pour un modèle mixed-logit de choix discret
 
 ### Lectures
 
@@ -238,7 +242,7 @@ Sections "Intuition" et "Formal Derivation"
 
 
 
-## Cours 10, La simulation Monte Carlo séquentielle
+## Cours 10. La simulation Monte Carlo séquentielle
 
 ### Matières
 
@@ -259,7 +263,7 @@ Sections "Intuition" et "Formal Derivation"
 
 
 
-## Cours 11, La résolution des équations différentielles
+## Cours 11. La résolution des équations différentielles
 
 ### Matières
 
@@ -277,7 +281,7 @@ Sections "Intuition" et "Formal Derivation"
 
 
 
-## Cours 12 et 13, La programmation dynamique
+## Cours 12 et 13. La programmation dynamique
 
 ### Matières
 
