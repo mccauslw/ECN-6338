@@ -7,6 +7,59 @@ output: beamer_presentation
 urlcolor: blue
 ---
 
+
+## Deux opérations clés de l'analyse numérique en économie
+
+### L'optimisation
+
+Par les agents dans un modèle économique
+
+* maximisation de l'utilité (choix des actions dans un jeu, des quantités de consommation)
+* maximisation des profits (choix des quantités de production)
+
+Par les économètres
+
+* estimation économétrique par maximum de vraisemblance
+* autres méthodes d'estimation par optimisation
+
+### L'intégration (très souvent le calcul d'une espérance)
+
+Par les agents
+
+* évaluer l'espérance de l'utilité, des profits
+
+Par les économètres
+
+* simulations Monte Carlo des estimateurs
+* bootstrap
+* inférence bayésienne
+
+## Autres opérations
+
+Les autres opérations sont souvents les outils de soutien
+
+* Résolution des systèmes d'équation
+    - reliée à l'optimisation, à la recherche des racines
+    - recherche d'un équilibre
+* Approximation
+* Résolution des équations différentielles
+* Simulation
+
+## Ce cours, relatif au livre classique de Judd
+
+Relatif au livre de Judd, je mets un accent sur
+
+* l'économétrie (cependant, ce n'est pas un cours d'économétrie)
+    - exemples dans le domaine de choix discret
+    - maximum de vraisemblance
+    - inférence bayésienne
+* la simulation
+    - intégration par simulation (utile en grandes dimensions)
+    - applications en inférence bayésienne
+
+Je mets moins d'emphase sur l'optimisation dynamique.
+Le but ici est de présenter les cas les plus simples et de vous guider vers la matière plus avancée.
+
 ## Documents et Communication
 
 ### Site Github du cours
@@ -22,6 +75,27 @@ urlcolor: blue
 1. Forums (possiblement)
 1. Documents avec droit d'auteur
 1. Chargement des devoirs
+
+## Logiciels (votre choix de quatre logiciels)
+
+### R
+
+* graticiel, accent sur la statistique, beaucoup d'applications
+* utilisé pour les démonstrations du cours
+
+### Python
+
+* graticiel, général, beaucoup d'applications
+
+### Julia
+
+* graticiel, général, moins utilisé que les autres
+* très rapide, élégant
+
+### Matlab
+
+* commercial mais disponible à l'université, général, beaucoup d'applications
+* toujours populaire mais son importance diminue en faveur de R et python
 
 ## Notation pour les dérivées multivariées
 
@@ -48,26 +122,27 @@ urlcolor: blue
 
 * Pour les matrices $A$ constantes, $m \times n$,
 \[
-  \frac{\partial Ax}{x} = A,
+  \frac{\partial Ax}{\partial x} = A.
 \]
-* Pour les vecteurs $u(x)$ et $v(x)$, $n \times 1$,
+* Règle du produit, de Leibniz : pour les vecteurs $u(x)$ et $v(x)$, $n \times 1$,
 \[
   \frac{\partial u^\top v}{\partial x}
   = u^\top \frac{\partial v}{\partial x} + v^\top \frac{\partial u}{\partial x}.
 \]
-* Pour $z = g(y)$,
+* Règle de la chaîne, des fonctions composées : pour $z = g(y)$,
 \[
   \frac{\partial z}{\partial x} =
-  \frac{\partial g(y)}{\partial y} \frac{\partial y}{\partial x}
+  \frac{\partial g(y)}{\partial y} \frac{\partial y}{\partial x}.
 \]
 
 ## Analyse de l'erreur
 
-* Deux sources d'erreur numérique.
-    - Précision finie des nombres réels
-    - Troncation de calculs infinie
+Deux sources d'erreur numérique :
+
+- Précision finie des nombres réels
+- Troncation de calculs infinis
     
-* Les deux sources d'erreur propagent et 
+Les deux sources d'erreur propagent
 
 ## La représentation virgule flottante
 
@@ -78,8 +153,8 @@ L'ordinateur représente un nombre réel $x$ comme
 où
 
 - $s\in \{-1,1\}$ est la signe,
-- $m \in \mathbb{N}$ est la mantisse et
-- $e \in \mathbb{N}$ est l'exposant.
+- $m \in \mathbb{R}_+$ est la mantisse et
+- $e \in \{\ldots,-1,0,1,\ldots\}$ est l'exposant.
 
 Le nombre d'octets utilisés pour représenter $m$ gouverne la précision numérique.
 
@@ -97,6 +172,11 @@ Pour une machine donnée, les constantes suivantes décrivent les points de dép
 |\texttt{double.eps}|$x>0$ le plus petit tel que $1 + x$ et 1 sont distincts.|
 |\texttt{double.neg.eps}|$x>0$ le plus petit tel que $1 - x$ et 1 sont distincts.|
 
+On appele
+
+* \texttt{double.xmax} l'infini de la machine,
+* \texttt{double.eps} l'epsilon de la machine.
+
 ## Trouver ces constantes avec R
 
 ```{r epsilon, echo=TRUE}
@@ -107,9 +187,25 @@ m$double.xmin
 m$double.xmax
 ```
 
+## Propogation de l'erreur
+
+* L'erreur relative du résultat d'un calcul peut être très différente de l'erreur des intrants.
+* Suppose qu'on évalue la dérivée numérique suivante, pour approximer la dérivée de la fonction $e^x$ à $x=0$ :
+\[
+  d_h = \frac{e^h - e^{-h}}{2h},
+\]
+où $h > 0$ est très petit.
+* Mettons que l'erreurs relatives maximales de $e^h$ et $e^{-h}$ sont $\epsilon$.
+* Puisque $e^x = 1$ à $x=0$, les erreurs abolues sont pareilles.
+* Par une expansion Taylor,
+\[
+  d_h \approx \frac{2h \pm 2\epsilon}{2h} = 1 \pm \frac{\epsilon}{h}
+\]
+* L'erreur relative du résultat peut être aussi grand que $\epsilon/h$.
+
 ## Expansions de Taylor et de Mercator de la fonction $\ln x$
 
-L'expansion de Taylor autour de $x=1$ :
+L'expansion de Taylor de $\ln x$ autour de $x=1$ :
 \[
   \ln x = \sum_{k=1}^\infty \frac{(-1)^k(x-1)^k}{k}
   = (x-1) - \frac{(x-1)^2}{2} + \frac{(x-1)^3}{3} - \ldots
@@ -121,6 +217,11 @@ L'expansion de Mercator :
   = x - \frac{x^2}{2} + \frac{x^3}{3} - \ldots
 \]
 
+* Si on veux évaluer $\ln (1+x)$ quand $x$ est petit et disponsible, on ne veut pas
+calculer $1+x$ comme résultat intermédiaire.
+
+* La fonction \texttt{log1p} en R (et autres langages) évalue la fonction $f(x) = \ln(1+x)$ directement.
+
 ## La fonction \texttt{log1p}
 
 ```{r log1p}
@@ -129,9 +230,23 @@ plot(x, log1p(x), 'l')
 lines(x, log(1+x), col='red')
 ```
 
-## Troncation des sommes infinies
+## Troncation
 
+Une autre source d'erreur est la troncation
 
+La valeur exacte de la fonction exponentielle est
+\[
+  e^x = \sum_{n=0}^\infty \frac{x^n}{n!},
+\]
+mais on pratique il faut tronquer et utiliser
+\[
+  \sum_{n=0}^N \frac{x^n}{n!}.
+\]
+
+Le point plus général :
+
+* un algorithme iteratif génére une suite de valeurs intermédiares $x_N$ qui converge au résultat voulu $x^* = \lim_{N\to \infty} x_N$
+* il faut accepter une valeur approximé $x_N$, $N < \infty$.
 
 ## Analyse (de la complexité) d'algorithmes
 
@@ -140,28 +255,30 @@ lines(x, log(1+x), col='red')
 * Pour des fonctions $f$ et $g$ sur $\mathbb{N}$, on écrit $f(n) = O(g(n))$ s'il existe $M > 0$ tel que $|f(n)| \leq Mg(n)$.
 * Par exemple $f(n) = 6n^2 + 8n + 2 = O(n^2)$
 
-### La complexité de certains algorithmes 
+### La complexité de certains algorithmes
 
-* $O(1)$ : trouver l'élément $f(i)$ dans un tableau.
-* $O(\log n)$ : nombre de comparaisons pour trouver un élément dans une liste triée de $n$ éléments, par recherche binaire.
-* $O(n)$ : nombre de comparaisons pour trouver un élément dans une liste non-triée de $n$ éléments.
-* $O(n^2)$ : nombre de multiplications scalaires pour multiplier une matrice $n\times n$ et un vecteur $n\times 1$.
-* $O(n^3)$ : nombre de multiplications scalaires pour multiplier deux matrices $n\times n$ (Algorithme évident)
-* $O(n^{2.8074})$ : nombre de multiplications scalaires pour multiplier deux matrices $n\times n$ (Algorithme de Strassen)
+* $O(1)$ : nombre d'opérations pour trouver le $i$-ième élément dans un $n$-vecteur;
+* $O(\log n)$ : nombre de comparaisons pour trouver un élément donnée dans un $n$-vecteur, par recherche binaire,
+* $O(n)$ : pour trouver un élément donnée dans un $n$-vecteur, par recherche exhaustive;
+* $O(n^2)$ : nombre de multiplications scalaires pour multiplier une matrice $n\times n$ et un vecteur $n\times 1$,
+* $O(n^3)$ : pour multiplier deux matrices $n\times n$ (méthode évidente)
+* $O(n^{2.81})$ : pour multiplier deux matrices $n\times n$ (Algorithme de Strassen)
 
-## L'importance d'algorithmes polynôme
+## L'importance d'algorithmes d'ordre polynomial
 
-* Un algorithme est polynôme si le temps de computation est $O(g(n))$ en $n$, le nombre de scalaires dans l'intrant, pour une polynôme $g(n)$.
-* Il y a une distintinction importante entre les problèmes facile (pour lesquels il y a un algorithme polynôme connue pour le résoudre) et les problèmes plus difficile.
-* Fonctions à sens unique.
-* Si un algorithme est polynôme, il est habituellement facile à prouver qu'il l'est.
-    * Les polynômes sont stable pour l'addition, la multiplication et la composition.
-    * Si $p(x)$ est $q(x)$ sont des fonctions polynômes, $p(x) + q(x)$, $p(x)q(x)$ et $p(q(x))$ le sont aussi.
-    * Les boucles, l'appel aux fonctions, ne sont pas 
+* Soit $n$ le nombre de scalaires dans l'intrant du problème.
+* Distinction entre la complexité d'un algorithme est la complexité d'un problème.
+* Un algorithme est d'ordre polynomial si le nombre d'opérations est $O(g(n))$, pour une polynôme $g(n)$.
+* Il y a une distinction importante entre les problèmes "faisables" (pour lesquels il y a un algorithme polynomial connue pour le résoudre) et les problèmes "infaisables".
+* Fonctions à sens unique et la cryptographie.
+* Si un algorithme est polynomial, il est habituellement facile à prouver qu'il l'est.
+    * Les polynômes sont stables pour l'addition, la multiplication et la composition :
+    si $p(n)$ et $q(n)$ sont polynomiales, $p(n) + q(n)$, $p(n)q(n)$ et $p(q(n))$ le sont aussi.
+    * (boucles, invocation des fonctions, etc.)
 
 ## P, NP et NP Complet
 
-- Une réduction : problème $A$ n'est pas plus difficile que $B$ ($A \leq_P B$) si $A$ peut être réduit à $B$---résolu par un algorithme pour résoudre $B$ plus une quantité polynôme de computation supplémentaire.
+- Une réduction : problème $A$ n'est pas plus difficile que $B$ ($A \leq_P B$) si $A$ peut être réduit à $B$---résolu par un algorithme pour résoudre $B$ plus un nombre d'opérations supplémentaires d'ordre polynomial.
 - Classes de problèmes :
     * P : problèmes de décision (oui/no) résoluble en temps polynôme.
     * NP : problèmes de décision (oui/non) ou une réponse affirmative peut être prouvé correcte en temps polynôme.
@@ -172,7 +289,7 @@ lines(x, log(1+x), col='red')
 ## Quelques problèmes
 
 \definecolor{amber}{rgb}{1.0,0.75,0.0}
-(\textcolor{green}{polynomial}, \textcolor{amber}{NP-complete}, \textcolor{red}{NP-hard})
+(\textcolor{green}{polynomial}, \textcolor{amber}{NP-complet}, \textcolor{red}{NP-difficile})
 
 ### Problème du voyageur de commerce (Travelling Salesman)
 
