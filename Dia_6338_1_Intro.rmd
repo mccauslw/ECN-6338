@@ -7,43 +7,52 @@ output: beamer_presentation
 urlcolor: blue
 ---
 
+## Quelques observations
 
-## Deux opérations clés de l'analyse numérique en économie
+* Sciences économiques et la recherche des implications des modèles.
+* La difficulté d'exprimer ces implications en forme analytique.
+* L'importance de l'optimisation et des espérances dans les problèmes d'agents économiques.
+* L'importance de l'optimisation et des espérances dans les problèmes économétriques.
+* L'utilité de l'analyse numérique en microéonomie, macroéconomie et économétrie.
+
+## Deux opérations numériques importante en économie
 
 ### L'optimisation
 
-Par les agents dans un modèle économique
+Par les agents des modèles économiques
 
 * maximisation de l'utilité (choix des actions dans un jeu, des quantités de consommation)
-* maximisation des profits (choix des quantités de production)
+* maximisation du profit (choix des quantités de production)
 
 Par les économètres
 
 * estimation économétrique par maximum de vraisemblance
-* autres méthodes d'estimation par optimisation
+* plus en général, [extremum estimation](https://en.wikipedia.org/wiki/Extremum_estimator)
 
-### L'intégration (très souvent le calcul d'une espérance)
+### L'intégration (souvent, l'évaluation d'une espérance)
 
 Par les agents
 
-* évaluer l'espérance de l'utilité, des profits
+* évaluation de l'espérance de l'utilité, du profit
 
 Par les économètres
 
 * simulations Monte Carlo des estimateurs
-* bootstrap
+* simulation bootstrap
 * inférence bayésienne
 
-## Autres opérations
+## D'autres opérations
 
-Les autres opérations sont souvents les outils de soutien
+D'autres opérations numériques jouent souvent un rôle de soutien
 
-* Résolution des systèmes d'équation
+* Résolution de systèmes d'équation
     - reliée à l'optimisation, à la recherche des racines
     - recherche d'un équilibre
-* Approximation
-* Résolution des équations différentielles
-* Simulation
+* Approximation de fonctions
+* Résolution d'équations différentielles
+* Simulation de variables aléatoires
+    - pour l'intégration (méthodes Monte Carlo)
+    - pour l'optimisation (recuit simulé)
 
 ## Ce cours, relatif au livre classique de Judd
 
@@ -55,6 +64,7 @@ Relatif au livre de Judd, je mets un accent sur
     - inférence bayésienne
 * la simulation
     - intégration par simulation (utile en grandes dimensions)
+    - optimisation par recuit simulé
     - applications en inférence bayésienne
 
 Je mets moins d'emphase sur l'optimisation dynamique.
@@ -68,6 +78,7 @@ Le but ici est de présenter les cas les plus simples et de vous guider vers la 
 1. Démonstrations
 1. Lectures, exercices
 1. Devoirs avec computation
+1. Liens vers les enregistrements des cours à distance (README.md)
 
 ### Site StudiUM du cours
 
@@ -76,7 +87,7 @@ Le but ici est de présenter les cas les plus simples et de vous guider vers la 
 1. Documents avec droit d'auteur
 1. Chargement des devoirs
 
-## Logiciels (votre choix de quatre logiciels)
+## Logiciels (pour les travaux pratiques, votre choix)
 
 ### R
 
@@ -107,7 +118,7 @@ Le but ici est de présenter les cas les plus simples et de vous guider vers la 
   \frac{\partial y_i}{\partial x_j}.
 \]
 * Le *gradient* est un cas spécial du Jacobien où $y$ est scalaire, un vecteur ligne $1 \times n$.
-* La *matrice hessienne* ($n\times n$) contient toutes les dérivées de deuxième ordre quand $y$ est scalaire:
+* La *matrice hessienne* ($n\times n$) contient toutes les dérivées de deuxième ordre pour $y$ scalaire:
 \[
   f_{xx} = \frac{\partial}{\partial x}
   \left( \frac{\partial y}{\partial x} \right)^\top
@@ -118,13 +129,13 @@ Le but ici est de présenter les cas les plus simples et de vous guider vers la 
 
 ## Quelques propriétés des dérivées multivariées
 
-À la même [page](https://en.wikipedia.org/wiki/Matrix_calculus) il y a des tableaux de propriétés, telles que les suivantes:
+À la même [page](https://en.wikipedia.org/wiki/Matrix_calculus) il y a des tableaux de propriétés, telles que :
 
-* Pour les matrices $A$ constantes, $m \times n$,
+* Pour une matrice constante $A$, $m \times n$,
 \[
   \frac{\partial Ax}{\partial x} = A.
 \]
-* Règle du produit, de Leibniz : pour les vecteurs $u(x)$ et $v(x)$, $n \times 1$,
+* Règle du produit : pour les vecteurs $u(x)$ et $v(x)$, $m \times 1$,
 \[
   \frac{\partial u^\top v}{\partial x}
   = u^\top \frac{\partial v}{\partial x} + v^\top \frac{\partial u}{\partial x}.
@@ -142,23 +153,22 @@ Deux sources d'erreur numérique :
 - Précision finie des nombres réels
 - Troncation de calculs infinis
     
-Les deux sources d'erreur propagent
+Les erreurs se propagent à travers les computations.
 
 ## La représentation virgule flottante
 
 L'ordinateur représente un nombre réel $x$ comme
 \[
-  x = s \times m \times 2^e,
+  x = m \times 2^e,
 \]
 où
 
-- $s\in \{-1,1\}$ est la signe,
-- $m \in \mathbb{R}_+$ est la mantisse et
+- $m \in \{\ldots,-1,0,1,\ldots\}$ est la mantisse et
 - $e \in \{\ldots,-1,0,1,\ldots\}$ est l'exposant.
 
-Le nombre d'octets utilisés pour représenter $m$ gouverne la précision numérique.
+Le nombre de bits pour représenter $m$ détermine la précision numérique.
 
-Le nombre d'octets utilisés pour représenter $e$ détermine les points de dépassement et soupassement numérique.
+Le nombre de bits pour représenter $e$ détermine les points de dépassement et soupassement numérique (overflow/underflow).
 
 
 ## Quatre constantes méchanique
@@ -190,18 +200,18 @@ m$double.xmax
 ## Propogation de l'erreur
 
 * L'erreur relative du résultat d'un calcul peut être très différente de l'erreur des intrants.
-* Suppose qu'on évalue la dérivée numérique suivante, pour approximer la dérivée de la fonction $e^x$ à $x=0$ :
+* Supposez qu'on évalue la dérivée numérique suivante, pour approximer la dérivée de la fonction $e^x$ à $x=0$ :
 \[
   d_h = \frac{e^h - e^{-h}}{2h},
 \]
 où $h > 0$ est très petit.
-* Mettons que l'erreurs relatives maximales de $e^h$ et $e^{-h}$ sont $\epsilon$.
+* Mettons que les erreurs relatives maximales de $e^h$ et $e^{-h}$ sont $\epsilon$.
 * Puisque $e^x = 1$ à $x=0$, les erreurs abolues sont pareilles.
 * Par une expansion Taylor,
 \[
   d_h \approx \frac{2h \pm 2\epsilon}{2h} = 1 \pm \frac{\epsilon}{h}
 \]
-* L'erreur relative du résultat peut être aussi grand que $\epsilon/h$.
+* L'erreur relative du résultat peut être aussi grande que $\epsilon/h$.
 
 ## Expansions de Taylor et de Mercator de la fonction $\ln x$
 
@@ -230,9 +240,9 @@ plot(x, log1p(x), 'l')
 lines(x, log(1+x), col='red')
 ```
 
-## Troncation
+## Troncation mathématique
 
-Une autre source d'erreur est la troncation
+Une autre source d'erreur est la troncation mathématique.
 
 La valeur exacte de la fonction exponentielle est
 \[
@@ -245,8 +255,8 @@ mais on pratique il faut tronquer et utiliser
 
 Le point plus général :
 
-* un algorithme iteratif génére une suite de valeurs intermédiares $x_N$ qui converge au résultat voulu $x^* = \lim_{N\to \infty} x_N$
-* il faut accepter une valeur approximé $x_N$, $N < \infty$.
+* Un algorithme iteratif génére une suite de valeurs $x_N$, $N=1,2,\ldots$, qui converge au résultat voulu $x^* \equiv \lim_{N\to \infty} x_N$.
+* Il faut accepter une valeur approximative $x_N$, pour $N$ fini.
 
 ## Analyse (de la complexité) d'algorithmes
 
@@ -264,25 +274,43 @@ Le point plus général :
 * $O(n^3)$ : pour multiplier deux matrices $n\times n$ (méthode évidente)
 * $O(n^{2.81})$ : pour multiplier deux matrices $n\times n$ (Algorithme de Strassen)
 
-## L'importance d'algorithmes d'ordre polynomial
+## L'évaluation des polynomes avec la méthode de Horner
+
+### Le problème est l'évaluation du polynôme $a_0 + a_1 x + \cdots + a_n x^n$.
+
+### Trois méthodes
+
+1. Évaluation naïve, $O(n^2)$ multiplications, $O(1)$ registres :
+\[
+  a_0 + a_1 * x + a_2 * x * x + a_3 * x * x * x + \cdots
+\]
+1. Meilleure, avec $2n$ opérations, $O(n)$ registres :
+    a. Calculer $x^i = x^{i-1} * x$, $i=2,\ldots,n$.
+    a. Calculer $a_0 + a_1 * x + \cdots + a_n * x^n$.
+1. La méthode de Horner, $n$ multiplications, $O(1)$ registres :
+\[
+  a_0 + x * (a_1 + x * (a_2 + x * (a_3 + \cdots + x * (a_{n-1} + x * a_n)\ldots)))
+\]
+
+## Complexité et l'importance d'algorithmes d'ordre polynomial
 
 * Soit $n$ le nombre de scalaires dans l'intrant du problème.
-* Distinction entre la complexité d'un algorithme est la complexité d'un problème.
+* L'ordre de complexité d'un problème est l'ordre de complexité du meilleur algorithme qui résoud le problème.
 * Un algorithme est d'ordre polynomial si le nombre d'opérations est $O(g(n))$, pour une polynôme $g(n)$.
-* Il y a une distinction importante entre les problèmes "faisables" (pour lesquels il y a un algorithme polynomial connue pour le résoudre) et les problèmes "infaisables".
+* Une distinction importante entre les problèmes "faisables" (pour lesquels il y a un algorithme polynomial connue pour le résoudre) et les problèmes "infaisables".
 * Fonctions à sens unique et la cryptographie.
 * Si un algorithme est polynomial, il est habituellement facile à prouver qu'il l'est.
     * Les polynômes sont stables pour l'addition, la multiplication et la composition :
     si $p(n)$ et $q(n)$ sont polynomiales, $p(n) + q(n)$, $p(n)q(n)$ et $p(q(n))$ le sont aussi.
     * (boucles, invocation des fonctions, etc.)
 
-## P, NP et NP Complet
+## P, NP, NP-complet, NP-difficile
 
 - Une réduction : problème $A$ n'est pas plus difficile que $B$ ($A \leq_P B$) si $A$ peut être réduit à $B$---résolu par un algorithme pour résoudre $B$ plus un nombre d'opérations supplémentaires d'ordre polynomial.
 - Classes de problèmes :
     * P : problèmes de décision (oui/no) résoluble en temps polynôme.
     * NP : problèmes de décision (oui/non) ou une réponse affirmative peut être prouvé correcte en temps polynôme.
-    * NP-complet : les problèmes en NP les plus difficile (une classe d'équivalence avec plusieurs exemples connus)
+    * NP-complet : les problèmes en NP les plus difficiles (une classe d'équivalence avec plusieurs exemples connus)
     * NP-difficile : les problèmes qui sont au moins aussi difficile que les problèmes dans NP-complet.
 - P=NP? est une question non-résolue : il n'y a pas d'algorithmes polynômes connus pour résoudre les problèmes en NP.
 
@@ -307,27 +335,19 @@ Le point plus général :
 
 * \textcolor{green}{Trouvez la solution optimale ou montrez qu'il n'y a pas de solution.}
 
-## L'évaluation des polynomes avec la méthode de Horner
-
-### Le problème est l'évaluation du polynôme $a_0 + a_1 x + \cdots + a_n x^n$.
-
-### Trois solutions
-
-1. Évaluation naïve, $O(n^2)$ opérations, $O(1)$ registres :
-\[
-  a_0 + a_1 * x + a_2 * x * x + a_3 * x * x * x + \cdots
-\]
-1. Meilleure, avec $O(n)$ opérations, $O(n)$ registres :
-    a. Calculer $x^i = x^{i-1} * x$, $i=2,\ldots,n$.
-    a. Calculer $a_0 + a_1 * x + \cdots + a_n * x^n$.
-1. La méthode de Horner, $O(n)$ opérations, $O(1)$ registres :
-\[
-  a_0 + x * (a_1 + x * (a_2 + x * (a_3 + \cdots + x * (a_{n-1} + x * a_n)\ldots)))
-\]
-
 ## Parallelisme
 
-Vous allez vous habituer à reconnaître deux types de problème où vous pouvez profitez des processeurs en parallèle.
+Vous allez vous habituer à reconnaître deux types de problème où vous pouvez profitez des processeurs en parallèle:
+
+1. problèmes avec l'embarras du parallelisme
+1. problèmes SIMD (single instruction multiple data)
+
+Idées en commun:
+* Les tâches individuelles doivent être suffisament grandes relatif aux coûts fixes de communication.
+* Les couts fixes varient beaucoup :
+    - coeurs multiple d'un processeur
+    - processeurs multiple d'une machine
+    - machines multiples d'un cluster
 
 ### Problèmes 
 
@@ -338,7 +358,10 @@ Vous allez vous habituer à reconnaître deux types de problème où vous pouvez
 1. Évaluation d'une fonction sur une grille de points
 1. Intégration numérique
 1. Simulation Monte Carlo indépendent
-1. Évaluation d'une fonction de vraisemblance
+1. Évaluation d'une fonction de log vraisemblance (souvent)
+\[
+  \sum_{t=1}^T \log f(y_t|\theta)
+\]
 1. Multiplication des matrices
 
 ### Problèmes sans l'embarras du parallelisme
@@ -347,6 +370,16 @@ Vous allez vous habituer à reconnaître deux types de problème où vous pouvez
 1. Méthodes iteratives pour trouver un point fixe
 1. Simulation Markov chain Monte Carlo
 
-## Problèmes SIMD (Single Instruction, Multiple Data)
+## SIMD (Single Instruction, Multiple Data)
 
-
+* Les GPUs (processeurs graphiques) peuvent executer les mêmes instructions pour
+plusieurs vecteurs différents de données.
+* Convenable pour les problèmes où les boucles locales ont le même nombre d'itérations.
+* Quand la structure de contrôle (control flow) est variable (if-else, do-while, etc.)
+les programmes marchent mais avec gaspillage.
+* Prenons encore l'évaluation d'une fonction de log vraisemblance
+\[
+  \sum_{t=1}^T \log f(y_t|\theta)
+\]
+    - Si l'évaluation de $\log f(y_t|\theta)$ utilise les mêmes instructions, peu importe la valeur de $y_t$, le problème est disposé à SIMD
+    - Si la suite des instructions dépend de $y_t$, SIMD est moins intéressant.
