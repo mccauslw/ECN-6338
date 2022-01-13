@@ -1,0 +1,48 @@
+---
+title: "Exercices, ECN 6338, Hiver 2022"
+author: "William McCausland"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+## Cours 1. Introduction
+
+### Exercices théorique
+
+1. Montrez que $6n^2 + 3n + 10 = O(n^2)$.
+
+### Exercices de computation
+
+1. Lisez l'aide sur la fonction \texttt{expm1} et démontrez son avantage par rapport à la fonction \texttt{exp} pour évaluer $e^x - 1$ quand $|x|$ est prés de zéro.
+Vous pouvez suivre l'exemple sur \texttt{log1p} dans les diapos.
+
+1. Téléchargez le paquet R \texttt{microbenchmark}, lisez l'aide sur la fonction \texttt{microbenchmark} et mesurer le temps nécessaire pour faire les opérations \texttt{x * y}, \texttt{x / y}, \texttt{exp(y)} et \texttt{log(x)}, pour un vecteur $x > 0$ de mille éléments et un vecteur $y$ de mille éléments.
+
+## Cours 2. La résolution de systèmes d'équations linéaires
+
+### Exercices préliminaires
+
+1. Soit $L_1$ et $L_2$ des matrices triangulaires inférieures $n\times n$.
+Soit $U_1$ et $U_2$ des matrices triangulaires supérieures $n\times n$.
+Supposez que $L_1$ et $U_1$ sont inversibles.
+    a. Parmi les matrices suivantes, lequelles sont triangulaires inférieures :
+    $L_1L_2$, $L_1+L_2$, $L_1^{-1}$, $L_1^\top$, $U_1^\top$, $L_1U_1$?
+    a. Parmi les matrices suivantes, lequelles sont triangulaires supérieures :
+    $U_1U_2$, $U_1+U_2$, $U_1^{-1}$, $U_1^\top$, $L_1^\top$, $L_1U_1$?
+    
+1. (Substitution avant et substitution arrière)
+Soit $L$ et $U$ des matrices inversibles $n \times n$, où $L$ est triangulaire inférieure et $U$ est triangulaire supérieure.
+Soit $y$ un vecteur $n \times 1$.
+Notez que Judd utilise le terme "back substitution" pour décrire deux algorithmes distincts.
+Plusieurs auteurs font une distinction entre "back substitution" et "forward substitution".
+    a. Trouver un algorithme pour résoudre l'équation $Lx = y$.
+    Notez que $L_{11} x_1 = y_1$, alors $x_1 = y_1/L_{11}$.
+    a. Trouvez un algorithme pour résoudre l'équation $Ux = y$.
+    Commencez par $x_n$.
+
+1. Soit $x$ un $n$-vecteur aléatoire avec moyenne $\mu$ ($n\times 1$) et variance $\Sigma$ ($n \times n$). Soit $A$ une matrice constante $m \times n$.
+Quelles sont la moyenne et la variance de $Ax$.
+
+### Exercices théoriques
+
+### Exercices de computation

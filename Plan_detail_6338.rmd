@@ -55,7 +55,6 @@ Les éléments de l'évaluation sont
 ### Matières
 
 1. Dérivées multivariées, vecteur gradient, matrices jacobienne et hessienne
-1. Valeurs propres de matrices carrées
 1. Analyse (de la complexité) d'algorithmes
 1. Analyse des erreurs numériques
 1. Parallélisme
@@ -63,9 +62,8 @@ Les éléments de l'évaluation sont
 ### Lectures
 
 1. Judd, Chapitres 1 et 2
-1. Page Wikipédia sur [P et NP](https://en.wikipedia.org/wiki/P_versus_NP_problem)
 1. Page Wikipédia sur [l'algorithme de Strassen](https://fr.wikipedia.org/wiki/Algorithme_de_Strassen)
-1. Page Wikipédia sur la représentation des nombres [virgules flottantes] (https://en.wikipedia.org/wiki/Floating-point_arithmetic)
+1. Page Wikipédia sur la représentation des nombres [virgules flottantes](https://en.wikipedia.org/wiki/Floating-point_arithmetic)
 
 
 

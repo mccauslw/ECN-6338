@@ -159,12 +159,12 @@ Les erreurs se propagent à travers les computations.
 
 L'ordinateur représente un nombre réel $x$ comme
 \[
-  x = m \times 2^e,
+  x = \pm m \times 2^{\pm e},
 \]
 où
 
-- $m \in \{\ldots,-1,0,1,\ldots\}$ est la mantisse et
-- $e \in \{\ldots,-1,0,1,\ldots\}$ est l'exposant.
+- $m \in \mathbb{N}$ est la mantisse et
+- $e \in \mathbb{N}$ est l'exposant.
 
 Le nombre de bits pour représenter $m$ détermine la précision numérique.
 
@@ -253,10 +253,34 @@ mais on pratique il faut tronquer et utiliser
   \sum_{n=0}^N \frac{x^n}{n!}.
 \]
 
-Le point plus général :
+## Troncation mathématique, plus généralement
 
-* Un algorithme iteratif génére une suite de valeurs $x_N$, $N=1,2,\ldots$, qui converge au résultat voulu $x^* \equiv \lim_{N\to \infty} x_N$.
-* Il faut accepter une valeur approximative $x_N$, pour $N$ fini.
+* Souvent un algorithme iteratif génére une suite de vecteurs $x_k$, $k=1,2,\ldots$, qui converge au résultat voulu $x^* \equiv \lim_{k\to \infty} x^k$.
+* Il faut accepter une valeur approximative $x^k$, pour $k$ fini.
+* On ne connait pas la valeur $x^*$ pour évaluer l'erreur $\|x^k - x^*\|$.
+* Il faut utiliser $\|x^{k+1}-x^k\|$, ...
+* ... mais prudemment, parce que (par exemple)
+\[
+  1/k \to 0\; \mbox{mais}\; \sum_{j=1}^k \frac{1}{j} \; \mbox{diverge}.
+\]
+
+## Règles d'arrêt
+
+* On pratique, on veut arreter quand $\|x^k - x^{k+1}\|$ est petit relatif et à $\|x^k\|$ et à zéro.
+* Par exemple, arreter quand :
+\[
+  \frac{\|x^k - x^{k+1}\|}{1 + \|x^k\|} \leq \epsilon.
+\]
+* Si on peut établir qu'il y a un $\beta < 1$ connu tel que
+\[
+  \|x^{k+1} - x^*\| \leq \beta \|x^k - x^*\|,
+\]
+on a un garantie que $\|x^k - x^*\| \leq \|x^k - x^{k+1}\| / (1-\beta)$.
+* Des fois, la convergence est linéaire : il existe $\beta$ tel que
+\[
+  \lim_{k\to \infty} \frac{\|x^{k+1} - x^*\|}{\|x^k - x^*\|} \leq \beta < 1,
+\]
+auquel cas, on peut estimer $\beta$ et espérer que cela marche.
 
 ## Analyse (de la complexité) d'algorithmes
 
@@ -292,64 +316,20 @@ Le point plus général :
   a_0 + x * (a_1 + x * (a_2 + x * (a_3 + \cdots + x * (a_{n-1} + x * a_n)\ldots)))
 \]
 
-## Complexité et l'importance d'algorithmes d'ordre polynomial
-
-* Soit $n$ le nombre de scalaires dans l'intrant du problème.
-* L'ordre de complexité d'un problème est l'ordre de complexité du meilleur algorithme qui résoud le problème.
-* Un algorithme est d'ordre polynomial si le nombre d'opérations est $O(g(n))$, pour une polynôme $g(n)$.
-* Une distinction importante entre les problèmes "faisables" (pour lesquels il y a un algorithme polynomial connue pour le résoudre) et les problèmes "infaisables".
-* Fonctions à sens unique et la cryptographie.
-* Si un algorithme est polynomial, il est habituellement facile à prouver qu'il l'est.
-    * Les polynômes sont stables pour l'addition, la multiplication et la composition :
-    si $p(n)$ et $q(n)$ sont polynomiales, $p(n) + q(n)$, $p(n)q(n)$ et $p(q(n))$ le sont aussi.
-    * (boucles, invocation des fonctions, etc.)
-
-## P, NP, NP-complet, NP-difficile
-
-- Une réduction : problème $A$ n'est pas plus difficile que $B$ ($A \leq_P B$) si $A$ peut être réduit à $B$---résolu par un algorithme pour résoudre $B$ plus un nombre d'opérations supplémentaires d'ordre polynomial.
-- Classes de problèmes :
-    * P : problèmes de décision (oui/no) résoluble en temps polynôme.
-    * NP : problèmes de décision (oui/non) ou une réponse affirmative peut être prouvé correcte en temps polynôme.
-    * NP-complet : les problèmes en NP les plus difficiles (une classe d'équivalence avec plusieurs exemples connus)
-    * NP-difficile : les problèmes qui sont au moins aussi difficile que les problèmes dans NP-complet.
-- P=NP? est une question non-résolue : il n'y a pas d'algorithmes polynômes connus pour résoudre les problèmes en NP.
-
-## Quelques problèmes
-
-\definecolor{amber}{rgb}{1.0,0.75,0.0}
-(\textcolor{green}{polynomial}, \textcolor{amber}{NP-complet}, \textcolor{red}{NP-difficile})
-
-### Problème du voyageur de commerce (Travelling Salesman)
-
-\definecolor{amber}{rgb}{1.0,0.75,0.0}
-* \textcolor{red}{Trouvez le trajet le plus court qui relie un ensemble de villes.}
-* \textcolor{amber}{Y a-t-il un trajet plus court que $L$ qui relie les villes?}
-
-### Optimisation linéaire en nombres entiers (Integer programming)
-
-\definecolor{amber}{rgb}{1.0,0.75,0.0}
-* \textcolor{red}{Trouvez la solution optimale ou montrez qu'il n'y a pas de solution.}
-* \textcolor{amber}{(Cas spécial de variables binaires) Y a-t-il une solution faisable?}
-
-### Optimisation linéaire (Linear programming)
-
-* \textcolor{green}{Trouvez la solution optimale ou montrez qu'il n'y a pas de solution.}
-
-## Parallelisme
+## Parallélisme
 
 Vous allez vous habituer à reconnaître deux types de problème où vous pouvez profitez des processeurs en parallèle:
 
-1. problèmes avec l'embarras du parallelisme
+1. problèmes avec l'embarras du parallélisme
 1. problèmes SIMD (single instruction multiple data)
 
-Idées en commun:
-* Les tâches individuelles doivent être suffisament grandes relatif aux coûts fixes de communication.
+Idées en commun :
+
+* Les tâches individuelles doivent être suffisamment grandes relatif aux coûts fixes de communication.
 * Les couts fixes varient beaucoup :
     - coeurs multiple d'un processeur
     - processeurs multiple d'une machine
     - machines multiples d'un cluster
-
-### Problèmes 
 
 ## L'embarras du parallelisme
 
@@ -357,17 +337,17 @@ Idées en commun:
 
 1. Évaluation d'une fonction sur une grille de points
 1. Intégration numérique
-1. Simulation Monte Carlo indépendent
+1. Simulation Monte Carlo indépendant
 1. Évaluation d'une fonction de log vraisemblance (souvent)
 \[
-  \sum_{t=1}^T \log f(y_t|\theta)
+  L(\theta;y) = \sum_{t=1}^T \log f(y_t|\theta).
 \]
 1. Multiplication des matrices
 
 ### Problèmes sans l'embarras du parallelisme
 
-1. Méthodes iteratives d'optimisation
-1. Méthodes iteratives pour trouver un point fixe
+1. Méthodes itératives d'optimisation
+1. Méthodes itératives pour trouver un point fixe
 1. Simulation Markov chain Monte Carlo
 
 ## SIMD (Single Instruction, Multiple Data)
@@ -379,7 +359,7 @@ plusieurs vecteurs différents de données.
 les programmes marchent mais avec gaspillage.
 * Prenons encore l'évaluation d'une fonction de log vraisemblance
 \[
-  \sum_{t=1}^T \log f(y_t|\theta)
+  L(\theta;y) = \sum_{t=1}^T \log f(y_t|\theta).
 \]
     - Si l'évaluation de $\log f(y_t|\theta)$ utilise les mêmes instructions, peu importe la valeur de $y_t$, le problème est disposé à SIMD
     - Si la suite des instructions dépend de $y_t$, SIMD est moins intéressant.
