@@ -64,6 +64,8 @@ Les éléments de l'évaluation sont
 1. Judd, Chapitres 1 et 2
 1. Page Wikipédia sur [l'algorithme de Strassen](https://fr.wikipedia.org/wiki/Algorithme_de_Strassen)
 1. Page Wikipédia sur la représentation des nombres [virgules flottantes](https://en.wikipedia.org/wiki/Floating-point_arithmetic)
+1. Page Wikipédia sur [le calcul différentiel matriciel](https://en.wikipedia.org/wiki/Matrix_calculus).
+Notez que le cours suit la convention "numerator layout".
 
 
 

@@ -151,7 +151,7 @@ README.md comme page d'acceuil
 \[
   \frac{\partial Ax}{\partial x} = A.
 \]
-* Règle du produit : pour les vecteurs $u(x)$ et $v(x)$, $n \times 1$,
+* Règle du produit : pour les vecteurs $u(x)$ et $v(x)$, $m \times 1$,
 \[
   \frac{\partial u^\top v}{\partial x}
   = u^\top \frac{\partial v}{\partial x} + v^\top \frac{\partial u}{\partial x}.
@@ -281,7 +281,7 @@ mais on pratique il faut tronquer et utiliser
 \[
   x^k = \sum_{j=1}^k \frac{1}{j}
 \]
-$|x^k - x^{k-1}| = 1/k \to 0$ mais $x_k$ diverge.
+$|x^k - x^{k-1}| = 1/k \to 0$ mais $x^k$ diverge.
 
 ## Exemple, maximisation de $f(x)$
 ![](./Figures/Hill_climb.png)
