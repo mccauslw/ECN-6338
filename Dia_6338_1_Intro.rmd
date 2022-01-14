@@ -13,9 +13,10 @@ urlcolor: blue
 * La difficulté d'exprimer ces implications en forme analytique.
 * L'importance de l'optimisation et des espérances dans les problèmes d'agents économiques.
 * L'importance de l'optimisation et des espérances dans les problèmes économétriques.
-* L'utilité de l'analyse numérique en microéonomie, macroéconomie et économétrie.
+* L'apport de l'analyse numérique en microéonomie, macroéconomie et économétrie.
+* Le site web [QuantEcon](https://quantecon.org) donne une bonne idée de la diversité d'applications.
 
-## Deux opérations numériques importante en économie
+## Deux opérations numériques importantes en économie
 
 ### L'optimisation
 
@@ -37,9 +38,9 @@ Par les agents
 
 Par les économètres
 
-* simulations Monte Carlo des estimateurs
-* simulation bootstrap
 * inférence bayésienne
+* simulation Monte Carlo des estimateurs
+* simulation bootstrap
 
 ## D'autres opérations
 
@@ -52,7 +53,7 @@ D'autres opérations numériques jouent souvent un rôle de soutien
 * Résolution d'équations différentielles
 * Simulation de variables aléatoires
     - pour l'intégration (méthodes Monte Carlo)
-    - pour l'optimisation (recuit simulé)
+    - pour l'optimisation (recuit simulé, simulated annealing)
 
 ## Ce cours, relatif au livre classique de Judd
 
@@ -70,6 +71,18 @@ Relatif au livre de Judd, je mets un accent sur
 Je mets moins d'emphase sur l'optimisation dynamique.
 Le but ici est de présenter les cas les plus simples et de vous guider vers la matière plus avancée.
 
+## Évaluation
+
+|Type                     |Date                  |Pondération |
+|-------------------------|----------------------|------------|
+|~10 interrogations de 10 minutes    |Au début des classes                     |20\%|
+|||
+|Quatres exercices computationnelles |28 janvier, 18 février, 18 mars, 8 avril |40\%|
+|||
+|Projet computationnel               |8 avril                                  |15\%|
+|||
+|Examen final                        |22 avril                                 |25\%|
+
 ## Documents et Communication
 
 ### Site Github du cours
@@ -78,21 +91,24 @@ Le but ici est de présenter les cas les plus simples et de vous guider vers la 
 1. Démonstrations
 1. Lectures, exercices
 1. Devoirs avec computation
-1. Liens vers les enregistrements des cours à distance (README.md)
+1. Liens vers les enregistrements des cours à distance
+
+README.md comme page d'acceuil
 
 ### Site StudiUM du cours
 
 1. Messages
-1. Forums (possiblement)
 1. Documents avec droit d'auteur
-1. Chargement des devoirs
-
+1. Téléversement de vos devoirs computationnels, interrogations
+1. Forums (possiblement)
+    
 ## Logiciels (pour les travaux pratiques, votre choix)
 
 ### R
 
 * graticiel, accent sur la statistique, beaucoup d'applications
 * utilisé pour les démonstrations du cours
+* recommandé, introduction pendant la première séance TP
 
 ### Python
 
@@ -135,12 +151,12 @@ Le but ici est de présenter les cas les plus simples et de vous guider vers la 
 \[
   \frac{\partial Ax}{\partial x} = A.
 \]
-* Règle du produit : pour les vecteurs $u(x)$ et $v(x)$, $m \times 1$,
+* Règle du produit : pour les vecteurs $u(x)$ et $v(x)$, $n \times 1$,
 \[
   \frac{\partial u^\top v}{\partial x}
   = u^\top \frac{\partial v}{\partial x} + v^\top \frac{\partial u}{\partial x}.
 \]
-* Règle de la chaîne, des fonctions composées : pour $z = g(y)$,
+* Règle des fonctions composées, de la chaîne : pour $z = g(y)$,
 \[
   \frac{\partial z}{\partial x} =
   \frac{\partial g(y)}{\partial y} \frac{\partial y}{\partial x}.
@@ -200,37 +216,39 @@ m$double.xmax
 ## Propogation de l'erreur
 
 * L'erreur relative du résultat d'un calcul peut être très différente de l'erreur des intrants.
-* Supposez qu'on évalue la dérivée numérique suivante, pour approximer la dérivée de la fonction $e^x$ à $x=0$ :
+* Supposez qu'on évalue la dérivée numérique suivante, pour approximer la dérivée de la fonction $f(x) = e^x$ à $x=0$ :
 \[
-  d_h = \frac{e^h - e^{-h}}{2h},
+  d_h = \frac{f(0+h) - f(0-h)}{2h} = \frac{e^h - e^{-h}}{2h},
 \]
 où $h > 0$ est très petit.
 * Mettons que les erreurs relatives maximales de $e^h$ et $e^{-h}$ sont $\epsilon$.
 * Puisque $e^x = 1$ à $x=0$, les erreurs abolues sont pareilles.
-* Par une expansion Taylor,
+* Par une expansion de Taylor,
 \[
   d_h \approx \frac{2h \pm 2\epsilon}{2h} = 1 \pm \frac{\epsilon}{h}
 \]
 * L'erreur relative du résultat peut être aussi grande que $\epsilon/h$.
 
-## Expansions de Taylor et de Mercator de la fonction $\ln x$
+## Expansions de Taylor et de Mercator de la fonction $\log x$
 
-L'expansion de Taylor de $\ln x$ autour de $x=1$ :
+L'expansion de Taylor de $\log x$ autour de $x=1$ :
 \[
-  \ln x = \sum_{k=1}^\infty \frac{(-1)^k(x-1)^k}{k}
+  \log x = \sum_{k=1}^\infty \frac{(-1)^k(x-1)^k}{k}
   = (x-1) - \frac{(x-1)^2}{2} + \frac{(x-1)^3}{3} - \ldots
 \]
 
 L'expansion de Mercator :
 \[
-  \ln (1+x) = \sum_{k=1}^\infty \frac{(-1)^k x^k}{k}
+  \log (1+x) = \sum_{k=1}^\infty \frac{(-1)^k x^k}{k}
   = x - \frac{x^2}{2} + \frac{x^3}{3} - \ldots
 \]
 
-* Si on veux évaluer $\ln (1+x)$ quand $x$ est petit et disponsible, on ne veut pas
+* Si on veux évaluer $\log (1+x)$ quand $x$ est petit et disponsible, on ne veut pas
 calculer $1+x$ comme résultat intermédiaire.
 
-* La fonction \texttt{log1p} en R (et autres langages) évalue la fonction $f(x) = \ln(1+x)$ directement.
+* La fonction \texttt{log1p} en R (et autres langages) évalue la fonction $f(x) = \log(1+x)$ directement.
+
+* Exemple économique : pour le rendement net simple $R$, le rendement continument composé est $\log (1+R)$.
 
 ## La fonction \texttt{log1p}
 
@@ -259,10 +277,14 @@ mais on pratique il faut tronquer et utiliser
 * Il faut accepter une valeur approximative $x^k$, pour $k$ fini.
 * On ne connait pas la valeur $x^*$ pour évaluer l'erreur $\|x^k - x^*\|$.
 * Il faut utiliser $\|x^{k+1}-x^k\|$, ...
-* ... mais prudemment, parce que (par exemple)
+* ... mais prudemment, parce que (par exemple) pour
 \[
-  1/k \to 0\; \mbox{mais}\; \sum_{j=1}^k \frac{1}{j} \; \mbox{diverge}.
+  x^k = \sum_{j=1}^k \frac{1}{j}
 \]
+$|x^k - x^{k-1}| = 1/k \to 0$ mais $x_k$ diverge.
+
+## Exemple, maximisation de $f(x)$
+![](./Figures/Hill_climb.png)
 
 ## Règles d'arrêt
 
@@ -308,7 +330,7 @@ auquel cas, on peut estimer $\beta$ et espérer que cela marche.
 \[
   a_0 + a_1 * x + a_2 * x * x + a_3 * x * x * x + \cdots
 \]
-1. Meilleure, avec $2n$ opérations, $O(n)$ registres :
+1. Meilleure, avec $2n$ multiplications, $O(n)$ registres :
     a. Calculer $x^i = x^{i-1} * x$, $i=2,\ldots,n$.
     a. Calculer $a_0 + a_1 * x + \cdots + a_n * x^n$.
 1. La méthode de Horner, $n$ multiplications, $O(1)$ registres :
@@ -327,8 +349,8 @@ Idées en commun :
 
 * Les tâches individuelles doivent être suffisamment grandes relatif aux coûts fixes de communication.
 * Les couts fixes varient beaucoup :
-    - coeurs multiple d'un processeur
-    - processeurs multiple d'une machine
+    - coeurs multiples d'un processeur
+    - processeurs multiples d'une machine
     - machines multiples d'un cluster
 
 ## L'embarras du parallelisme
@@ -348,7 +370,7 @@ Idées en commun :
 
 1. Méthodes itératives d'optimisation
 1. Méthodes itératives pour trouver un point fixe
-1. Simulation Markov chain Monte Carlo
+1. Simulation Markov chain Monte Carlo (MCMC)
 
 ## SIMD (Single Instruction, Multiple Data)
 
@@ -361,5 +383,5 @@ les programmes marchent mais avec gaspillage.
 \[
   L(\theta;y) = \sum_{t=1}^T \log f(y_t|\theta).
 \]
-    - Si l'évaluation de $\log f(y_t|\theta)$ utilise les mêmes instructions, peu importe la valeur de $y_t$, le problème est disposé à SIMD
+    - Si l'évaluation de $\log f(y_t|\theta)$ utilise les mêmes instructions, peu importe la valeur de $y_t$, le problème est disposé à SIMD.
     - Si la suite des instructions dépend de $y_t$, SIMD est moins intéressant.

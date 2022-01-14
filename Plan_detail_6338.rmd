@@ -55,8 +55,8 @@ Les éléments de l'évaluation sont
 ### Matières
 
 1. Dérivées multivariées, vecteur gradient, matrices jacobienne et hessienne
-1. Analyse (de la complexité) d'algorithmes
 1. Analyse des erreurs numériques
+1. Analyse (de la complexité) d'algorithmes
 1. Parallélisme
 
 ### Lectures

@@ -25,16 +25,16 @@ Vous pouvez suivre l'exemple sur \texttt{log1p} dans les diapos.
 1. Soit $L_1$ et $L_2$ des matrices triangulaires inférieures $n\times n$.
 Soit $U_1$ et $U_2$ des matrices triangulaires supérieures $n\times n$.
 Supposez que $L_1$ et $U_1$ sont inversibles.
-    a. Parmi les matrices suivantes, lequelles sont triangulaires inférieures :
+    a. Parmi les matrices suivantes, lequelles sont toujours triangulaires inférieures :
     $L_1L_2$, $L_1+L_2$, $L_1^{-1}$, $L_1^\top$, $U_1^\top$, $L_1U_1$?
-    a. Parmi les matrices suivantes, lequelles sont triangulaires supérieures :
+    a. Parmi les matrices suivantes, lequelles sont toujours triangulaires supérieures :
     $U_1U_2$, $U_1+U_2$, $U_1^{-1}$, $U_1^\top$, $L_1^\top$, $L_1U_1$?
     
 1. (Substitution avant et substitution arrière)
 Soit $L$ et $U$ des matrices inversibles $n \times n$, où $L$ est triangulaire inférieure et $U$ est triangulaire supérieure.
 Soit $y$ un vecteur $n \times 1$.
-Notez que Judd utilise le terme "back substitution" pour décrire deux algorithmes distincts.
-Plusieurs auteurs font une distinction entre "back substitution" et "forward substitution".
+Notez que Judd utilise le terme "back substitution" pour décrire deux algorithmes distincts (a. et b.).
+Plusieurs auteurs font une distinction entre "back substitution" (b.) et "forward substitution" (a.).
     a. Trouver un algorithme pour résoudre l'équation $Lx = y$.
     Notez que $L_{11} x_1 = y_1$, alors $x_1 = y_1/L_{11}$.
     a. Trouvez un algorithme pour résoudre l'équation $Ux = y$.
