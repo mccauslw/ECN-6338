@@ -18,6 +18,8 @@ Vous pouvez suivre l'exemple sur \texttt{log1p} dans les diapos.
 
 1. Téléchargez le paquet R \texttt{microbenchmark}, lisez l'aide sur la fonction \texttt{microbenchmark} et mesurer le temps nécessaire pour faire les opérations \texttt{x * y}, \texttt{x / y}, \texttt{exp(y)} et \texttt{log(x)}, pour un vecteur $x > 0$ de mille éléments et un vecteur $y$ de mille éléments.
 
+\pagebreak
+
 ## Cours 2. La résolution de systèmes d'équations linéaires
 
 ### Exercices préliminaires
@@ -45,4 +47,38 @@ Quelles sont la moyenne et la variance de $Ax$.
 
 ### Exercices théoriques
 
+1. Quelquefois, il est plus facile de spécifier la matrice de précision $H = \Sigma^{-1}$ que la matrice de variance $\Sigma$, pour une loi gaussienne multivariée $N(\mu,\Sigma)$.
+Si vous avez la matrice $H$ et non la matrice $\Sigma$, décrivez comment on peut tirer des variables aléatoires $N(\mu,\Sigma)$ et évaluer la densité gaussienne multivariée.
+Commencez par la décomposition cholesky de $H$.
+
+1. La matrice de précision $H$ pour un processus AR(1) gaussien est
+tridiagonale ($H_{ij} = 0$ pour $|i-j|>1$) et symmétrique. Si $\omega = \sigma^{-2}$ est la précision de l'innovation et $\phi$ est le coefficient d'autorégression, le diagonal de $H$ est $\omega(1,1+\phi^2,\ldots,1+\phi^2,1)$ et le sous-diagonal est $-\omega(\phi, \ldots, \phi)$.
+Trouvez la décomposition cholesky de $H$, en utilisant une description de l'algorithme (page 59 de Judd, par exemple).
+
+1. Dans l'exemple MCO, calculez le vecteur $e = y - Xb$ des résiduelles et $\hat{\sigma}^2 (X^\top X)^{-1}$, une estimation de la variance de $b$. Utilisez seulement $y$ et la décomposition QR de $X$, pas $X$ elle-même. Notez que $\hat{\sigma}^2 = e^\top e/(n-k)$.
+
 ### Exercices de computation
+
+\pagebreak
+
+## Cours 3. Quelques sujets préalables
+
+### Exercices préliminaires
+
+1. Trouvez le panier de consommation $(x_1,x_2)$ qui maximise $U(x_1,x_2) = x_1^{1/2} x_2^{1/2}$ sous les contraintes $p_1x_1 + p_2x_2 = m$, $x_1 \geq 0$ et $x_2 \geq 0$, où $m \geq 0$, $p_1 \geq 0$ et $p_2 \geq 0$.
+Utilisez la méthode de Lagrange.
+
+1. Si $X_i|\lambda \sim \mathrm{iid}\;\mathrm{Exp}(\lambda)$ (loi exponentielle) et $\lambda \sim \mathrm{Ga}(\alpha, \beta)$ (loi gamma)
+écrivez
+    a. la fonction de densité conditionnelle de $(X_1,\ldots,X_n)$ sachant $\lambda$.
+    a. la densité conjointe de $(X_1,\ldots,X_n)$ et $\lambda$.
+
+### Exercices théoriques
+
+### Exercices de computation
+
+Aucune, étant donnée la nature du cours 3.
+
+\pagebreak
+
+## Cours 4. L'optimisation statique

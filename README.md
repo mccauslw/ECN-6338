@@ -9,3 +9,7 @@
 #### Cours 1, Introduction
 
 [Diapos](Dia_6338_1_Intro.pdf)
+
+#### Cours 2, La résolution de systèmes d'équations linéaires
+
+[Diapos](Dia_6338_2_LinEq.pdf)
