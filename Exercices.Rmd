@@ -43,7 +43,7 @@ Plusieurs auteurs font une distinction entre "back substitution" (b.) et "forwar
     Commencez par $x_n$.
 
 1. Soit $x$ un $n$-vecteur aléatoire avec moyenne $\mu$ ($n\times 1$) et variance $\Sigma$ ($n \times n$). Soit $A$ une matrice constante $m \times n$.
-Quelles sont la moyenne et la variance de $Ax$.
+Quelles sont la moyenne et la variance de $Ax$?
 
 ### Exercices théoriques
 
@@ -57,9 +57,14 @@ Trouvez la décomposition cholesky de $H$, en utilisant une description de l'alg
 
 1. Dans l'exemple MCO, calculez le vecteur $e = y - Xb$ des résiduelles et $\hat{\sigma}^2 (X^\top X)^{-1}$, une estimation de la variance de $b$. Utilisez seulement $y$ et la décomposition QR de $X$, pas $X$ elle-même. Notez que $\hat{\sigma}^2 = e^\top e/(n-k)$.
 
+1. Donnez la matrice creuse des diapos en format colonne compressée après
+    a. Une insertion \texttt{A[2,4] <- 24},
+    a. Une supression \texttt{A[3,2] <- 0}.
+Décrit brièvement les algorithmes pour l'insertion et la supression en général.
+
 ### Exercices de computation
 
-1. Regardez la démonstration \texttt{GPA.R} de l'analyse d'une régression linéaire, exemple 3.1 dans Wooldridge (2016) Introductory Econometrics.
+1. Regardez la démonstration \texttt{GPA.R} (au site Github du cours) de l'analyse d'une régression linéaire, exemple 3.1 dans Wooldridge (2016) Introductory Econometrics.
 Calculez $b$, $e$ et $\hat{\sigma}^2 (X^\top X)^{-1}$ en utilisant la décomposition QR.
 La fonction \texttt{qr} effectue la décomposition QR, les fonctions \texttt{qr.Q} et \texttt{qr.R} extraient les matrices $Q_1$ et $R_1$ du résultat.
 Les fonctions \texttt{backsolve} et \texttt{t} (transpose) pourraient être utiles.

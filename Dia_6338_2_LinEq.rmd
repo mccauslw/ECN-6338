@@ -4,18 +4,28 @@ subtitle: "La résolution de systèmes d'équations linéaires"
 author: "William McCausland"
 date: "`r Sys.Date()`"
 output: beamer_presentation
+urlcolor: blue
 ---
+
+## Survol du Cours 2
+
+- Problème : de trouver le $n$-vecteur $x$ qui résoud le système $Ax = b$. $A$ est $n \times n$ et inversible; $b$ est un $n$-vecteur.
+- Les systèmes les plus faciles : $A$ triangulaire ou orthogonal
+- Pour les systèmes où $A$ est dense, on peut décomposer $A$ et ainsi réduire le problème en la résolution des systèmes triangulaires et orthogonaux.
+- Pour les systèmes où $n$ est grand et $A$ creuse, il y a deux options :
+    - utiliser les mêmes décompositions et courir le risque que les décompositions soient denses,
+    - utiliser des méthodes iteratives. (Il faut utiliser ces méthodes pour les problèmes non-linéaires de toute façon).
 
 ## Systèmes triangulaires
 
 - Notation :
     - $L$, une matrice triangulaire inférieure $n \times n$;
-    - $R$, une matrice triangularie supérieure $n \times n$.
+    - $R$ ou $U$, une matrice triangularie supérieure $n \times n$.
 - Il est facile de voir si la matrice est inversible : ssi aucun élément diagonal n'est nul.
-- Pour le $n$-vecteur colonne $y$, la résolution de
-    - $y = Lx$ est facile par substitution avant
-    - $y = Rx$ est facile par substitution arrière
-- Pour le $n$-vecteur ligne $y$, la solution de $y = xL$ est la transposée de la solution de $y^\top = L^\top x^\top$.
+- Pour le $n$-vecteur colonne $b$, la résolution de
+    - $Lx = b$ est facile par substitution avant
+    - $Rx = b$ est facile par substitution arrière
+- Pour le $n$-vecteur ligne $b$, la solution de $xL = b$ est la transposée de la solution de $L^\top x^\top = b^\top$.
 
 ## Systèmes orthogonaux I
 
@@ -67,7 +77,7 @@ output: beamer_presentation
 
 Notes :
 
-- La solution du système $y = Qx$ est $x = Q^\top y$.
+- La solution du système $Qx = b$ est $x = Q^\top b$.
 - Si $Q_1$ et $Q_2$ sont orthogonales,
    - $Q_1^\top$ l'est aussi,
    - $Q_1 Q_2$ l'est aussi :
@@ -80,7 +90,7 @@ Notes :
   
 ## Décompositions
 
-Trois décompositions permettent la division de la résolution d'un système plus générale en systèmes triangulaires ou orthogonaux :
+Trois décompositions facilite la résolution d'un système plus générale en reduisant le problème en la résolution des systèmes triangulaires ou orthogonaux :
 
 - Décomposition LU : $A = LU$ pour $A$ général $n\times n$
 - Décomposition Cholesky : $A = LL^\top = R^\top R$, pour $A$ symmétrique et définie positive $n \times n$.
@@ -93,12 +103,12 @@ Trois décompositions permettent la division de la résolution d'un système plu
    - $U$ est triangulaire supérieure $n \times n$.
 - En pratique, pour garder contre la division par un nombre près de zéro, la décomposition est $A = PLU$, où
     - $P$ est une matrice de permutation.
-- Pour résoudre le système $y = Ax$,
+- Pour résoudre le système $Ax = b$,
     - Calculer la décomposition $A = PLU$.
-    - Le systéme s'écrit $y = PLUx$
-    - Permuter $y$ avec $P^\top = P^{-1}$ : $\tilde{y} = P^\top y$.
-    - Le système s'écrit $\tilde{y} = LUx$.
-    - Résoudre le système $\tilde{y} = Lz$ pour trouver $z \equiv Ux$.
+    - Le systéme s'écrit $PLUx = b$
+    - Permuter $b$ avec $P^\top = P^{-1}$ : $\tilde{b} = P^\top b$.
+    - Le système s'écrit $LUx = \tilde{b}$.
+    - Résoudre le système $Lz = \tilde{b}$ pour trouver $z \equiv Ux$.
     - Résoudre le système $Ux = z$ pour trouver $x$.
 - Pour les systèmes $n \times n$, toutes les décompositions sont $O(n^3)$, la substitution (avant et arrière) est $O(n^2)$ et la multiplication matrice-vecteur est $O(n^2)$.
 
@@ -115,7 +125,7 @@ Voici les fonctions de meilleure réponse de trois firmes en jeu de Cournot
   q_3 = 4 - 0.2 q_1 - 0.4 q_2.
 \]
 
-En équation matriciel $Aq = y$, où
+En équation matriciel $Aq = b$, où
 \[
   A = \begin{bmatrix}
     1.0 & 0.5 & 0.3 \\
@@ -123,7 +133,7 @@ En équation matriciel $Aq = y$, où
     0.2 & 0.4 & 1.0 \\
   \end{bmatrix},
   \quad
-  y = \begin{bmatrix} 5 \\ 7 \\ 4 \end{bmatrix}.
+  b = \begin{bmatrix} 5 \\ 7 \\ 4 \end{bmatrix}.
 \]
 
 ## L'équilibre Cournot, calculé numériquement
@@ -131,8 +141,8 @@ En équation matriciel $Aq = y$, où
 ```{r Oligo}
 data = c(1.0, 0.6, 0.2, 0.5, 1.0, 0.4, 0.3, 0.1, 1.0)
 A = matrix(data, nrow = 3, ncol=3, byrow=FALSE)
-y = c(5, 7, 4)
-q = solve(A, y)
+b = c(5, 7, 4)
+q = solve(A, b)
 q
 ```
 
@@ -140,9 +150,9 @@ Notes :
 
 - \texttt{solve} utilise la commande \texttt{DGESV} de \texttt{LAPACK}.
 - De la documentation \texttt{LAPACK} : "LU decomposition with partial pivoting and row interchanges"
-- Pas d'accès à la décomposition $PLU$, paraît-il.
-- Cependant, si on veut résoudre $Ax^i = y^i$ pour plusieurs $i$,
-on peut résoudre $AX = Y$, où $X = [x^1 \cdots x^N]$ et $Y = [y^1 \cdots y^N]$, avec \texttt{X = solve(A, Y)}.
+- En R de base, pas d'accès à la décomposition $PLU$, paraît-il.
+- Cependant, si on veut résoudre $Ax^i = b^i$ pour plusieurs $i$,
+on peut résoudre $AX = B$, où $X = [x^1 \cdots x^N]$ et $B = [b^1 \cdots b^N]$, avec \texttt{X = solve(A, B)}.
 
 ## La décomposition QR
 
@@ -158,10 +168,10 @@ où $Q$ est orthogonal, $R$ est triangulaire supérieur.
 
 Pour une matrice $X$, $n \times k$, $n > k$ (souvent $n \gg k$), on peut faire la décomposition
 \[
-  A = QR =
+  X = QR =
   \begin{bmatrix} Q_1 & Q_2 \end{bmatrix}
   \begin{bmatrix} R_1 \\ 0  \end{bmatrix}
-  = Q_1 R_1
+  = Q_1 R_1,
 \]
 où $Q$ est $n \times n$, $R$ est $n \times k$, $Q_1$ est $n \times k$ et $R_1$ est $k \times k$.
 
@@ -169,21 +179,21 @@ où $Q$ est $n \times n$, $R$ est $n \times k$, $Q_1$ est $n \times k$ et $R_1$ 
 
 Pour $A$ carré est inversible, tout est simple:
 
-- Écrire le système à résoudre, $y = Ax$, comme $y = QRx$.
-- Définir $\tilde y = Q^\top y$ et maintenant le système s'écrit
-$\tilde{y} = Rx$.
+- Écrire le système à résoudre, $Ax = b$, comme $QRx = b$.
+- Définir $\tilde{b} = Q^\top b$ et maintenant le système s'écrit
+$Rx = \tilde{b}$.
 - Résoudre ce système triangulaire avec la substituion arrière.
 
-Pour $A$ grande et mince, l'application principale en économie le calcul des coefficients moindres carrées linéaire.
+Pour $A$ grande et mince ($n \gg k$), l'application principale en économie est le calcul de l'estimation MCO (moindres carrées ordinaire).
 
-## Aparté, régression linéaire
+## Aparté sur la régression linéaire
 
-- Équation de régression pour une unité d'observation :
+- Équation de régression pour l'unité d'observation $i$ :
 \[
   y_i = x_{i1} \beta_1 + \ldots + x_{ik} \beta_k + \epsilon_i,
   \quad E[\epsilon_i|x_{i1},\ldots,x_{ik}] = 0.
 \]
-- Cette équations en vecteurs :
+- Cette équation en vecteurs :
 \[
   y_i = x_i^\top \beta + \epsilon_i.
 \]
@@ -192,12 +202,12 @@ Pour $A$ grande et mince, l'application principale en économie le calcul des co
   y = X\beta + \epsilon,
 \]
 où $y$ et $\epsilon$ sont $n \times 1$, $X$ est $n \times k$, $\beta$ est $k \times 1$. 
-- L'estimateur MCO $b$ de $\beta$ est $(X^\top X)^{-1} X^\top y$.
+- L'estimation MCO $b$ de $\beta$ est $b = (X^\top X)^{-1} X^\top y$.
 
 ## La résolution de systèmes avec la décomposition QR, II
 
 - On veut calculer $b \equiv (X^\top X)^{-1} X^\top y$.
-- Soit $X = QR$ la décomposition QR de $X$.
+- Décompose $X = QR$.
 - Rappeler que $QR = Q_1R_1$, pour la sous-matrice $n \times k$ $Q_1$ et la sous-matrice $k\times k$ $R_1$.
 - On peut écrire
 \[
@@ -220,13 +230,14 @@ où $y$ et $\epsilon$ sont $n \times 1$, $X$ est $n \times k$, $\beta$ est $k \t
     - $L = R^\top$ est triangulaire inférieure $n \times n$.
 - C'est une décomposition $LU$ sans permutation.
 - Le calcul est numériquement plus stable, sans recours au pivots.
+- Un tiers le nombre de multiplications scalaires de LU.
 - Deux opérations intéressantes dans le contexte des variables aléatoires gaussiennes multivariées.
     - Multiplication directe $Lx$
-    - Résolution du système $Lx = y$.
+    - Résolution du système $Lx = b$.
 
 ## Exemple, tirage de variables aléatoires gaussiennes multivariées
 
-Problème : tirer $X \sim N(\mu, \Sigma)$, où la variance $\Sigma$ de $X$ est $n\times n$ et positive définie.
+Problème : tirer $X \sim N(\mu, \Sigma)$, où $X$ et $\mu$ sont des $n$-vecteurs et la variance $\Sigma$ est $n\times n$ et positive définie.
 
 - La décomposition Cholesky est $\Sigma = LL^\top$.
 - Pour $u \sim N(0,I_n)$, $Lu \sim N(0,\Sigma)$, parce que
@@ -260,12 +271,12 @@ Pour calculer $(x-\mu)^\top \Sigma^{-1} (x-\mu)$ :
     (x-\mu)^\top \Sigma^{-1} (x-\mu)
     &= (x-\mu)^\top (LL^\top)^{-1} (x-\mu) \\
     &= (x-\mu)^\top L^{-\top} L^{-1} (x-\mu) \\
-    &= \|L^{-1}(x-\mu)\|
+    &= \|L^{-1}(x-\mu)\|^2
   \end{aligned},
 \]
 et $L^{-1}(x-\mu)$ est la solution du sytème triangulaire $Lu = (x-\mu)$.
 
-Pour calculer $|\Sigma|$ : $|\Sigma| = |L||L^\top|$ où $|L| = |L^\top|$ est le produit des éléments diagonaux de $L$, parce qu'elle est triangulaire. 
+Pour calculer $|\Sigma|$ : $|\Sigma| = |L||L^\top|$ où $|L| = |L^\top| = \prod_{i=1}^n L_{ii}$, parce que $L$ est triangulaire. 
 
 ## Matrice creuse (sparse matrix), format triple
 
@@ -283,13 +294,13 @@ Matrice creuse $A$, $m \times n$, avec $N$ éléments ($m=5, n=6, N=5$) :
 
 Triples en ordre colonne par colonne (column major order) :
 
-| $i$ | $j$ | $x$    |
-|-----|-----|--------|
-|  3  |  2  |$A_{32}$|
-|  5  |  2  |$A_{52}$|
-|  1  |  3  |$A_{13}$|
-|  4  |  3  |$A_{43}$|
-|  3  |  5  |$A_{35}$|
+| $i$ | $j$ | $x$    | $i-1$ | $j-1$ |
+|-----|-----|--------|-------|-------|
+|  3  |  2  |$A_{32}$|   2   |   1   |
+|  5  |  2  |$A_{52}$|   4   |   1   |
+|  1  |  3  |$A_{13}$|   0   |   2   |
+|  4  |  3  |$A_{43}$|   3   |   2   |
+|  3  |  5  |$A_{35}$|   2   |   4   |
 
 ## Matrice creuse, format colonne compressée
 
@@ -303,13 +314,13 @@ Triples en ordre colonne par colonne (column major order) :
   \end{bmatrix}
 \]
 
-| $i$ | $x$    |
+| $i-1$ | $x$    |
 |-----|--------|
-|  3  |$A_{32}$|
-|  5  |$A_{52}$|
-|  1  |$A_{13}$|
-|  4  |$A_{43}$|
-|  3  |$A_{35}$|
+|  2  |$A_{32}$|
+|  4  |$A_{52}$|
+|  0  |$A_{13}$|
+|  3  |$A_{43}$|
+|  2  |$A_{35}$|
 
 | j | 0 | 1 | 2 | 3 | 4 | 5 | 6 |
 |---|---|---|---|---|---|---|---|
@@ -352,7 +363,7 @@ str(m)
     - $O(\log N)$ pour le format triple.
 - Opérations rapides :
     - Recherche : \texttt{x = A[i,j]}
-    - Insertion : \texttt{A[i,j] = Aij}
+    - Insertion : \texttt{A[i,j] = x}
     - Suppression : \texttt{A[i,j] = 0}
     - Multiplication par un vecteur : \texttt{y = A \%*\% x} ou \texttt{y = x \%*\% A}
 
@@ -360,7 +371,7 @@ str(m)
 
 - Les décompositions LU, QR, Cholesky sont possibles (et disponsibles en R) mais les résultats sont souvent des matrices denses.
 
-## Multiplication pour une matrice en format triple
+## Multiplication, pour une matrice en format triple
 
 - Soit \texttt{A} une matrice creuse en format triple, $n \times n$ avec $N$ éléments non-nuls.
 - Soit \texttt{x} un vecteur, $n \times 1$.
@@ -369,3 +380,115 @@ str(m)
 \[
   y_{i_k} \leftarrow y_{i_k} + A_{i_k,j_k} x_{j_k}.
 \]
+- L'algorithme est $O(N)$, qui peut être beaucoup plus rapide que l'algorithme standard pour $A$ dense.
+- L'algorithme est légèrement plus compliqué pour le format colonne compressé.
+
+## Autres notes sur les matrices creuses
+
+- Il y a un format ligne compressée (compressed sparse row)
+- La page Wikipédia sur les
+[matrices creuses](https://en.wikipedia.org/wiki/Sparse_matrix) explique en détail ce format.
+
+## Méthodes itératives linéaires
+
+- Problème : trouver $x^*$, la solution du système $Ax = b$, quand les décompositions sont couteuses.
+
+- Il y a des méthodes itératives de la forme
+\[
+  x^{k+1} = \Omega x^k + c.
+\]
+
+- Pour que $x^k \to x^*$, il faut que
+    1. $x^* = \Omega x^* + c$ (la solution est un point fixe) et
+    2. $\rho(\Omega) < 1$ (toutes les valeurs propres ont une module inférieure à 1)
+
+- Dans ce cas la convergence est linéaire à taux $\beta = \rho(\Omega)$.
+
+## Splitting
+
+L'idée est de décomposer $A = N - P$, et utiliser $\Omega = N^{-1}P$ et $c = N^{-1}b$ :
+\[
+  x^{k+1} = N^{-1}(b + Px^k).
+\]
+
+Notes :
+
+- Par construction, $x^*$ est un point fixe : $x^* = N^{-1}(b+Px^*)$.
+- On veut choisir $N$ telle que
+    - $\rho(N^{-1}P) < 1$
+    - le système $Nx^{k+1} = b + Px^k$ est plus facile à résoudre que le système $Ax = b$.
+
+## Gauss-Jacobi pour un système $2 \times 2$
+
+Le système $2 \times 2$ s'écrit
+\[
+  \begin{bmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{bmatrix}
+  \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}
+  = 
+  \begin{bmatrix} b_1 \\ b_2 \end{bmatrix}.
+\]
+
+- La première ligne s'écrit $a_{11} x_1 + a_{12} x_2 = b_1$, ce qui motive
+\[
+  x_1^{k+1} = (b_1 - a_{12} x_2^k) / a_{11}.
+\]
+- Même chose pour la deuxième ligne donne
+\[
+  x_2^{k+1} = (b_2 - a_{21} x_1^k) / a_{22}.
+\]
+- La méthode Gauss-Jacobi est une méthode splitting où
+\[
+  N = \begin{bmatrix} a_{11} & 0 \\ 0 & a_{22} \end{bmatrix},\;
+  P = -\begin{bmatrix} 0 & a_{12} \\ a_{21} & 0 \end{bmatrix},\;
+  N^{-1}P = -\begin{bmatrix} 0 & a_{12}/a_{11} \\ a_{21}/a_{22} & 0 \end{bmatrix}.
+\]
+- Les valeurs propres de $N^{-1}P$ sont $\pm \sqrt{a_{12}a_{21}/a_{11}a_{22}}$
+
+
+## Gauss-Seidel pour un système $2 \times 2$
+
+- Ici l'itération pour $x_1$ est pareille :
+\[
+  x_1^{k+1} = (b_1 - a_{12} x_2^k) / a_{11}.
+\]
+- L'itération pour $x_2$ utilise $x_1^{k+1}$, déjà calculé, au lieu de $x_1^k$ :
+\[
+  x_2^{k+1} = (b_2 - a_{21} x_1^k) / a_{22}.
+\]
+- La méthode Gauss-Jacobi est une méthode splitting où
+\[
+  N = \begin{bmatrix} a_{11} & 0 \\ a_{21} & a_{22} \end{bmatrix},\;
+  P = -\begin{bmatrix} 0 & a_{12} \\ 0 & 0 \end{bmatrix},\;
+  N^{-1}P = -\begin{bmatrix} 0 & a_{12}/a_{11} \\ 0 & a_{12}a_{21}/(a_{11}a_{22}) \end{bmatrix}.
+\]
+- Les valeurs propres de $N^{-1}P$ sont $-a_{12}a_{21}/a_{11}a_{22}$ et 0.
+
+## Deux exemples de Judd à voir (pages 80-83)
+
+### Offre et demande (hog cycle)
+
+- Systéme : demande $p + 3q = 21$ et offre $p - 2q = 6$, où $p$ est 
+le prix et $q$ est la quantité dans un marché.
+
+- En matrices, après élimination de $a_{11}$ et $a_{22}$ :
+\[
+  \begin{bmatrix} 1 & -\tfrac{1}{2} \\ 3 & 1 \end{bmatrix}
+  \begin{bmatrix} q \\ p \end{bmatrix}
+  = \begin{bmatrix} -3 \\ 21 \end{bmatrix}
+\]
+
+- G-J et G-S sont instables, mais on peut les stabiliser.
+
+### Duopole en équilibre Bertrand
+
+- Système : meilleures réponses $p_1 = 1 + 0.75p_2$,
+$p_2 = 2 + 0.80p_2$, où $p_i$ est le prix choisi par la firme $i$, $i=1,2$.
+
+- En matrices :
+\[
+  \begin{bmatrix} 1 & -0.75 \\ -0.8 & 1 \end{bmatrix}
+  \begin{bmatrix} p_1 \\ p_2 \end{bmatrix}
+  = \begin{bmatrix} 1 \\ 2 \end{bmatrix}
+\]
+
+- G-J et G-S sont stables, mais on peut accelerer la convergence.
