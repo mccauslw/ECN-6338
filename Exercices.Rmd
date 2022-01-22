@@ -57,10 +57,9 @@ Trouvez la décomposition cholesky de $H$, en utilisant une description de l'alg
 
 1. Dans l'exemple MCO, calculez le vecteur $e = y - Xb$ des résiduelles et $\hat{\sigma}^2 (X^\top X)^{-1}$, une estimation de la variance de $b$. Utilisez seulement $y$ et la décomposition QR de $X$, pas $X$ elle-même. Notez que $\hat{\sigma}^2 = e^\top e/(n-k)$.
 
-1. Donnez la matrice creuse des diapos en format colonne compressée après
+1. Donnez la matrice creuse des diapos en format colonne compressée après les deux opérations suivantes. Décrivez brièvement les algorithmes pour l'insertion et la supression en général.
     a. Une insertion \texttt{A[2,4] <- 24},
     a. Une supression \texttt{A[3,2] <- 0}.
-Décrit brièvement les algorithmes pour l'insertion et la supression en général.
 
 ### Exercices de computation
 

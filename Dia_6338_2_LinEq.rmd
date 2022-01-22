@@ -373,8 +373,8 @@ str(m)
 
 ## Multiplication, pour une matrice en format triple
 
-- Soit \texttt{A} une matrice creuse en format triple, $n \times n$ avec $N$ éléments non-nuls.
-- Soit \texttt{x} un vecteur, $n \times 1$.
+- Soit \texttt{A} une matrice creuse en format triple, $m \times n$ avec $N$ éléments non-nuls.
+- Soit \texttt{x} un vecteur dense, $n \times 1$.
 - On veut calculer le vecteur dense \texttt{y = A \%*\% x}.
 - Algorithme : $y \leftarrow 0$ puis pour $k = 1,\ldots,N$,
 \[
@@ -453,7 +453,7 @@ Le système $2 \times 2$ s'écrit
 \]
 - L'itération pour $x_2$ utilise $x_1^{k+1}$, déjà calculé, au lieu de $x_1^k$ :
 \[
-  x_2^{k+1} = (b_2 - a_{21} x_1^k) / a_{22}.
+  x_2^{k+1} = (b_2 - a_{21} x_1^{k+1}) / a_{22}.
 \]
 - La méthode Gauss-Jacobi est une méthode splitting où
 \[
