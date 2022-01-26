@@ -15,3 +15,10 @@
 [Diapos](Dia_6338_2_LinEq.pdf)
 
 Démonstration de MCO : [GPA.R](GPA.R)
+
+#### Cours 3, Quelques sujets préalables
+
+[Diapos](Dia_6338_3_Preal.pdf)
+
+Exemple "Chomage" : [chomage.R](chomage.R)
+

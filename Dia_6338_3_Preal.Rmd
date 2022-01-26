@@ -1,0 +1,253 @@
+---
+title: "ECN 6338 Cours 3"
+subtitle: "Quelques sujets préalables"
+author: "William McCausland"
+date: "`r Sys.Date()`"
+output: beamer_presentation
+urlcolor: blue
+---
+
+## Survol du Cours 2
+
+Maximisation sous contraintes
+
+- une contrainte d'égalité
+- plusieures contraintes d'égalité
+- plusieures contraintes d'égalité plus non-négativité
+- plusieures contraintes d'égalité et d'inégalité
+- exemple
+
+Maximisation de la vraisemblance
+
+- la vraisemblance
+- l'estimateur maximum de vraisemblance et ses propriétés
+- les problèmes d'optimisation à effectuer
+
+Inférence bayésienne
+
+- les lois *a priori* et *a posteriori*
+- les problèmes d'intégration à effectuer
+
+## Problème de maximisation avec une contrainte d'égalité
+
+Problème :
+\[
+  \max_{x \in \mathbb{R}^n} f(x) \quad\mbox{t.q.}\quad g(x) = c,
+\]
+où
+
+- $f \colon \mathbb{R}^n \to \mathbb{R}$, $g \colon \mathbb{R}^n \to \mathbb{R}$,
+- $c \in \mathbb{R}$,
+- $f, g \in C^2$, l'espace de fonctions avec deux dérivées continues.
+
+Fonction de Lagrange, en $x \in \mathbb{R}^n$, $\lambda \in \mathbb{R}$ :
+\[
+  L(x,\lambda) = f(x) + \lambda[c - g(x)].
+\]
+
+Théorème : Si $x^*$ est une solution et que $g_j(x^*) \neq 0$ pour au moins un $j$,
+il existe $\lambda^* \in \mathbb{R}$ tel que
+
+- $L_j(x^*,\lambda^*) = 0$, $j=1,\ldots,n$, et $L_\lambda(x^*,\lambda^*) = 0$.
+
+## Problème avec plusieurs contraintes d'égalité
+
+Problème :
+\[
+  \max_{x \in \mathbb{R}^n} f(x) \quad\mbox{t.q.}\quad
+  g(x) = c,
+\]
+où
+
+- $f \colon \mathbb{R}^n \to \mathbb{R}$, $g \colon \mathbb{R}^n \to \mathbb{R}^m$; $m < n$; $f, g \in C^2$,
+- $c \in \mathbb{R}^m$.
+
+Fonction de Lagrange, en $x\in \mathbb{R}^n$,
+$\lambda \in \mathbb{R}^m$ est :
+\[
+  L(x,\lambda) = f(x) + \lambda^\top [c - g(x)] = f(x) + \sum_{i=1}^m \lambda_i [c_i - g^i(x)].
+\]
+
+Théorème :
+Si $x^*$ est une solution et le rang du jacobien $g_x(x^*)$ est $m$,
+il existe $\lambda^* \in \mathbb{R}^m$ tel que
+
+- $L_x(x^*,\lambda^*) = 0_n$, $L_\lambda(x^*,\lambda^*) = 0_m$.
+
+## Plusieurs contraintes d'égalité, non-négativité
+
+Problème :
+\[
+  \max_{x \in \mathbb{R}^n} f(x) \quad\mbox{t.q.}\quad
+  g(x) = c,\; x \geq 0,
+\]
+où $f$, $g$ et $c$ sont comme dans le problème précédent.
+
+Fonction de Lagrange, comme dans le dernier problème :
+\[
+  L(x,\lambda) = f(x) + \lambda[c - g(x)].
+\]
+
+Théorème :
+Si $x^*$ est une solution et le rang du jacobien $g_x(x^*)$ est $m$,
+il existe $\lambda^* \in \mathbb{R}^m$ tel que
+
+- $L_x(x^*,\lambda^*) \leq 0$, $x^*\geq 0$ avec écarts complémentaires,
+- $L_\lambda(x^*,\lambda^*) = 0$.
+
+## Exemple, utilité quasi-linéaire I (exemple 3.1 de Dixit)
+
+Le problème : pour prix $p > 0$ et $q > 0$, revenu $I > 0$ et $a > 0$, 
+\[
+  \max_{x,y \in \mathbb{R}} y + a \ln x \quad\mbox{t.q.}\quad px + qy = I.
+\]
+La fonction de Lagrange :
+\[
+  L(x,y,\lambda) = y + a \ln x + \lambda(I - px - qy).
+\]
+Les conditions nécessaires pour un maximum :
+\[
+  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0;
+\]
+\[
+  L_y = 1 - \lambda q \leq 0,\; y \geq 0;
+\]
+\[
+  I - px - qy = 0.
+\]
+
+- Cas $x = 0$, $y = 0$ : $I - px - qy = 0$ est impossible.
+- Cas $x = 0$, $y > 0$ : $L_x \leq 0$ est impossible.
+
+## Exemple, utilité quasi-linéaire II
+
+Les conditions nécessaires pour un maximum, encore :
+\[
+  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0;
+\]
+\[
+  L_y = 1 - \lambda q \leq 0,\; y \geq 0;
+\]
+\[
+  I - px - qy = 0.
+\]
+
+- Cas $x > 0$, $y = 0$ :
+    - dans ce cas $x = I/p$ et $\lambda = a/I$,
+    - il faut que $1 - aq/I \leq 0$, $I \leq aq$.
+- Cas $x > 0$, $y > 0$ :
+    - dans ce cas $\lambda = a/(px) = 1/q$,
+    - $x = aq/p$,
+    - Il faut que $I - px = I - aq > 0$, auquel cas $y = I/q - a$.
+
+## Exemple, utilité quasi-linéaire III
+
+```{r ql1}
+p <- 1; I <- 10  # Prix de x et revenu
+a <- 5;          # Paramètre d'utilité
+q1 <- 1; q2 <- 2; q3 <- 5   # Trois valeurs du prix de y
+x = seq(0, 10, length.out = 1000)  # Grille, valeurs de x
+
+# Trois budgets
+b1 = (I - p*x)/q1;
+b2 = (I - p*x)/q2;
+b3 = (I - p*x)/q3;
+
+# Deux courbes d'indifférence
+y1 = 5*log(5)+5 - 5*log(x)  # Qui passe par (5, 5)
+y2 = 5*log(10) - 5*log(x)   # Qui passe par (10, 0)
+```
+
+## Exemple, utilité quasi-linéaire IV
+
+```{r ql2}
+plot(x, b1, type='l', xlab='x', ylab='y', bty='l');
+lines(x, b2); lines(x, b3)
+lines(x, y1, col='green'); lines(x, y2, col='green')
+points(c(5, 10), c(5, 0), col='blue', pch=16)
+```
+
+## Plusieurs contraintes d'égalité et d'inégalité
+
+Problème :
+\[
+  \max_{x \in \mathbb{R}^n} f(x) \quad\mbox{t.q.}\quad
+  g(x) = c,\; h(x) \leq d,
+\]
+où $f$, $g$ et $c$ sont comme dans le problème précédent,
+
+- $h \colon \mathbb{R}^n \to \mathbb{R}^l$, $h \in C^2$, $d \in \mathbb{R}^l$.
+
+Fonction de Lagrange :
+\[
+  L(x,\lambda) = f(x) + \lambda^\top [c - g(x)] + \mu^\top [d - h(x)].
+\]
+
+Théorème : Si $x^*$ est une solution, le rang des jacobiens $g_x(x^*)$  et $h_x(x^*)$ sont $m$ et $l$, il existe $\lambda^* \in \mathbb{R}^m$ et $\mu^* \in \mathbb{R}^l$ tels que
+
+- $L_x(x^*,\lambda^*,\mu^*) = 0_n$,
+- $L_\lambda(x^*,\lambda^*,\mu^*) = 0_m$,
+- $L_\mu(x^*,\lambda^*,\mu^*) \geq 0_l$, $\mu \geq 0_l$ avec écarts complémentaires.
+
+## Comparaison avec la page 122 dans Judd
+
+Dans Judd :
+
+- $g(x) = 0$ et $h(x) \leq 0$, pas $g(x) = c$ et $h(x) \leq d$.
+    - aucune perte de généralité :
+    défine $\tilde{g}(x) = g(x) - c$, $\tilde{h}(x) = h(x) - d$
+- moins de détail sur les conditions de rang ("constraint qualification")
+- problème de minimisation, pas de maximisation
+    - le relâchement d'une contrainte *réduit* la valeur optimale $f(x^*)$
+- $L(x,\lambda,\mu) = f(x) + \lambda^\top g(x) + \mu^\top h(x)$ (signe opposé des deux derniers termes)
+- Les conditions pour $\mu$ et $L_\mu$ sont $\mu \leq 0$, $L_\mu \leq 0$.
+
+Le problème de maximisation est plus naturel pour les économistes mais les logiciels exigent souvent des fonctions à minimiser. Il faut "traduire" la spécification du problème et bien intérpreter la signe des prix d'ombre et autres résultats.
+
+
+## Exemple, chomage technique (exemple 3.2 de Dixit)
+
+Le problème :
+
+- Une économie a 300 unités de $L$ (main d'oeuvre) et 450 unités de $T$, pour la production de blé et de boeuf.
+- Produire une unité de blé prend 2 unités de $L$, 1 unité de $T$.
+- Produire une unité de boeuf prend 1 unité de $L$, 2 unités de $T$.
+- On veut maximiser $W(x,y) = (1-\beta) \ln x + \beta \ln y$, où $x$ et $y$ sont les quantités de blé et de boeuf.
+- On écarte d'emblée la possibilité des valeurs $x < 0$, $y < 0$.
+
+La fonction de Lagrange :
+\[
+  L(x,y,\mu_L,\mu_T) = (1-\beta) \ln x + \beta \ln y
+  + \mu_L[300 - 2x - y] + \mu_T[450 - x - 2y]
+\]
+
+## Chomage technique, conditions de première ordre
+
+\[
+  L(x,y,\mu_L,\mu_T) = (1-\beta) \ln x + \beta \ln y
+  + \mu_L[300 - 2x - y] + \mu_T[450 - x - 2y]
+\]
+Les conditions de première ordre sont
+\[
+  \frac{1-\beta}{x} - 2\mu_L - \mu_T = 0,
+  \quad
+  \frac{\beta}{y} - \mu_L - 2\mu_T = 0,
+\]
+et avec écarts complémentaires,
+\[
+  300 - 2x - y \geq 0, \quad \mu_L \geq 0;
+\]
+\[
+  450 - x - 2y \geq 0, \quad \mu_T \geq 0.
+\]
+
+- $\mu_L = 0$, $\mu_T = 0$ ne vérifie pas les deux premières équations.
+- $\mu_L > 0$, $\mu_T > 0$ donne le plan unique sans chomage, mais il faut vérifier $\mu_L > 0$ et $\mu_T > 0$ : il faut que $2/3 < \beta < 8/9$.
+- $\mu_L = 0$ et $\mu_T > 0$ (chomage de $L$) requiert $\beta \geq 8/9$.
+- $\mu_L > 0$ et $\mu_T = 0$ (chomage de $T$) requiert $\beta \leq 2/3$.
+
+## Trois solutions, selon la valeur de $\beta$ ('chomage.R')
+
+```{r chomage_g, echo=FALSE}
+source('chomage.R')
+```
