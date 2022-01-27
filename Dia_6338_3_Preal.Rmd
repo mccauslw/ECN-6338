@@ -252,22 +252,29 @@ et avec écarts complémentaires,
 source('chomage.R')
 ```
 
-## Maximisation de la vraisemblance
+## Éléments de l'analyse maximum de vraisemblance
 
-- la vraisemblance
-- l'estimateur maximum de vraisemblance et ses propriétés
-- les problèmes d'optimisation à effectuer
+* Quantités pertinentes :
+    * $\theta$, un vecteur de paramètres inconnus,
+    * $y=(y_1,\ldots,y_T)$, un vecteur aléatoire des variables observables,
+    * $y^\circ$, le vecteur observé.
+    
+* Fonctions pertinentes :
+    * $f(y|\theta)$, la densité conditionnelle des données (modèle),
+    * ${\cal L}(\theta;y) = f(y|\theta)$, la vraisemblance,
+    * ${\cal L}(\theta;y^\circ) = f(y^\circ|\theta)$, la vraisemblance réalisée.
 
 ## Le modèle Bernoulli
 
-* Supposons que les $y_i$ sont iid Bernoulli avec probabilité $\theta \in [0,1]$ :
+* Supposez que les $y_i$ sont iid Bernoulli avec probabilité $\theta \in [0,1]$: $y_i = 1$ avec probabilité $\theta$, $y_i = 0$ avec probabilité $(1-\theta)$.
+* Alors la fonction de masse de probabilité de $y_i$ est
 \[
   \begin{aligned}
     f(y_i|\theta) &= \begin{cases} \theta & y_i = 1 \\ (1-\theta) & y_i = 0 \end{cases} \\
-    &= \theta^{y_i}(1-\theta)^{1-y_i}
+    &= \theta^{y_i}(1-\theta)^{1-y_i}.
   \end{aligned}
 \]
-* On observe $y = (y_1,\ldots,y_n)$ ; la fonction de masse de probabilité est
+* On observe le vecteur aléatoire $y = (y_1,\ldots,y_n)$ ; la fonction de masse de probabilité de $y$ est
 \[
   f(y|\theta) = \prod_{i=1}^n f(y_i|\theta) = \prod_{i=1}^n \theta^{y_i} (1-\theta)^{1-y_i}
   = \theta^{n_1} (1-\theta)^{n_0},
@@ -278,27 +285,26 @@ où
 
 ## Deux intérpretations de la même expression
 
-* Deux façons de dénoter la même expression :
+* Deux intérpretations de l'expression $\theta^{n_1} (1-\theta)^{n_0}$ :
     * Fonction de masse de probabilité $f(y|\theta) = \theta^{n_1} (1-\theta)^{n_0}$.
     * Fonction de vraisemblance ${\cal L}(\theta; y) = \theta^{n_1} (1-\theta)^{n_0}$.
-* $f(y|\theta)$ donne, pour $\theta$ fixe, les probabilités relatives de plusieurs séquences $(y_1,\ldots,y_n)$.
-* ${\cal L}(\theta; y)$ donne, pour $y$ fixe (le vecteur des données observées) une note (ou évaluation) à
-chaque valeur $\theta$ pour la qualité de sa prévision des données observées.
+* $f(y|\theta)$ donne, pour $\theta$ fixe, les probabilités relatives des séquences possibles $(y_1,\ldots,y_n)$.
+* ${\cal L}(\theta; y)$ donne, pour $y$ fixe (notamment $y=y^\circ$) une note (ou évaluation) à chaque valeur $\theta$ pour la qualité de sa prévision des données observées.
 * Soit $L(\theta; y) = \log {\cal L}(\theta; y)$, la log-vraisemblance.
 
 ## La vraisemblance Bernoulli pour $n_0 = 200$, $n_1 = 230$
 
 ```{r vrai}
 n_0 = 200; n_1 = 230; theta = seq(0, 1, by=0.001)
-L = theta^n_1 * (1-theta)^n_0
-plot(theta, L, type='l')
+cal_L = theta^n_1 * (1-theta)^n_0
+plot(theta, cal_L, type='l')
 ```
 
 ## La log vraisemblance Bernoulli pour $n_0 = 200$, $n_1 = 230$
 
 ```{r lvrai}
-logL = n_1 * log(theta) + n_0 * log(1-theta)
-plot(theta, logL, type='l', ylim=c(-400, max(logL)))
+L = n_1 * log(theta) + n_0 * log(1-theta)
+plot(theta, L, type='l', ylim=c(-400, max(L)))
 ```
 
 ## Maximum de la vraisemblance Bernoulli
@@ -312,52 +318,45 @@ plot(theta, logL, type='l', ylim=c(-400, max(logL)))
 \[
   \frac{\partial^2 L(\theta;y)}{\partial \theta^2} = -\frac{n_1}{\theta^2} - \frac{n_0}{(1-\theta)^2} < 0.
 \]
-* La valeur qui maximise la vraisemblance et la log-vraisemblance est
+* La valeur $\hat\theta$ (souvent vue comme une variable aléatoire) qui maximise la vraisemblance et la log-vraisemblance est
 \[
   \hat{\theta} = \frac{n_1}{n_0 + n_1} = \frac{n_1}{n}.
 \]
+* Pour $n_0 = 200$ et $n_1 = 230$, $\hat\theta = \frac{23}{43} \approx 0.5349$.
 
 ## Maximum de vraisemblance : conditions de régularité
 
 * Définitions :
     * $\theta$ est le vecteur des paramètres ; $\Theta$, l'ensemble de toutes les valeurs possibles de $\theta$.
-    * $r$ est le vecteur (aléatoire) des données.
+    * $y$ est le vecteur (aléatoire) des données.
 
 * Conditions informelles de regularité :
     1. Le modèle est correct pour une valeur $\theta = \theta_0 \in \Theta$.
     1. La vraie valeur $\theta_0$ est dans l'intérieur de $\Theta$.
     1. Identification :
     $$ \theta \neq \theta_0 \Rightarrow f(\cdot|\theta) \neq f(\cdot|\theta_0). $$
-    1. $L(\theta;r) \equiv \log f(r|\theta)$ a toujours un maximum global unique.
-    1. Le gradient de $L(\theta;r)$ est toujours borné.
+    1. $L(\theta;y) \equiv \log f(y|\theta)$ a toujours un maximum global unique.
+    1. Le gradient de $L(\theta;y)$ (par rapport à $\theta$) est toujours borné.
     1. La matrice ${\cal I}(\theta)$ suivante (matrice d'information de Fisher) est définie positive:
-    $$ {\cal I}(\theta) = E_{r|\theta}\left[ \frac{\partial L(\theta;r)}{\partial \theta^\top} \frac{\partial L(\theta;r)}{\partial \theta} \right]. $$
+    $$ {\cal I}(\theta) = E_{y|\theta}\left[ \frac{\partial L(\theta;y)}{\partial \theta^\top} \frac{\partial L(\theta;y)}{\partial \theta} \right]. $$
 
 ## Maximum de vraisemblance : résultats
 
-Résultats : (Soit $\hat{\theta} \equiv \arg \max_{\theta} L(\theta;r)$, qui existe et est unique.)
+Résultats : (Soit $\hat{\theta} \equiv \arg \max_{\theta} L(\theta;y)$, qui existe et est unique.)
 
 1. $\hat{\theta} \to_p \theta_0$ (loi de grands nombres)
-1. $\sqrt{n}(\hat{\theta}-\theta_0) \to_d N(0,{\cal I}(\theta_0)^{-1})$ (théorème central limite)
-1. $E_{r|\theta}\left[\frac{\partial L(\theta;r)}{\partial \theta}\right] = 0$, alors ${\cal I}(\theta) = \mathrm{Var}_{r|\theta}\left[\frac{\partial L(\theta;r)}{\partial \theta}\right]$.
-1. ${\cal I}(\theta)  = E_{r|\theta}\left[ -\frac{\partial^2 L(\theta;r)}{\partial \theta \partial \theta^\top} \right].$
+1. $\sqrt{n}(\hat{\theta}-\theta_0) \to_d N(0,n{\cal I}(\theta_0)^{-1})$ (théorème central limite)
+1. ${\cal I}(\theta)  = E_{y|\theta}\left[ -\frac{\partial^2 L(\theta;y)}{\partial \theta \partial \theta^\top} \right].$
 
 Problèmes restants :
 
 1. Il faut trouver $\hat{\theta}$.
-1. La variance asymptotique ${\cal I}(\theta_0)^{-1}$ dépend de $\theta_0$, qui est inconnu.
-1. L'espérance dans l'expression de ${\cal I}(\theta)$ est difficile à évaluer analytiquement.
+1. La variance asymptotique ${\cal I}(\theta_0)^{-1}$ de $\hat\theta$ dépend de $\theta_0$, qui est inconnu.
+1. L'espérance dans les deux expressions pour ${\cal I}(\theta)$ sont difficiles à évaluer analytiquement.
 
 ## Exemple Bernoulli
 
 * Un cas rare où les calculs analytiques sont faisables.
-* La moyenne du score :
-\[
-  E_{y|\theta}\left[\frac{\partial L}{\partial \theta}\right]
-  = E_{y|\theta}\left[\frac{n_1}{\theta} - \frac{n_0}{(1-\theta)}\right]
-  = \frac{n\theta}{\theta} - \frac{n(1-\theta)}{(1-\theta)}
-  = 0
-\]
 * La matrice d'information de Fisher :
 \[
   \begin{aligned}
@@ -373,17 +372,18 @@ Problèmes restants :
   \mathrm{Var}[\hat{\theta}] = \mathrm{Var}\left[\frac{n_1}{n}\right]
   = \frac{1}{n^2} n \mathrm{Var}[y_i] = \frac{1}{n} (\theta-\theta^2) = \frac{\theta(1-\theta)}{n}.
 \]
+* Pour $n_0 = 200$ et $n_1 = 230$, $\mathrm{Var}[\hat{\theta}]$ est de $(0.02411)^2$ pour $\theta = 1/2$ et $(0.02405)^2$ pour $\theta = \hat\theta \approx 0.5349$
 
 ## Éléments de l'analyse bayésienne
 
 * Quantités pertinentes :
-    * $\theta$, un vecteur de paramètres inconnus,
-    * $y=(y_1,\ldots,y_T)$, un vecteur aléatoire des variables observables, et
+    * $\theta$, un vecteur de paramètres inconnus *aléatoire*
+    * $y=(y_1,\ldots,y_T)$, un vecteur aléatoire des variables observables,
     * $y^\circ$, le vecteur observé.
     
-* Densités pertinentes :
+* Fonctions pertinentes :
     * $f(y|\theta)$, la densité conditionnelle des données (modèle),
-    * ${\cal L}(\theta;y^\circ) = f(y^\circ|\theta)$, la vraisemblance,
+    * ${\cal L}(\theta;y^\circ) = f(y^\circ|\theta)$, la vraisemblance réalisé,
     * $f(\theta)$, la densité *a priori*,
     * $f(\theta,y)$, la densité conjointe,
     * $f(\theta|y)$, la densité *a posteriori*,
