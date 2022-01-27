@@ -251,3 +251,232 @@ et avec écarts complémentaires,
 ```{r chomage_g, echo=FALSE}
 source('chomage.R')
 ```
+
+## Maximisation de la vraisemblance
+
+- la vraisemblance
+- l'estimateur maximum de vraisemblance et ses propriétés
+- les problèmes d'optimisation à effectuer
+
+## Le modèle Bernoulli
+
+* Supposons que les $y_i$ sont iid Bernoulli avec probabilité $\theta \in [0,1]$ :
+\[
+  \begin{aligned}
+    f(y_i|\theta) &= \begin{cases} \theta & y_i = 1 \\ (1-\theta) & y_i = 0 \end{cases} \\
+    &= \theta^{y_i}(1-\theta)^{1-y_i}
+  \end{aligned}
+\]
+* On observe $y = (y_1,\ldots,y_n)$ ; la fonction de masse de probabilité est
+\[
+  f(y|\theta) = \prod_{i=1}^n f(y_i|\theta) = \prod_{i=1}^n \theta^{y_i} (1-\theta)^{1-y_i}
+  = \theta^{n_1} (1-\theta)^{n_0},
+\]
+où
+    - $n_1 = \sum_{i=1}^n y_i$ est le nombre de fois qu'on observe 1, et
+    - $n_0 = n - \sum_{i=1}^n y_i$ est le nombre de fois qu'on observe 0.
+
+## Deux intérpretations de la même expression
+
+* Deux façons de dénoter la même expression :
+    * Fonction de masse de probabilité $f(y|\theta) = \theta^{n_1} (1-\theta)^{n_0}$.
+    * Fonction de vraisemblance ${\cal L}(\theta; y) = \theta^{n_1} (1-\theta)^{n_0}$.
+* $f(y|\theta)$ donne, pour $\theta$ fixe, les probabilités relatives de plusieurs séquences $(y_1,\ldots,y_n)$.
+* ${\cal L}(\theta; y)$ donne, pour $y$ fixe (le vecteur des données observées) une note (ou évaluation) à
+chaque valeur $\theta$ pour la qualité de sa prévision des données observées.
+* Soit $L(\theta; y) = \log {\cal L}(\theta; y)$, la log-vraisemblance.
+
+## La vraisemblance Bernoulli pour $n_0 = 200$, $n_1 = 230$
+
+```{r vrai}
+n_0 = 200; n_1 = 230; theta = seq(0, 1, by=0.001)
+L = theta^n_1 * (1-theta)^n_0
+plot(theta, L, type='l')
+```
+
+## La log vraisemblance Bernoulli pour $n_0 = 200$, $n_1 = 230$
+
+```{r lvrai}
+logL = n_1 * log(theta) + n_0 * log(1-theta)
+plot(theta, logL, type='l', ylim=c(-400, max(logL)))
+```
+
+## Maximum de la vraisemblance Bernoulli
+
+* Vraisemblance : ${\cal L}(\theta;y) = \theta^{n_1} (1-\theta)^{n_0}$.
+* Log vraisemblance : $L(\theta;y) = n_1 \log(\theta) + n_0 \log(1-\theta)$
+* Deux dérivées de la log vraisemblance :
+\[
+  \frac{\partial L(\theta;y)}{\partial \theta} = \frac{n_1}{\theta} - \frac{n_0}{1-\theta}
+\]
+\[
+  \frac{\partial^2 L(\theta;y)}{\partial \theta^2} = -\frac{n_1}{\theta^2} - \frac{n_0}{(1-\theta)^2} < 0.
+\]
+* La valeur qui maximise la vraisemblance et la log-vraisemblance est
+\[
+  \hat{\theta} = \frac{n_1}{n_0 + n_1} = \frac{n_1}{n}.
+\]
+
+## Maximum de vraisemblance : conditions de régularité
+
+* Définitions :
+    * $\theta$ est le vecteur des paramètres ; $\Theta$, l'ensemble de toutes les valeurs possibles de $\theta$.
+    * $r$ est le vecteur (aléatoire) des données.
+
+* Conditions informelles de regularité :
+    1. Le modèle est correct pour une valeur $\theta = \theta_0 \in \Theta$.
+    1. La vraie valeur $\theta_0$ est dans l'intérieur de $\Theta$.
+    1. Identification :
+    $$ \theta \neq \theta_0 \Rightarrow f(\cdot|\theta) \neq f(\cdot|\theta_0). $$
+    1. $L(\theta;r) \equiv \log f(r|\theta)$ a toujours un maximum global unique.
+    1. Le gradient de $L(\theta;r)$ est toujours borné.
+    1. La matrice ${\cal I}(\theta)$ suivante (matrice d'information de Fisher) est définie positive:
+    $$ {\cal I}(\theta) = E_{r|\theta}\left[ \frac{\partial L(\theta;r)}{\partial \theta^\top} \frac{\partial L(\theta;r)}{\partial \theta} \right]. $$
+
+## Maximum de vraisemblance : résultats
+
+Résultats : (Soit $\hat{\theta} \equiv \arg \max_{\theta} L(\theta;r)$, qui existe et est unique.)
+
+1. $\hat{\theta} \to_p \theta_0$ (loi de grands nombres)
+1. $\sqrt{n}(\hat{\theta}-\theta_0) \to_d N(0,{\cal I}(\theta_0)^{-1})$ (théorème central limite)
+1. $E_{r|\theta}\left[\frac{\partial L(\theta;r)}{\partial \theta}\right] = 0$, alors ${\cal I}(\theta) = \mathrm{Var}_{r|\theta}\left[\frac{\partial L(\theta;r)}{\partial \theta}\right]$.
+1. ${\cal I}(\theta)  = E_{r|\theta}\left[ -\frac{\partial^2 L(\theta;r)}{\partial \theta \partial \theta^\top} \right].$
+
+Problèmes restants :
+
+1. Il faut trouver $\hat{\theta}$.
+1. La variance asymptotique ${\cal I}(\theta_0)^{-1}$ dépend de $\theta_0$, qui est inconnu.
+1. L'espérance dans l'expression de ${\cal I}(\theta)$ est difficile à évaluer analytiquement.
+
+## Exemple Bernoulli
+
+* Un cas rare où les calculs analytiques sont faisables.
+* La moyenne du score :
+\[
+  E_{y|\theta}\left[\frac{\partial L}{\partial \theta}\right]
+  = E_{y|\theta}\left[\frac{n_1}{\theta} - \frac{n_0}{(1-\theta)}\right]
+  = \frac{n\theta}{\theta} - \frac{n(1-\theta)}{(1-\theta)}
+  = 0
+\]
+* La matrice d'information de Fisher :
+\[
+  \begin{aligned}
+  {\cal I}(\theta)
+  &= E_{y|\theta}\left[-\frac{\partial^2 L}{\partial \theta^2}\right]
+  = E_{y|\theta}\left[\frac{n_1}{\theta^2} + \frac{n_0}{(1-\theta)^2}\right] \\
+  &= \frac{n\theta}{\theta^2} + \frac{n(1-\theta)}{(1-\theta)^2}
+  = \frac{n}{\theta(1-\theta)}.
+  \end{aligned}
+\]
+* La variance de $\hat{\theta}$ (exacte, pas asymptotique) :
+\[
+  \mathrm{Var}[\hat{\theta}] = \mathrm{Var}\left[\frac{n_1}{n}\right]
+  = \frac{1}{n^2} n \mathrm{Var}[y_i] = \frac{1}{n} (\theta-\theta^2) = \frac{\theta(1-\theta)}{n}.
+\]
+
+## Éléments de l'analyse bayésienne
+
+* Quantités pertinentes :
+    * $\theta$, un vecteur de paramètres inconnus,
+    * $y=(y_1,\ldots,y_T)$, un vecteur aléatoire des variables observables, et
+    * $y^\circ$, le vecteur observé.
+    
+* Densités pertinentes :
+    * $f(y|\theta)$, la densité conditionnelle des données (modèle),
+    * ${\cal L}(\theta;y^\circ) = f(y^\circ|\theta)$, la vraisemblance,
+    * $f(\theta)$, la densité *a priori*,
+    * $f(\theta,y)$, la densité conjointe,
+    * $f(\theta|y)$, la densité *a posteriori*,
+    * $f(y)$, la densité marginale des données,
+    * $f(y^\circ)$, la vraisemblance marginale (un nombre).
+
+## Inférence bayésienne
+
+* Par la règle de Bayes,
+$$ f(\theta|y^\circ) = \frac{f(\theta,y^\circ)}{f(y^\circ)} = \frac{f(\theta)f(y^\circ|\theta)}{f(y^\circ)}
+\propto f(\theta)f(y^\circ|\theta). $$
+
+* $f(\theta)$ représente notre incertitude sur $\theta$ avant l'observation de $y$.
+
+* $f(\theta|y^\circ)$ resprésente notre incertitude sur $\theta$ après qu'observe $y=y^\circ$.
+
+* Un point important à retenir : $f(\theta|y^\circ) \propto f(\theta,y^\circ)$.
+
+## Reprise et extension de l'exemple Bernoulli
+
+* Si $y_i$ est Bernoulli avec probabilité $\theta$, $f(y|\theta) = \theta^{n_1} (1-\theta)^{n_0}$.
+
+* Mettons qu'on choisit la loi *a priori* $\theta \sim \mathrm{Beta}(\alpha,\beta)$ sur $[0,1]$ :
+$$ f(\theta) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \theta^{\alpha-1} (1-\theta)^{\beta-1}. $$
+* La densité conjointe est
+$$ f(\theta,y) = f(\theta)f(y|\theta) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \theta^{\alpha + n_1 - 1} (1-\theta)^{\beta + n_0 - 1}. $$
+
+* La loi *a posteriori* doit être $\theta \sim \mathrm{Beta}(\alpha + n_1, \beta + n_0)$.
+
+* La vraisemblance marginale est $f(\theta,y)/f(\theta|y)$ :
+$$ f(y) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \frac{\Gamma(\alpha+n_1)\Gamma(\beta+n_0)}{\Gamma(\alpha + \beta + n)}. $$
+
+## Graphique pour l'exemple Bernoulli
+
+```{r bbpriorpost, echo=TRUE}
+n0 = 200; n1 = 230; alpha=2; beta=2
+x = seq(0, 1, by=0.002)
+plot(x, dbeta(x, alpha+n1, beta+n0), type='l')
+lines(x, dbeta(x, alpha, beta), col='red')
+```
+
+## Exemple gaussien I
+
+* Considérez les modèle $y_t \sim \mathrm{iid}\, N(\mu, h^{-1})$.
+* Le vecteur de paramètres est $\theta = (\mu,h)$.
+* Le vecteur d'observables est $y = (y_1,\ldots,y_T)$.
+* La densité des données est
+$$ \begin{aligned} f(y|\theta) &= \prod_{t=1}^T \sqrt{\frac{h}{2\pi}} \exp\left[-\frac{h}{2}(y_t-\mu)^2\right] \\
+&= \left(\frac{h}{2\pi}\right)^{T/2} \exp \left[-\frac{h}{2} \sum_{t=1}^T (y_t-\mu)^2 \right]. \end{aligned} $$
+
+## Exemple gaussien II
+
+* Mettons qu'on choisit une loi *a priori* où $h$ et $\mu$ sont indépendents,
+avec
+$$ \mu \sim N(\bar{\mu},\bar{\omega}^{-1}), \quad \bar{s}^2h \sim \chi^2(\bar{\nu}), $$
+où $\bar{\mu}$, $\bar{\omega}$, $\bar{s}$ et $\bar{\nu}$ sont des hyperparamètres constants choisis par l'investigateur.
+* La densité *a priori* est
+$$ f(\theta) \propto \exp \left[-\frac{\bar{\omega}}{2}(\mu-\bar{\mu})^2\right]
+\cdot h^{(\bar{\nu}-2)/2} \exp\left[-\frac{1}{2}\bar{s}^2 h\right]. $$
+* La densité conjointe est
+$$ f(\theta,y) \propto h^{(\bar{\nu}+T-2)/2} \exp\left[-\frac{\bar{\omega}}{2} (\mu-\bar{\mu})^2 - \frac{h}{2} \left( \bar{s}^2 + \sum_{t=1}^T (y_t - \mu)^2 \right) \right]. $$
+
+## L'intégration et les objectifs de l'analyse bayésienne
+
+* Plusieurs problèmes d'inférence bayésienne ont, comme solution, une intégrale par rapport à la densité *a posteriori*.
+
+* Exemple 1, estimation ponctuelle de $\theta_k$ sous perte quadratique:
+$$ \hat{\theta}_k = E[\theta_k | y^\circ] = \int \theta_k f(\theta|y^\circ)\, d\theta. $$
+
+* Exemple 2, quantification de l'incertitude sur $\theta_k$ :
+$$ \mathrm{Var}[\theta|y^\circ] = E[(\theta_k - E[\theta_k|y^\circ])^2|y^\circ]. $$
+
+* Exemple 3, densité prédictive (valeurs de $y_{T+1}$ sur une grille) :
+$$ f(y_{T+1}|y^\circ) = E[f(y_{T+1}|\theta,y^\circ)|y^\circ]. $$
+
+## Preuve de l'exemple 3
+
+$$ \begin{aligned}
+E[f(y_{T+1}&|y_1,\ldots,y_T,\theta)|y_1,\ldots,y_T] \\
+&= \int f(y_{T+1}|y_1,\ldots,y_T,\theta) f(\theta|y_1,\ldots,y_T)\, d\theta \\
+&= \int f(y_{T+1},\theta|y_1,\ldots,y_T)\, d\theta \\
+&= f(y_{T+1}|y_1,\ldots,y_T)
+\end{aligned} $$
+
+## Méthodes pour trouver $E[g(\theta)|y^\circ]$
+
+* Calcul analytique : élégant, exacte, presque toujours insoluble.
+* Simulation Monte Carlo indépendante :
+    * Si on peut simuler $\theta^m \sim \mathrm{iid}\, \theta|y^\circ$,
+    $$ \frac{1}{M} \sum_{m=1}^M g(\theta^m) \rightarrow_p E[g(\theta)|y^\circ]. $$
+    * Cependant, cette simulation est rarement faisable.
+* Simulation Monte Carlo chaîne de markov (MCMC) :
+    * On choisit un processus markovien avec densité de transition $f(\theta^m|\theta^{m-1})$ telle que la loi *a posteriori* $\theta|y^\circ$ est la loi stationnaire du processus. C'est à dire :
+    $$ \theta^{m-1} \sim f(\theta|y^\circ) \Rightarrow \theta^m \sim f(\theta|y^\circ). $$
+    * Sous quelques conditions techniques, la loi de $\theta^m$ converge à la loi *a posteriori* et
+$$ \frac{1}{M} \sum_{m=1}^M g(\theta^m) \rightarrow_p E[g(\theta)|y^\circ]. $$
