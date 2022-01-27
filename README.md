@@ -22,3 +22,6 @@ Démonstration de MCO : [GPA.R](GPA.R)
 
 Exemple "Chomage" : [chomage.R](chomage.R)
 
+Notes, [maximum de vraisemlance](Metrics_R/likelihood.html)
+
+Notes, [inférence bayésienne](Metric_R/Bayesian.html)

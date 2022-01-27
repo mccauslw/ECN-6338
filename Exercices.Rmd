@@ -90,7 +90,7 @@ Décrivez le problème qui se présente quand vous essayez d'utiliser la méthod
 Expliquez brièvement pourquoi ce problème ne représente pas une contradiction du théorème de Lagrange.
 
 1. Pour le modèle de l'exercice préliminaire 2,
-    a. trouvez l'estimateur maximum de vraisemblance de $\lambda$, sa moyenne et sa variance.
+    a. trouvez l'estimateur maximum de vraisemblance $\hat\lambda$ de $\lambda$, sa moyenne et sa variance.
     a. trouvez la distribution postérieure $\lambda|x^\circ$, où $x^\circ$ est une réalisation de $(X_1,\ldots,X_n)$.
 
 ### Exercices de computation
@@ -103,6 +103,7 @@ Aucune, étant donnée la nature du cours 3.
 
 ### Exercice préliminaire
 
+1. Lisez la section "Newton's Method" pp 96-97 dans Judd.
 1. Prenez la fonction de log vraisemblance (graphique, diapo 19, cours 3) $L(\theta;y) = n_1 \log \theta + n_0 \log (1-\theta)$, pour $n_0 = 200$ et $n_1 = 230$.
     a. Calculez l'expansion Taylor d'ordre deux (quadratique) de $L(\theta;y)$ autour de $\theta = 1/2$.
     a. Trouvez la valeur de $\theta$ qui maximise cette fonction quadratique.

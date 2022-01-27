@@ -1,0 +1,233 @@
+---
+title: "Maximum likelihood"
+output: html_document
+---
+
+This vignette is an introduction to the principle of maximum likelihood, through examples and exercises.
+
+### A coin-tossing example
+
+We start with a coin-tossing example, the simplest possible model that illustrates the principle of maximum likelihood.
+Suppose $X_i$, $i=1,\ldots,n$, are iid random variables, each with two possible values, 0 or 1, which we can interpret as tails and heads.
+The probability of the outcome $x \in \{0,1\}$ of a single coin toss is given by
+$$ P_\theta[X_i = x] = \begin{cases} \theta & x=1 \\ 1-\theta & x=0, \end{cases} $$
+where $\theta \in [0,1]$ is a parameter.
+It is convenient to write this as $$ P_\theta[X_i = x] = \theta^x (1-\theta)^{1-x}. $$
+
+> Exercise: verify that the two previous equations give the same expression for $P_\theta[X_i = x]$.
+
+Now let $X = (X_1,\ldots,X_n)$, a random vector of $n$ coin tosses. Then for each vector $x=(x_1,\ldots,x_n) \in \{0,1\}^n$, a possible outcome of a sequence of $n$ coin tosses,
+$$ P_\theta[X=x] = \prod_{i=1}^n \theta^{x_i} (1-\theta)^{1-x_i} = \theta^{n_1}(1-\theta)^{n_0}, $$
+where $n_1$ is the number of times $x_i = 1$ occurs and $n_0$ is the number of times $x_i = 0$ occurs.
+
+### Likelihood, log-likelihood, score and Hessian functions
+
+There are two ways to look at the expression $\theta^{n_1}(1-\theta)^{n_0}$.
+
+1. We can think of it as a function of $x$ for a fixed value of the parameter $\theta$.
+As such, it gives the probabilities of all possible realizations of $n$ coin tosses at that value of $\theta$; some values of $x$ are more probable than others.
+2. Alternatively, we can think of it as a function of $\theta$ for a fixed value $x$ of a sequence of $n$ coin tosses. It makes sense to think of the value of $x$ as arising from observing the result of a single experiment featuring $n$ coin tosses. We call this function of $\theta$ a *likelihood function* and denote it ${\cal L}(\theta; x) = \theta^{n_1}(1-\theta)^{n_0}$.
+We might be in the position of trying to estimate the value of $\theta$ after observing such an experiment.
+For a given observed sample $x$, it makes sense to favour values of $\theta$ for which the sample was relatively probable.
+The likelihood function says how probable the realized sample $x$ was, for each value $\theta$. In a sense, ${\cal L}(\theta;x)$ is a record of how well the model "predicted" the realized sample $x$, for each value of $\theta$.
+
+In practice, it is often more convenient to work with the log likelihood function $L(\theta;x) = \log {\cal L}(\theta; x)$. Some reasons for this are:
+
+1. Multivariate densities naturally take the form of products of densities. Taking the logarithm of a product yields a sum of logarithms, which is usually easier to work with; for example, it is often easier to take derivatives.
+1. Many commonly used densities are products of multiplicative factors, and some of these factors are exponentials of simpler functions.
+These densities include those of the [exponential family](https://en.wikipedia.org/wiki/Exponential_family) of distributions.
+1. Using a computer to compute products of a large number of small (or large) factors can easily lead to numerical underflows (or overflows), where the result of a calculation is too close to zero (or too large) to be represented. Working with logarithms essentially eliminates this problem.
+1. Several theoretical results related to maximum likelihood, as an estimation procedure, involve first and second derivatives of the log likelihood function.
+
+The log likelihood function for our coin-tossing example is
+$$ L(\theta;x) = n_1 \log \theta + n_0 \log (1-\theta). $$
+
+Since most models have more than one parameter, most log likelihood functions are multivariate.
+The gradient vector $s(\theta;x)$ and the Hessian matrix $H(\theta;x)$ of the log likelihood function figure prominently in the theory of maximum likelihood.
+The coin tossing example has a single parameter, so the $s(\theta;x)$ and $H(\theta;x)$ are scalar.
+We can compute them as
+$$ s(\theta;x) = \frac{\partial L(\theta;x)}{\partial \theta} = \frac{n_1}{\theta} - \frac{n_0}{1-\theta} $$
+
+$$ H(\theta;x) = \frac{\partial^2 L(\theta;x)}{\partial \theta^2} = -\frac{n_1}{\theta^2} - \frac{n_0}{(1-\theta)^2}. $$
+
+### Maximum likelihood
+
+Maximizing the log likelihood function is one way of estimating the unknown parameter
+$$ \hat\theta \equiv \arg\max_\theta L(\theta;x). $$
+
+> Exercise: show that $\hat\theta = n_1/n$ in the binomial model. Be careful with the special cases $n_1=0$ and $n_1=n$, where $\hat\theta$ is a corner solution and $s(\hat\theta;x) \neq 0$.
+
+### Properties of maximum likelihood, fixed number of observations
+
+We now consider the properties of $\hat\theta$, taking a traditional frequentist perspective.
+Frequentist, as opposed to Bayesian, analysis is intrinsically *ex ante*: it focusses on the behaviour of some decision rule---here the choice of $\hat\theta$ as an approximation of $\theta$---in repeated samples, where each sample is a different realization of the random vector $X = (X_1,\ldots,X_n)$.
+The term ex ante refers to the fact that you can do this analysis before you observe the data $x$, considered to be a realization of $X$.
+For now, we suppose that there is a value $\theta_0$ for which the model above is a true description of the coin tossing process.
+The value $\theta_0$ is fixed (non-random), but unknown.
+$\hat\theta(X)$, on the other hand, is a function of the random vector $X$, and therefore random itself.
+We call it an *estimator* (FR: estimateur) of the parameter $\theta$, emphasizing the *procedure* rather than the result of applying the procedure to a particular sample.
+When we plug in the observed *result* of a single experiment, a value $x$, we get a numerical value $\hat\theta(x)$, which we call an *estimate* (FR: estimation).
+
+To illustrate, we now do a computational experiment to illustrate the variation of $\hat\theta(X)$ from sample to sample.
+The following R code implements the experiment.
+```{r set_seed, include=FALSE}
+set.seed(1234567)
+```
+```{r params}
+theta_0 = 0.75; n = 250; n_exper = 10
+n_1 = rbinom(n_exper, n, theta_0); n_0 = n - n_1
+```
+This sets $\theta_0 = `r theta_0`$, which is the true value by design.
+The number of coin tosses in each experiment is $n = `r n`$, and we repeat the experiment `n_exper`=`r n_exper` times.
+The results `n_1` and `n_0` are vectors of length `r n_exper`.
+The $i$'th element of `n_1` is the number of heads in the $i$'th coin-tossing experiment and the $i$'th element of `n_0` is the number of tails.
+
+We now graph the log likelihood function ${\cal L}(\theta;x)$ and the score function $s(\theta;x)$ for each of the `r n_exper` realizations of the experiment.
+```{r LSH_low_n}
+# Grid of theta values
+theta = seq(0, 1, by=0.001)
+# Choose appropriate range of values for vertical axis
+n1_interval = c(min(n_1), max(n_1)); th_hat_interval = n1_interval/n
+maxL_interval = n*(th_hat_interval * log(th_hat_interval) + (1-th_hat_interval) * log(1-th_hat_interval))
+# Create empty plot with axes and titles
+plot(theta, theta,
+     xlim=c(0,1), ylim=maxL_interval, type='n',
+     main='Log likelihood function for all realizations of the coin-tossing experiment', xlab='theta', ylab='Log likelihood')
+# Plot log-likelihood function for each realization of the experiment
+for (i in 1:n_exper) {
+  lines(theta, n_1[i] * log(theta) + n_0[i] * log(1-theta))
+}
+# Vertical line at true value
+abline(v=theta_0, col='red')
+```
+
+```{r LSH_low_n_s}
+score_interval = n1_interval / theta_0 - (n-n1_interval) / (1-theta_0)
+plot(theta, theta, xlim=c(0,1), ylim=score_interval, type='n',
+     main='Score function for all realizations of the coin-tossing experiment', xlab='theta', ylab='Score')
+for (i in 1:n_exper) {
+  lines(theta, n_1[i] / theta - n_0[i] / (1-theta))
+}
+# Vertical line at true value, horizontal line at zero
+abline(v=theta_0, col='red')
+abline(h=0, col='red')
+```
+
+Here are some qualitative observations on the variation in $L(\theta;x)$ and $s(\theta;x)$ in repeated samples.
+
+1. The peak of the likelihood function occurs at a value $\hat\theta(X)$ that is sometimes greater than the true value $\theta_0$ (red line), sometimes less, depending on the experiment. Overall, the peaks appear centred near $\theta_0$.
+1. The score at $\theta_0$, $s(\theta_0;X)$ is sometimes positive, sometimes negative, but appears centred near 0.
+
+Corresponding to these observations, here are some exact quantitative results pertaining to the experiment.
+
+1. The maximum likelihood estimator for this model is *unbiased*, meaning that its expected value is the true value of the parameter.
+$$ E_{\theta_0}[\hat\theta] = \frac{\theta_0 n}{n} = \theta_0. $$
+1. The expected score at $\theta_0$, for this model, is zero.
+$$ E_{\theta_0}[s(\theta_0;x)] = \frac{\theta_0 n}{\theta_0} - \frac{(1-\theta_0)n}{1-\theta_0} = 0. $$
+
+The first of these results is true for some models but not for many others.
+However, we will see later that there are still some things we can say about the central tendancy of $\hat\theta$ around $\theta_0$ that apply quite broadly.
+The second result holds more broadly, and there are some well known *regularity conditions* that are sufficient for the result; in practice, we can often verify these conditions for a particular model and then be confident that this result, and some others, hold.
+
+The following exercise is for another one-parameter model. There are not many of these!
+
+> Exercise: Suppose $X_i$, $i=1,\ldots,n$, are iid, each with a Poisson distribution with parameter $\lambda$. The true value of $\lambda$ is $\lambda_0$. Compute the likelihood, log-likelihood, score and Hessian functions. Find the maximum likelihood estimator $\hat\lambda$ and show that it is unbiased.
+Show that the expected score function is zero at the true value $\lambda_0$.
+
+### Properties of maximum likelihood, as the number of observations grows
+
+If we repeat the computational exercise with the same number of samples (experiments) but each with a larger sample size $n=1000$, we get the following log-likelihood functions.
+
+```{r LSH_high_n, echo=FALSE}
+# New values
+theta_0 = 0.75; n = 1000; n_exper = 10
+n_1 = rbinom(n_exper, n, theta_0); n_0 = n - n_1
+# Grid of theta values
+theta = seq(0, 1, by=0.001)
+# Choose appropriate range of values for vertical axis
+n1_interval = c(min(n_1), max(n_1)); th_hat_interval = n1_interval/n
+maxL_interval = n*(th_hat_interval * log(th_hat_interval) + (1-th_hat_interval) * log(1-th_hat_interval))
+# Create empty plot with axes and titles
+plot(theta, theta,
+     xlim=c(0,1), ylim=maxL_interval, type='n',
+     main='Log likelihood functions for new coin-tossing experiment', xlab='theta', ylab='Log likelihood')
+# Plot log-likelihood function for every realization of the experiment
+for (i in 1:n_exper) {
+  lines(theta, n_1[i] * log(theta) + n_0[i] * log(1-theta))
+}
+# Vertical line at true value
+abline(v=theta_0, col='red')
+```
+
+Some qualitative observations:
+
+1. For the higher value of $n$, the values of $\hat\theta$ in repeated samples tend to be closer to the true value $\theta_0$.
+1. Each likelihood function has more extreme curvature. The functions fall off faster as you go away from the maximizing value $\hat\theta$.
+
+Some exact quantitative results corresponding to these observations
+
+1. The variance of $\hat\theta$ is given by
+\[
+  \mathrm{Var}_{\theta_0}[\hat\theta]
+  = \mathrm{Var}_{\theta_0}\left[\frac{n_1}{n}\right]
+  = \frac{1}{n^2} \mathrm{Var}_{\theta_0}[X_1 + X_2 + \ldots + X_n]
+  = \frac{1}{n^2} \mathrm{Var}_{\theta_0}[X_i]
+\]
+Now since $E_{\theta_0}[X_i^2] = E_{\theta_0}[X_i] = \theta_0$, we get $\mathrm{Var}_{\theta_0}[X_i] = \theta_0(1-\theta_0)$ and then
+\[
+  \mathrm{Var}_{\theta_0}[\hat\theta] = \frac{\theta_0(1-\theta_0)}{n}.
+\]
+1. The expected value of the function $H(\theta;X)$ is the function
+\[
+  E_{\theta_0}[H(\theta;X)] = -\frac{\theta_0 n}{\theta^2} - \frac{(1-\theta_0)n}{(1-\theta)^2},
+\]
+and evaluating this function at the true value $\theta_0$ gives
+\[
+  E_{\theta_0}[H(\theta_0;X)] = -n \left[\frac{1}{\theta_0} + \frac{1}{1-\theta_0}\right] = -\frac{n}{\theta_0(1-\theta_0)}.
+\]
+
+### A Gaussian likelihood
+
+We now turn to a simple model with two parameters.
+The observables $X_i$, $i=1,\ldots$ are independent and identically distributed, with $X_i \sim N(\mu,\sigma^2)$, $i=1,\ldots,n$.
+The density of a single $X_i$ is
+\[
+  f(x_i) = \frac{1}{\sqrt{2\pi\sigma^2}}
+  \exp\left[-\frac{1}{2\sigma^2}(x_i-\mu)^2\right].
+\]
+Thus the joint density of $X = (X_1,\ldots,X_n)$ is
+\[
+  f(x) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}
+  \exp\left[-\frac{1}{2\sigma^2}(x_i-\mu)^2\right]
+  = (2\pi\sigma^2)^{-n/2} \exp\left[-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2\right].
+\]
+Each term of the sum in the exponential function is quadratic in $\mu$, with a negative coefficient of $\mu^2$.
+Therefore the sum itself is quadratic in $\mu$, with a negative coefficient of $\mu^2$.
+
+> Exercise: prove the identity $$\sum_{i=1}^n (x_i-\mu)^2 = n(\bar x - \mu)^2 + \sum_{i=1}^n (x_i - \bar x)^2,$$
+where $\bar{x} \equiv \tfrac{1}{n} \sum_{i=1}^n$
+
+Dividing this identity by $n$ gives a sample analogue of the following population identity, which is also helpful to know. Its proof is very similar.
+\[
+  E[(X-a)^2] = E[(X-E[X])^2] + (E[X] - a)^2 = \mathrm{Var}[X] + (E[X] - a)^2.
+\]
+
+Now we can use the identity to write the joint density of $f(x)$ as
+\[
+  f(x) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\left[-\frac{1}{2\sigma^2}(x_i-\mu)^2\right]
+  = (2\pi)^{-n/2} (\sigma^2)^{-n/2} \exp\left[-\frac{S + n (\bar x - \mu)^2}{2\sigma^2}
+  \right],
+\]
+where $S = \sum_{i=1}^n (x_i-\mu)^2$.
+
+Defining $\theta = (\mu, \sigma^2)$, the log likelihood function is
+\[
+  L(\theta;x) = -\frac{n}{2} \log 2\pi\sigma^2 - \frac{S + n (\bar x - \mu)^2}{2\sigma^2}.
+\]
+It is easy to see that for every value of $\sigma^2$, $\hat \mu = \bar x$ gives the largest value of $L(\theta; x)$.
+Setting $\mu = \bar x$ in $L(\theta; x)$ gives a univariate function of $\sigma^2$ that is easier to maximize.
+
+> Exercise: show that $\hat\theta = (\bar x, S/n)$ maximizes the log likelihood function.
+
+

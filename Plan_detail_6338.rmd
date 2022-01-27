@@ -98,12 +98,11 @@ Notez que le cours suit la convention "numerator layout".
 ### Matières
 
 1. Optimisation sous contraintes, conditions de Karush-Kuhn-Tucker
-1. Programmation dynamique
 1. Maximum de vraisemblance
 1. Inférence bayésienne
 1. Applications : (cas simples où les méthodes numériques ne sont pas nécessaires)
-    a. un problème de consommateur avec rationnement
-    a. un problème d'épargne sous incertitude
+    a. un problème de consommateur avec la possibilité d'une solution de coin
+    a. un problème d'allocation de resources
     a. analyse maximum de vraisemblance d'un modèle poissonien de comptes de transactions
     a. analyse bayésienne du même modèle 
 

@@ -1,0 +1,18 @@
+---
+title: "Unused stuff"
+author: "William McCausland"
+date: "29/05/2020"
+output: html_document
+---
+
+```{r LSH_low_n_H}
+Hessian_interval = c(-n1_interval[1] / theta_0^2 - (n-n1_interval[1]) / (1-theta_0)^2, 0)
+plot(theta, theta, xlim=c(0,1), ylim=Hessian_interval, type='n',
+     main='Hessian function for all realizations of the coin-tossing experiment',
+     xlab='theta', ylab='Hessian')
+for (i in 1:n_exper) {
+  lines(theta, -n_1[i] / theta^2 - n_0[i] / (1-theta)^2)
+}
+abline(v=theta_0, col='red')
+```
+
