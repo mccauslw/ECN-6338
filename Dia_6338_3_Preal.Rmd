@@ -85,7 +85,7 @@ où $f$, $g$ et $c$ sont comme dans le problème précédent.
 
 Fonction de Lagrange, comme dans le dernier problème :
 \[
-  L(x,\lambda) = f(x) + \lambda[c - g(x)].
+  L(x,\lambda) = f(x) + \lambda^\top[c - g(x)].
 \]
 
 Théorème :
