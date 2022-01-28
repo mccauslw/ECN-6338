@@ -33,13 +33,16 @@ urlcolor: blue
   = \left[ \prod_{i=1}^n \frac{1}{y_i!} \right]
   e^{-n\theta} \theta^{\sum_{i=1}^n y_i}.
 \]
+* Pour simplifier un facteur qui importe peu,
+\[
+  c \equiv \left[ \prod_{i=1}^n \frac{1}{y_i!} \right].
+\]
 
 ## Deux intérpretations de la même expression
 
 * L'expression :
 \[
-  f(y|\theta) = \left[ \prod_{i=1}^n \frac{1}{y_i!} \right]
-  e^{-n\theta} \theta^{\sum_{i=1}^n y_i}
+  f(y|\theta) = c e^{-n\theta} \theta^{\sum_{i=1}^n y_i}
   = {\cal L}(\theta;y).
 \]
 * Deux intérpretations :
@@ -66,20 +69,22 @@ plot(theta, L, type='l', ylim=c(-200, max(L)))
 
 ## Maximum de la vraisemblance poissonienne
 
-* Vraisemblance : ${\cal L}(\theta;y) = \theta^{n_1} (1-\theta)^{n_0}$.
-* Log vraisemblance : $L(\theta;y) = n_1 \log(\theta) + n_0 \log(1-\theta)$
+* Vraisemblance : ${\cal L}(\theta;y) = c e^{-n\theta} \theta^{\sum_{i=1}^n y_i}$.
+* Log vraisemblance : $L(\theta;y) = \log c - n\theta + \left(\sum_{i=1}^n y_i\right) \log \theta$.
 * Deux dérivées de la log vraisemblance :
 \[
-  \frac{\partial L(\theta;y)}{\partial \theta} = \frac{n_1}{\theta} - \frac{n_0}{1-\theta}
+  \frac{\partial L(\theta;y)}{\partial \theta}
+  = -n + \frac{\sum_{i=1}^n y_i}{\theta}
 \]
 \[
-  \frac{\partial^2 L(\theta;y)}{\partial \theta^2} = -\frac{n_1}{\theta^2} - \frac{n_0}{(1-\theta)^2} < 0.
+  \frac{\partial^2 L(\theta;y)}{\partial \theta^2}
+  = -\frac{\sum_{i=1}^n y_i}{\theta^2} < 0.
 \]
 * La valeur $\hat\theta$ (souvent vue comme une variable aléatoire) qui maximise la vraisemblance et la log-vraisemblance est
 \[
-  \hat{\theta} = \frac{n_1}{n_0 + n_1} = \frac{n_1}{n}.
+  \hat{\theta} = \tfrac{1}{n} \sum_{i=1}^n y_i.
 \]
-* Pour $n_0 = 200$ et $n_1 = 230$, $\hat\theta = \frac{23}{43} \approx 0.5349$.
+* Pour $n = 60$ et $\sum_{i=1}^n y_i = 230$, $\hat\theta = \frac{23}{6} \approx 3.833$.
 
 ## Maximum de vraisemblance : conditions de régularité
 
@@ -111,25 +116,23 @@ Problèmes restants :
 1. La variance asymptotique ${\cal I}(\theta_0)^{-1}$ de $\hat\theta$ dépend de $\theta_0$, qui est inconnu.
 1. L'espérance dans les deux expressions pour ${\cal I}(\theta)$ sont difficiles à évaluer analytiquement.
 
-## Exemple Bernoulli
+## Exemple poissonien
 
 * Un cas rare où les calculs analytiques sont faisables.
-* La matrice d'information de Fisher :
+* La matrice d'information de Fisher : ($E[y_i] = \theta$, $\mathrm{Var}[y_i] = \theta$)
 \[
-  \begin{aligned}
   {\cal I}(\theta)
-  &= E_{y|\theta}\left[-\frac{\partial^2 L}{\partial \theta^2}\right]
-  = E_{y|\theta}\left[\frac{n_1}{\theta^2} + \frac{n_0}{(1-\theta)^2}\right] \\
-  &= \frac{n\theta}{\theta^2} + \frac{n(1-\theta)}{(1-\theta)^2}
-  = \frac{n}{\theta(1-\theta)}.
-  \end{aligned}
+  = E_{y|\theta}\left[-\frac{\partial^2 L}{\partial \theta^2}\right]
+  = E_{y|\theta}\left[\frac{\sum_{i=1}^n y_i}{\theta^2}\right]
+  = \frac{n\theta}{\theta^2}
+  = \frac{n}{\theta}.
 \]
 * La variance de $\hat{\theta}$ (exacte, pas asymptotique) :
 \[
-  \mathrm{Var}[\hat{\theta}] = \mathrm{Var}\left[\frac{n_1}{n}\right]
-  = \frac{1}{n^2} n \mathrm{Var}[y_i] = \frac{1}{n} (\theta-\theta^2) = \frac{\theta(1-\theta)}{n}.
+  \mathrm{Var}[\hat{\theta}] = \mathrm{Var}\left[\frac{\sum_{i=1}^n y_i}{n}\right]
+  = \frac{1}{n^2} n \mathrm{Var}[y_i] = \frac{\theta}{n}.
 \]
-* Pour $n_0 = 200$ et $n_1 = 230$, $\mathrm{Var}[\hat{\theta}]$ est de $(0.02411)^2$ pour $\theta = 1/2$ et $(0.02405)^2$ pour $\theta = \hat\theta \approx 0.5349$
+* Pour $n = 60$ et $\sum_{i=1}^n y_i = 230$, $\mathrm{Var}[\hat{\theta}]$ est de $(0.2528)^2$ pour $\theta = \hat\theta \approx 3.833$, $(0.2236)^2$ pour $\theta = 3$ et $(0.2739)^2$ pour $\theta = 4.5$.
 
 ## Éléments de l'analyse bayésienne
 
@@ -159,49 +162,30 @@ $$ f(\theta|y^\circ) = \frac{f(\theta,y^\circ)}{f(y^\circ)} = \frac{f(\theta)f(y
 
 * Un point important à retenir : $f(\theta|y^\circ) \propto f(\theta,y^\circ)$.
 
-## Reprise et extension de l'exemple Bernoulli
+## Reprise et extension de l'exemple poissonien
 
-* Si $y_i$ est Bernoulli avec probabilité $\theta$, $f(y|\theta) = \theta^{n_1} (1-\theta)^{n_0}$.
+* Si $y_i \sim \mathrm{iid}\,\mathrm{Po}(\theta)$,
+$f(y|\theta) = c e^{-n\theta} \theta^{\sum_{i=1}^n y_i}$.
 
-* Mettons qu'on choisit la loi *a priori* $\theta \sim \mathrm{Beta}(\alpha,\beta)$ sur $[0,1]$ :
-$$ f(\theta) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \theta^{\alpha-1} (1-\theta)^{\beta-1}. $$
+* Mettons qu'on choisit la loi *a priori* $\theta \sim \mathrm{Ga}(\alpha,\beta)$ sur $[0,\infty)$ :
+$$ f(\theta) = \frac{\beta^\alpha}{\Gamma(\alpha)} \theta^{\alpha-1} e^{-\beta \theta}. $$
 * La densité conjointe est
-$$ f(\theta,y) = f(\theta)f(y|\theta) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \theta^{\alpha + n_1 - 1} (1-\theta)^{\beta + n_0 - 1}. $$
+$$ f(\theta,y) = f(\theta)f(y|\theta) = c \frac{\beta^\alpha}{\Gamma(\alpha)} \cdot \theta^{\alpha + \sum_{i=1}^n y_i -1} \cdot e^{-(\beta + n) \theta}. $$
 
-* La loi *a posteriori* doit être $\theta \sim \mathrm{Beta}(\alpha + n_1, \beta + n_0)$.
+* La loi *a posteriori* doit être $\theta \sim \mathrm{Ga}(\alpha + \sum_{i=1}^n y_i, \beta + n)$.
 
 * La vraisemblance marginale est $f(\theta,y)/f(\theta|y)$ :
-$$ f(y) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \frac{\Gamma(\alpha+n_1)\Gamma(\beta+n_0)}{\Gamma(\alpha + \beta + n)}. $$
+$$ f(y) = c \frac{\beta^\alpha}{(\beta + n)^{\alpha + \sum_{i=1}^n y_i}}
+\cdot \frac{\Gamma(\alpha + \sum_{i=1}^n y_i)}{\Gamma(\alpha)}. $$
 
-## Graphique pour l'exemple Bernoulli
+## Graphique pour l'exemple poissonien
 
 ```{r bbpriorpost, echo=TRUE}
-n0 = 200; n1 = 230; alpha=2; beta=2
-x = seq(0, 1, by=0.002)
-plot(x, dbeta(x, alpha+n1, beta+n0), type='l')
-lines(x, dbeta(x, alpha, beta), col='red')
+n = 60; somme_y = 230; alpha=2; beta=0.4
+x = seq(0, 10, by=0.02)
+plot(x, dgamma(x, alpha+somme_y, beta+n), type='l')
+lines(x, dgamma(x, alpha, beta), col='red')
 ```
-
-## Exemple gaussien I
-
-* Considérez les modèle $y_t \sim \mathrm{iid}\, N(\mu, h^{-1})$.
-* Le vecteur de paramètres est $\theta = (\mu,h)$.
-* Le vecteur d'observables est $y = (y_1,\ldots,y_T)$.
-* La densité des données est
-$$ \begin{aligned} f(y|\theta) &= \prod_{t=1}^T \sqrt{\frac{h}{2\pi}} \exp\left[-\frac{h}{2}(y_t-\mu)^2\right] \\
-&= \left(\frac{h}{2\pi}\right)^{T/2} \exp \left[-\frac{h}{2} \sum_{t=1}^T (y_t-\mu)^2 \right]. \end{aligned} $$
-
-## Exemple gaussien II
-
-* Mettons qu'on choisit une loi *a priori* où $h$ et $\mu$ sont indépendents,
-avec
-$$ \mu \sim N(\bar{\mu},\bar{\omega}^{-1}), \quad \bar{s}^2h \sim \chi^2(\bar{\nu}), $$
-où $\bar{\mu}$, $\bar{\omega}$, $\bar{s}$ et $\bar{\nu}$ sont des hyperparamètres constants choisis par l'investigateur.
-* La densité *a priori* est
-$$ f(\theta) \propto \exp \left[-\frac{\bar{\omega}}{2}(\mu-\bar{\mu})^2\right]
-\cdot h^{(\bar{\nu}-2)/2} \exp\left[-\frac{1}{2}\bar{s}^2 h\right]. $$
-* La densité conjointe est
-$$ f(\theta,y) \propto h^{(\bar{\nu}+T-2)/2} \exp\left[-\frac{\bar{\omega}}{2} (\mu-\bar{\mu})^2 - \frac{h}{2} \left( \bar{s}^2 + \sum_{t=1}^T (y_t - \mu)^2 \right) \right]. $$
 
 ## L'intégration et les objectifs de l'analyse bayésienne
 

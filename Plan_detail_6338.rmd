@@ -101,16 +101,17 @@ Notez que le cours suit la convention "numerator layout".
 1. Maximum de vraisemblance
 1. Inférence bayésienne
 1. Applications : (cas simples où les méthodes numériques ne sont pas nécessaires)
-    a. un problème de consommateur avec la possibilité d'une solution de coin
-    a. un problème d'allocation de resources
+    a. un problème de consommateur avec préférences quasi-linéaires, où une solution de coin est possibles
+    a. un problème d'allocation de ressources, où le chomage des ressources est possible.
     a. analyse maximum de vraisemblance d'un modèle poissonien de comptes de transactions
     a. analyse bayésienne du même modèle 
 
 ### Lectures
 
-1. Notes du professeur basées sur les exemples 3.1 "Rationing" et 11.1 "Search" de Dixit (1990).
+1. Notes du professeur basées sur les exemples 3.1 "Quasi-linear Preferences" et 3.1 "Technological Unemployment" de Dixit (1990).
 1. Page Wikipédia sur l'[estimation maximum de vraisemblance](https://en.wikipedia.org/wiki/Maximum_likelihood_estimation), Sections "Principles", "Properties" et "Examples"
 1. Page Wikipédia sur l'[inférence bayésienne](https://en.wikipedia.org/wiki/Bayesian_inference), Sections "Introduction to Bayes' Rule" and "Formal Description of Bayesian Inference".
+1. Documents du professeur sur l'estimation maximum de vraisemblance et l'estimation bayésienne (en anglais).
 
 
 

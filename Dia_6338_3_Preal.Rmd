@@ -425,27 +425,6 @@ plot(x, dbeta(x, alpha+n1, beta+n0), type='l')
 lines(x, dbeta(x, alpha, beta), col='red')
 ```
 
-## Exemple gaussien I
-
-* Considérez les modèle $y_t \sim \mathrm{iid}\, N(\mu, h^{-1})$.
-* Le vecteur de paramètres est $\theta = (\mu,h)$.
-* Le vecteur d'observables est $y = (y_1,\ldots,y_T)$.
-* La densité des données est
-$$ \begin{aligned} f(y|\theta) &= \prod_{t=1}^T \sqrt{\frac{h}{2\pi}} \exp\left[-\frac{h}{2}(y_t-\mu)^2\right] \\
-&= \left(\frac{h}{2\pi}\right)^{T/2} \exp \left[-\frac{h}{2} \sum_{t=1}^T (y_t-\mu)^2 \right]. \end{aligned} $$
-
-## Exemple gaussien II
-
-* Mettons qu'on choisit une loi *a priori* où $h$ et $\mu$ sont indépendents,
-avec
-$$ \mu \sim N(\bar{\mu},\bar{\omega}^{-1}), \quad \bar{s}^2h \sim \chi^2(\bar{\nu}), $$
-où $\bar{\mu}$, $\bar{\omega}$, $\bar{s}$ et $\bar{\nu}$ sont des hyperparamètres constants choisis par l'investigateur.
-* La densité *a priori* est
-$$ f(\theta) \propto \exp \left[-\frac{\bar{\omega}}{2}(\mu-\bar{\mu})^2\right]
-\cdot h^{(\bar{\nu}-2)/2} \exp\left[-\frac{1}{2}\bar{s}^2 h\right]. $$
-* La densité conjointe est
-$$ f(\theta,y) \propto h^{(\bar{\nu}+T-2)/2} \exp\left[-\frac{\bar{\omega}}{2} (\mu-\bar{\mu})^2 - \frac{h}{2} \left( \bar{s}^2 + \sum_{t=1}^T (y_t - \mu)^2 \right) \right]. $$
-
 ## L'intégration et les objectifs de l'analyse bayésienne
 
 * Plusieurs problèmes d'inférence bayésienne ont, comme solution, une intégrale par rapport à la densité *a posteriori*.
