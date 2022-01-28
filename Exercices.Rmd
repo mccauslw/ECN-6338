@@ -90,7 +90,7 @@ Décrivez le problème qui se présente quand vous essayez d'utiliser la méthod
 Expliquez brièvement pourquoi ce problème ne représente pas une contradiction du théorème de Lagrange.
 
 1. Pour le modèle de l'exercice préliminaire 2,
-    a. trouvez l'estimateur maximum de vraisemblance $\hat\lambda$ de $\lambda$, sa moyenne et sa variance.
+    a. trouvez l'estimateur maximum de vraisemblance $\hat\lambda$ de $\lambda$; trouvez la moyenne et la variance de $\hat\lambda^{-1}$. (La moyenne et la variance de $\hat\lambda$ n'ont pas d'expression simple.)
     a. trouvez la distribution postérieure $\lambda|x^\circ$, où $x^\circ$ est une réalisation de $(X_1,\ldots,X_n)$.
 
 ### Exercices de computation
