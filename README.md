@@ -25,3 +25,11 @@ Exemple "Chomage" : [chomage.R](chomage.R)
 Notes, [maximum de vraisemlance](Metrics_R/likelihood.html)
 
 Notes, [inférence bayésienne](Metric_R/Bayesian.html)
+
+#### Cours 4, Optimisation statique sans contraintes
+
+[Diapos](Dia_6338_4_OptStat.pdf)
+
+Code pour l'exemple du monopole : [pi.R](pi.R)
+
+Code pour les graphiques : [conic.R](conic.R)
