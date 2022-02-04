@@ -142,5 +142,8 @@ Calculer l'inverse de cette matrice et donnez les écarts-types asymptotiques de
 
 ## Cours 5. La résolution de systèmes d'équations non-linéaires
 
-### Exercices préliminaire
+### Exercices préliminaires
 
+1. Considérez le problème de trouver une racine de la fonction $f(x) = e^x - x - 2$ dans l'intervalle $[0,2]$. Faites avec une calculatrice :
+    a. trois cycles de l'algorithme 5.1 (bisection).
+    a. trois cycles de l'algorithme 5.2 (Newton).
