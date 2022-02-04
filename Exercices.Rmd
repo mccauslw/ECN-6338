@@ -109,3 +109,38 @@ Aucune, étant donnée la nature du cours 3.
     a. Trouvez la valeur de $\theta$ qui maximise cette fonction quadratique.
     a. Considerez le même problème que a., mais pour la vraisemblance ${\cal L}(\theta;y) = \theta^{n_1} (1-\theta)^{n_0}$.
     Faites assez de ce problème pour vous convaincre que c'est plus difficile.
+
+### Exercices théoriques
+
+1. On veut modeler le choix binaire $y_i \in \{0,1\}$ d'une individu $i$ comme fonction du vecteur $x_i \in \mathbb{R}^k$ des variables explicatives, pour un échantillon aléatoire $\{(y_i, x_i)\}$, $i=1,\ldots,n$.
+Le modèle probit donne la probabilité conditionnelle $\Pr[y_i|x_i]$ comme $\Pr[y_i|x_i] = \Phi(x_i^\top \beta)$ où $\beta \in \mathbb{R}^k$ et $\Phi$ est la fonction de répartition d'une variable aléatoire gaussienne standard (\texttt{pnorm} en R; sa dérivée de première ordre est la densité, \texttt{dnorm} en R).
+    a. Écrivez la fonction de log vraisemblance $L(\beta;y, X)$,
+    où $y = (y_1,\ldots,y_n)$ est $X$ et la matrice $n \times k$ de variables explicatives.
+    a. Donnez le gradient et la matrice hessienne de $L(\beta;y, X)$.
+    Montrez que la matrice hessienne est négative définie.
+
+### Exercices de computation
+
+L'exercice est de reproduire les résultats du modèle probit de l'exemple 17.1 de Wooldridge, qui concerne le choix des femmes mariées d'être dans la population active ou non.
+Vous pouvez charger les données avec
+```{r mroz}
+library(wooldridge)
+data(mroz, package='wooldridge')
+```
+et ensuite voir les statistiques sommaires avec \texttt{summary(mroz)}.
+
+1. Écrivez des fonctions en R pour calculer la valeur, le gradient et la matrice hessienne de la fonction de log vraisemblance $L(\beta;y, X)$ du modèle probit.
+1. Trouvez l'estimation maximum de vraisemblance $\hat\beta$ pour le modèle probit de l'exemple 17.1 de Wooldridge, avec les méthodes Nelder-Mead et BFGS.
+Les variables sont une constante,
+\texttt{nwifeinc}, \texttt{educ}, \texttt{exper}, \texttt{exper} carré, \texttt{age}, \texttt{kidslt6}, \texttt{kidsge6}.
+1. Calculer moins la matrice hessienne de la log vraisemblance au point $\hat\beta$.
+Calculer l'inverse de cette matrice et donnez les écarts-types asymptotiques des éléments de $\hat\beta$ (les racines carrées des éléments diagonaux).
+
+
+
+\pagebreak
+
+## Cours 5. La résolution de systèmes d'équations non-linéaires
+
+### Exercices préliminaire
+

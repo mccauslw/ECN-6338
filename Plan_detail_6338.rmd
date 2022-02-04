@@ -123,17 +123,13 @@ Notez que le cours suit la convention "numerator layout".
 1. Problèmes unidimensionnels
 1. Méthodes de comparaison
 1. Méthode de Newton et ses raffinements
-1. Programmation linéaire
-1. Programmation non-linéaire avec et sans contraintes
 1. Applications:
-    a. la résolution de problèmes principal-agent
-    a. la computation d'équilibre de Nash des jeux du type action-discrète
-    a. maximisation de vraisemblance pour un modèle GEV (Generalized Extreme Value) de choix de mode de transport
+    a. problème d'un monopole qui maximise son profit.
+    a. maximisation de vraisemblance pour un modèle logit
 
 ### Lectures
 
-1. Judd: 4.1, 4.2, 4.3, 4.4, 4.6, 4.7, 4.8, 4.9
-1. Train: chapitre 4
+1. Judd: 4.1, 4.2, 4.3, 4.4
 
 
 
