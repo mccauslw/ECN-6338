@@ -25,7 +25,7 @@ urlcolor: blue
 1. méthode de Newton
 1. méthode de "direction set"
     a. direction des axes de coordonnées
-    a. direction opposée au gradient
+    a. direction de descente (opposée au gradient)
     a. direction Newton
     a. direction BFGS
 
@@ -152,7 +152,7 @@ où
   \pi(y,z) = \Pi(e^y, e^z) = \eta(e^{\alpha y} + e^{\alpha z})^{\eta/\alpha} - 0.62 e^y - 0.60 e^z.
 \]
 
-## Faires les graphiques en R
+## Comment faire les graphiques en R
 
 ```{r trois-D_setup}
 source('pi.R')
@@ -244,8 +244,8 @@ pi_val_grad_hess <- function(x, C, alpha, eta) {
   # Valeur v, gradient g, hessienne h du profit pi
   v = eta*Q_m0 - t(C) %*% X
   g = (eta2*Q_m1) * X_al - C*X
-  h = (alpha*eta2*(eta_sur_al-1)*Q_m2) * X_al %*% t(X_al)
-    + (alpha*eta2*Q_m1) * diag(X_al) - diag(C*X)
+  h = (alpha*eta2*(eta_sur_al-1)*Q_m2) * X_al %*% t(X_al) +
+      (alpha*eta2*Q_m1) * diag(X_al) - diag(C*X)
   list(valeur=v, gradient=g, hessien=h)
 }
 ```
@@ -295,11 +295,27 @@ vgh1$hessien %*% h
 
 - Simple à programmer, à comprendre
 - Marche pour les fonctions avec des discontinuités, des coudes
-- On fournit seulement une fonction pour évaluer la fonction (pas de gradient, pas de matrice hessienne).
+- On fournit seulement le code pour évaluer la fonction (pas de gradient, pas de matrice hessienne).
 
 ### Inconvénients
 
 - Lente : elle peut prendre beaucoup d'évaluations
+
+## La méthode Newton
+
+La méthode Newton est $x^{k+1} - x^k$ = $-H(x^k)^{-1} \nabla f(x^k)$.
+
+### Avantages
+
+- La convergence est quadratique près de la solution.
+- Elle marche bien quand la matrice hessienne ne change pas beaucoup
+et reste définie positive.
+- Il y a des modifications qui surmontent souvent les inconvénients.
+
+### Inconvénients
+
+- Elle marche moins bien quand les valeurs propres de $H(x^k)$ deviennent petites où négatives. (Illustration plus tard.)
+- La matrice hessienne est souvent coûteuse à évaluer.
 
 ## Méthodes du type "direction set"
 
@@ -319,14 +335,14 @@ Si $\|\nabla f(x^k)\| < \delta (1+f(x^k))$, réclamer le succès.
 1. direction des axes de coordonnées : $s^k = e_{(k\,\mathrm{mod}\, n + 1)}$
 1. direction opposée au gradient : $s^k = -\nabla f(x^k)$
 1. direction Newton : $s^k = -H(x^k)^{-1} \nabla f(x^k)$ 
-1. direction BFGS : $s^k = -H_k^{-1} \nabla f(x^k)$
+1. direction BFGS : $s^k = -H_k^{-1} \nabla f(x^k)$ ($H_k$ décrit plus tard)
 
-### Considérations
+### Considérations pour faire un choix de direction
 
-1. Coûts d'évaluation de $f$, $\nabla f$, $H(x^k)$.
-1. Coût d'évaluation de $\nabla f$ relatif aux coûts d'évaluation de ces éléments :
-    a. un cas extrème : $f(x) = f_1(x_1) + \ldots + f_n(x_n)$.
-    a. un cas avec "rendements à l'échelle" $f(x) = g(h(x))$, avec $g$ et $h$ scalaires : $g'(h(x))$ est un factor commun du gradient.
+1. Coût d'évaluation de $f(x^k)$, $\nabla f(x^k)$ et $H(x^k)$.
+1. Coût de $\nabla f$ relatif aux coûts de ses éléments :
+    a. un cas extrême : $f(x) = f_1(x_1) + \ldots + f_n(x_n)$.
+    a. un cas avec "rendements à l'échelle" : $f(x) = g(h(x))$, avec $g$ et $h$ scalaires : $g'(h(x))$ est un factor commun du gradient.
 1. Variations de $H(x)$ et la courbature de la fonction.
 1. Régions de non-convexité.
 1. Alignement des valeurs propres de la matrice hessienne et les axes de coordonnées.
@@ -349,16 +365,15 @@ Dans les graphiques suivantes,
 ## Exemple 1
 
 ```{r Newton1}
-source('conic.R')
-grad <- c(-1, -1)
-nc = Newton_conic(grad, theta=pi/8, lambda=c(1, 4))
+source('conic.R'); grad <- c(-1, -1)
+nc <- Newton_conic(grad, theta=pi/8, lambda=c(1, 4))
 Newton_plot(grad, nc)
 ```
 
 ## Exemple 2
 
 ```{r Newton2}
-nc = Newton_conic(grad, theta=pi/8, lambda=c(0.25, 4))
+nc <- Newton_conic(grad, theta=pi/8, lambda=c(0.25, 4))
 Newton_plot(grad, nc)
 ```
 
@@ -366,15 +381,14 @@ Newton_plot(grad, nc)
 
 ```{r Newton3}
 source('conic.R')
-gradient <- c(-1, -1)
-nc = Newton_conic(grad, theta=pi/8, lambda=c(-0.25, 4))
+nc <- Newton_conic(grad, theta=pi/8, lambda=c(-0.25, 4))
 Newton_plot(grad, nc)
 ```
 
 ## La méthode BFGS (Broyden-Fletcher-Goldfarb-Shanno)
 
-- Les méthodes quasi-Newton utilisent une matrice $H_k$ au lieu de la matrice hessienne de la méthode Newton.
-- Deux conditions convenables :
+- Les méthodes quasi-Newton (comme BFGS) utilisent une matrice $H_k$ au lieu de la matrice hessienne de la méthode Newton.
+- Deux conditions désirables : (les deux tiennent pour BFGS)
     - condition de corde pour $H_k$:
 \[
   H_k (x^k - x^{k-1}) = \nabla f(x^k)^\top - \nabla f(x^{k-1})^\top
