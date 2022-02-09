@@ -130,6 +130,8 @@ Notez que le cours suit la convention "numerator layout".
 ### Lectures
 
 1. Judd: 4.1, 4.2, 4.3, 4.4
+1. Page Wikipédia sur la méthode [Nelder-Mead](https://en.wikipedia.org/wiki/Nelder–Mead_method)
+1. Page Wikipédia sur la méthode [BFGS](https://en.wikipedia.org/wiki/Broyden–Fletcher–Goldfarb–Shanno_algorithm)
 
 
 
