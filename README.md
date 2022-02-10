@@ -10,7 +10,7 @@
 
 [Diapos](Dia_6338_1_Intro.pdf)
 
-#### Cours 2, La résolution de systèmes d'équations linéaires
+#### Cours 2, Résolution de systèmes d'équations linéaires
 
 [Diapos](Dia_6338_2_LinEq.pdf)
 
@@ -32,4 +32,10 @@ Notes, [inférence bayésienne](Metric_R/Bayesian.html)
 
 Code pour l'exemple du monopole : [pi.R](pi.R)
 
-Code pour les graphiques : [conic.R](conic.R)
+Code pour les graphiques sur les approximations quadratiques : [conic.R](conic.R)
+
+#### Cours 5, Résolution de systèmes d'équations non-linéaires
+
+[Diapos](Dia_6338_5_NonlinEq.pdf)
+
+Code pour la graphique sur la méthode Newton univariée : [root_uni.R](root_uni.R)

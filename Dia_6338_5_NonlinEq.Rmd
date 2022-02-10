@@ -98,14 +98,106 @@ th = seq(0, 2*pi, length=401)
 lines(cos(th), sin(th))
 ```
 
-## Méthodes Newton-Raphson et droite de sécante
+## Illustration univariée I : méthode de Newton-Raphson
+
+Considérons la fonction $f$ et sa dérivée, définie sur l'intervalle $[0,1]$ :
+\[
+  f(x) = (1-x)^3 - \log(1+x), \quad f'(x) = -3(1-x)^2 - (1+x)^{-1}.
+\]
+Si on prend le point initial $x_0 = 0$, la droite de tangente est
+\[
+  g(x) = f(0) + f'(0)(x-0) = 1-4x.
+\]
+et le point $x_1$ de l'itération Newton est l'intersection de cette droite
+et l'axe des abscisses :
+\[
+  x_1 = x_0 - \frac{f'(0)}{f(0)} = 0 - \frac{1}{-3-1} = \frac{1}{4}.
+\]
+Un pas de Newton de plus donne
+\[
+  x_2 = x_1 - \frac{f'(1/4)}{f(1/4)} \approx 0.329892,
+\]
+très près de la racine unique.
+
+## Illustration univariée II : échec de la méthode de Newton
+
+- On peut commencer à $x_0 = 1$ où la courbature est plus prononcée.
+- On évalue $f(x_0) = -\log 2$, $f'(x_0) = -\tfrac{1}{2}$ et on calcule
+\[
+  x_1 = x_0 - \frac{f'(x_0)}{f(x_0)} \approx -0.3862944,
+\]
+beaucoup plus loin de la racine et hors de l'intervalle $[0,1]$.
+- À voir aussi : "Pathological Examples", page 153 de Judd.
+
+## Illustration univariée III : méthode d'intérpolation linéaire
+
+- Note : fonction $f(x)$ en bleu, droites de tangente en rouge, droite de sécante en vert.
+- Pour la première itération, où on calcule $x_1$, on n'a pas encore deux valeurs précédentes et on
+utilise la méthode de Newton.
+- Une fois qu'on a $x_0$ et $x_1$, on peut construire la droite de sécante
+entre $(x_0, f(x_0))$ et $(x_1, f(x_1))$ :
+\[
+  h(x) = f(x_0) + \frac{f(x_1) - f(x_0)}{x_1 - x_0} (x - x_0)
+\]
+- Le point $s$ de l'itération avec interpolation linéaire est l'intersection de cette droite et l'axe des abscisses :
+\[
+  s = x_0 + \frac{(x_1 - x_0)}{f(x_1) - f(x_0)} f(x_0) \approx 0.3120053,
+\]
+un peu plus loin de la racine.
 
 
-## Illustration (Newton-Raphson, droite de sécante)
+
+## Illustration (Newton et interpolation linéaire)
 
 ```{r NewtonSecant}
 source('root_uni.R')
 ```
+
+## Méthode de dichotomie
+
+Intrants à l'itération $k+1$ : points $a_k$, $b_k$, valeurs $f(a_k)$, $f(b_k)$
+tels que
+
+1. $a_k < b_k$,
+1. $f(a_k)f(b_k) < 0$.
+
+À l'itération $k+1$ :
+
+1. Calculer $m = \frac{1}{2}(a_k + b_k)$.
+1. Évaluer $f(m)$, si $f(m) = 0$, terminer avec $m$.
+1. Si $f(m)$ a la même signe que $a_k$,
+\[
+  a_{k+1} = m, \quad b_{k+1} = b_k.
+\]
+sinon
+\[
+  a_{k+1} = a_k \quad b_{k+1} = m.
+\]
+Si $b_{k+1} - a_{k+1} < \delta$, terminer avec $\tfrac{1}{2}(a_{k+1} + b_{k+1})$.
+
+## Quand la méthode de dichotomie marche relativement bien
+
+```{r worst}
+x = seq(0, 1, by=0.0001)
+plot(x, (2*x-1)^9 - 0.1, type='l')
+abline(h=0)
+```
+
+## Discussion, méthode de dichotomie
+
+- Pour la méthode de dichotomie,
+    - on gagne 1 bit de précision à chaque itération (pas beaucoup, mais sûr),
+    - on sait à l'avance combien d'itérations il faut pour atteindre
+    ces deux conditions : $b_k - a_k < \delta$, $[a_k,b_k]$ contient une racine.
+- Considérez des jeux zéro-somme entre
+    - joueur 1 qui choisit une fonction continue $f(x)$ avec $f(a_0)f(b_0) < 0$,
+    et veut maximiser le nombre d'itérations pour trouver un intervalle $[a,a+\delta]$
+    qui contient une racine.
+    - joueur 2 qui choisit une algorithme pour trouver un intervalle $[a,a+\delta]$
+    contenant une racine.
+- Conjecture : Si joueur 2 joue en premier, la méthode de dichotomie est optimale (minmax).
+- Mais la méthode de dichotomie est très sous-optimale pour les fonctions habituelles.
+- On veut accélérer la convergence et en même temps garantir un intervalle court en un nombre borné d'itérations.
 
 ## Méthodes du type Dekker-Brent
 
@@ -114,12 +206,12 @@ Intrants à l'itération $k+1$ : points $a_k$, $b_k$, $b_{k-1}$ ($b{-1} = a_0$) 
 1. $|f(a_k)| \leq |f(b_k)|$ (point $b_k$, contrepoint $a_k$)
 1. $f(a_k) f(b_k) < 0$.
 
-À l'iteration $k+1$ :
+À l'itération $k+1$ :
 
 1. Calculer $m = \frac{1}{2}(a_k + b_k)$.
 1. Calculer $s$ comme fonction de $a_k$, $b_k$, $f(a_k)$, $f(b_k)$, $b_{k-1}$, $f(b_{k-1})$. (détails à venir)
 1. Choisir entre $b_{k+1} = s$ et $b_{k+1} = m$. (détails à venir)
-1. Évaluer $f(b_{k+1})$, terminer si $f(b_{k+1}) = 0$.
+1. Évaluer $f(b_{k+1})$, si $f(b_{k+1}) = 0$, terminer avec $b_{k+1}$.
 1. Choisir entre $a_{k+1} = a_k$ et $a_{k+1} = b_k$ tel que $f(a_{k+1})f(b_{k+1}) < 0$. (Condition 2.)
 1. Si $|f(a_{k+1})| < f(b_{k+1})|$, échanger $a_{k+1}$ et $b_{k+1}$. (Condition 1.)
 1. Si $|a_{k+1} - b_{k+1}| < \delta$, terminer avec $b_{k+1}$.
