@@ -39,3 +39,5 @@ Code pour les graphiques sur les approximations quadratiques : [conic.R](conic.R
 [Diapos](Dia_6338_5_NonlinEq.pdf)
 
 Code pour la graphique sur la méthode Newton univariée : [root_uni.R](root_uni.R)
+
+Code pour les graphiques sur la méthode Gauss-Seidel multivariée : [cerc_parab.R](cerc_parab.R)

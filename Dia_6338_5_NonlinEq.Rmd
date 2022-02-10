@@ -1,5 +1,5 @@
 ---
-title: "ECN 6338 Cours 4"
+title: "ECN 6338 Cours 5"
 subtitle: "Résolution de systèmes d'équations non-linéaires"
 author: "William McCausland"
 date: "`r Sys.Date()`"
@@ -85,6 +85,8 @@ lines(x, (x-1)^2)
 
 ## Exemple : solutions multiples
 
+Les racines de ce système sont $(0,-1)$,
+$(\pm \sqrt{3/4}, 1/2)$ :
 \[
   f^1(x_1,x_2) = x_1^2 + x_2^2 - 1,
   \quad
@@ -96,9 +98,66 @@ x = seq(-2, 2, length=201)
 plot(x, 2*x^2 - 1, type='l', ylim=c(-1.5, 1.5), xlab='x1', ylab='x2', asp=1)
 th = seq(0, 2*pi, length=401)
 lines(cos(th), sin(th))
+points(c(0, sqrt(0.75), -sqrt(0.75)), c(-1, 0.5, 0.5), pch=20)
 ```
 
-## Illustration univariée I : méthode de Newton-Raphson
+## Jeu du duopole (Judd, pages 162-3)
+
+- Dans un duopole, la firme 1 produit un bien en quantité $Y$,
+et la firme 2 produit un bien en quantité $Z$.
+- Les coûts de production sont linéaires
+\[
+  c_Y(Y) = C_Y Y, \quad c_Z(Z) = C_Z Z,
+\]
+où $C_Y = 0.07$ et $C_Z = 0.08$.
+- La demande est celle d'un consommateur avec utilité
+\[
+  U(Y,Z) = u(Y,Z) + M = (1 + Y^\alpha + Z^\alpha)^{\eta/\alpha} + M,
+\]
+où $\alpha = 0.999$, $\eta = 0.2$ et $M$ représente les dépenses en autres biens.
+- La demande pour $Y$, $Z$ est donnée par les équations
+\[
+  p_Y = u_Y(Y,Z), \quad p_Z = u_Z(Y,Z),
+\]
+où $p_Y$ et $p_Z$ sont les prix de $Y$ et $Z$.
+
+## Jeu du duopole (cont.)
+
+- On cherche une équilibre de Nash $(Y^*, Z^*)$ où
+    - $Y^*$ maximise le profit de la firme 1, pour $Z^*$ donnée,
+    - $Z^*$ maximise le profit de la firme 2, pour $Y^*$ donnée.
+- La meilleure réponse $Y$ à $Z$ la maximise le profit :
+\[
+  \begin{aligned}
+    \Pi^Y(Y,Z) &= Yu_Y(Y,Z) - C_Y Y \\
+    &= \eta(1 + Y^\alpha + Z^\alpha)^{\eta/\alpha - 1} Y^\alpha - C_Y Y \\
+    &= \eta(1 + e^{\alpha y} + e^{\alpha z})^{\eta/\alpha - 1} e^{\alpha y} - C_Y e^y,
+  \end{aligned}
+\]
+où $y = \log Y$, $z = \log Z$.
+- Une condition de première ordre nécessaire pour la firme 1 :
+\[
+  \begin{aligned}
+    \Pi^Y_1(Y,Z) &= \alpha \eta (\tfrac{\eta}{\alpha} - 1)
+    (1 + e^{\alpha y} + e^{\alpha z})^{\eta/\alpha - 2} e^{2\alpha y} \\
+    &+ \alpha \eta (1 + e^{\alpha y} + e^{\alpha z})^{\eta/\alpha - 1} e^{\alpha y}
+    - C_Y e^y = 0.
+  \end{aligned}
+\]
+- La même démarche pour la firme 2 donne une expression analogue $\Pi^Z_2(Y,Z) = 0$.
+
+## Le problème de computation pour le jeu du monopole
+
+L'équilibre du jeu du monopole est
+\[
+  (Y^*, Z^*) = (e^{x_1^*}, e^{x_2^*}),
+\]
+où $x^* = (x_1^*, x_2^*)$ est la solution du système $f(x) = 0$, où
+\[
+  f^1(x_1, x_2) = \Pi^Y_1(e^{x_1}, e^{x_2}), \qquad f^2(x_1, x_2) = \Pi^Z_2(e^{x_1}, e^{x_2}).
+\]
+
+## Illustration univariée I : méthode de Newton
 
 Considérons la fonction $f$ et sa dérivée, définie sur l'intervalle $[0,1]$ :
 \[
@@ -106,9 +165,9 @@ Considérons la fonction $f$ et sa dérivée, définie sur l'intervalle $[0,1]$ 
 \]
 Si on prend le point initial $x_0 = 0$, la droite de tangente est
 \[
-  g(x) = f(0) + f'(0)(x-0) = 1-4x.
+  g(x) = f(0) + f'(0)(x-0) = 1-4x,
 \]
-et le point $x_1$ de l'itération Newton est l'intersection de cette droite
+et le point $x_1$ de l'itération de Newton est l'intersection de cette droite
 et l'axe des abscisses :
 \[
   x_1 = x_0 - \frac{f'(0)}{f(0)} = 0 - \frac{1}{-3-1} = \frac{1}{4}.
@@ -139,7 +198,7 @@ entre $(x_0, f(x_0))$ et $(x_1, f(x_1))$ :
 \[
   h(x) = f(x_0) + \frac{f(x_1) - f(x_0)}{x_1 - x_0} (x - x_0)
 \]
-- Le point $s$ de l'itération avec interpolation linéaire est l'intersection de cette droite et l'axe des abscisses :
+- Le point $s$ de l'itération par interpolation linéaire est l'intersection de cette droite et l'axe des abscisses :
 \[
   s = x_0 + \frac{(x_1 - x_0)}{f(x_1) - f(x_0)} f(x_0) \approx 0.3120053,
 \]
@@ -159,12 +218,12 @@ Intrants à l'itération $k+1$ : points $a_k$, $b_k$, valeurs $f(a_k)$, $f(b_k)$
 tels que
 
 1. $a_k < b_k$,
-1. $f(a_k)f(b_k) < 0$.
+1. $f(a_k)f(b_k) < 0$. (signes opposés)
 
 À l'itération $k+1$ :
 
 1. Calculer $m = \frac{1}{2}(a_k + b_k)$.
-1. Évaluer $f(m)$, si $f(m) = 0$, terminer avec $m$.
+1. Évaluer $f(m)$, si $f(m) = 0$, terminer avec la racine $m$.
 1. Si $f(m)$ a la même signe que $a_k$,
 \[
   a_{k+1} = m, \quad b_{k+1} = b_k.
@@ -193,9 +252,9 @@ abline(h=0)
     - joueur 1 qui choisit une fonction continue $f(x)$ avec $f(a_0)f(b_0) < 0$,
     et veut maximiser le nombre d'itérations pour trouver un intervalle $[a,a+\delta]$
     qui contient une racine.
-    - joueur 2 qui choisit une algorithme pour trouver un intervalle $[a,a+\delta]$
+    - joueur 2 qui choisit un algorithme pour trouver un intervalle $[a,a+\delta]$
     contenant une racine.
-- Conjecture : Si joueur 2 joue en premier, la méthode de dichotomie est optimale (minmax).
+- Conjecture : Si joueur 2 joue en premier, la méthode de dichotomie est optimale (minmax) pour joueur 2.
 - Mais la méthode de dichotomie est très sous-optimale pour les fonctions habituelles.
 - On veut accélérer la convergence et en même temps garantir un intervalle court en un nombre borné d'itérations.
 
@@ -225,12 +284,12 @@ Intrants à l'itération $k+1$ : points $a_k$, $b_k$, $b_{k-1}$ ($b{-1} = a_0$) 
 Notes :
 
 1. $s$ n'est pas une fonction de $a_k$.
-1. Si on choisit $s$ par interpolation linéaire, une condtion nécessaire pour
+1. Si on choisit $s$ par interpolation linéaire, une condition nécessaire pour
 choisir $b_{k+1} = s$ (étape 3) est que $s$ se trouve entre $m$ et $b_k$.
 
 ## Calculer $s$ (étape 2) par interpolation inverse quadratique
 
-- Supposez que $f(a_k)$, $f(b_k)$ et $f(b_{k-1})$ sont distinctes
+- Supposez que $f(a_k)$, $f(b_k)$ et $f(b_{k-1})$ sont distinctes.
 - Voici une fonction quadratique $g(y)$ qui passe par les points
 $(f(a_k), a_k)$, $(f(b_k), b_k)$ et $(f(b_{k-1}), b_{k-1})$ :
 \[
@@ -241,7 +300,7 @@ $(f(a_k), a_k)$, $(f(b_k), b_k)$ et $(f(b_{k-1}), b_{k-1})$ :
   \end{aligned}
 \]
 
-- Notez que la fonction inverse $f^{-1}(y)$ passe par les mêmes points.
+- La fonction inverse $x = f^{-1}(y)$ passe par les mêmes points.
 - Défine $s = g(0)$, un zéro de la fonction $g^{-1}(x)$
 
 ## Calculer $s$ par interpolation inverse quadratique (cont.)
@@ -257,10 +316,10 @@ $(f(a_k), a_k)$, $(f(b_k), b_k)$ et $(f(b_{k-1}), b_{k-1})$ :
 Notes :
 
 1. Habituellement, c'est une amélioration, mais on peut toujours utiliser
-l'interpolation linéaire quand $k=1$ où quand deux valeurs
+l'interpolation linéaire quand $k=1$ où quand deux des valeurs $f(a_k)$, $f(b_k)$ et $f(b_{k-1})$
 sont très près l'une à l'autre.
-1. Si on choisit $s$ par interpolation inverse quadratique, une condition nécessaire pour
-choisir $b_{k+1} = s$ (étape 3) est que $s$ se trouve entre
+1. Si on choisit $s$ par interpolation inverse quadratique, une condition nécessaire
+habituelle pour choisir $b_{k+1} = s$ (étape 3) est que $s$ se trouve entre
 $\tfrac{3}{4}b_k + \tfrac{1}{4}a_k$ et $b_k$.
 
 ## Choisir entre $s$ et $m$ (étape 3)
@@ -271,6 +330,76 @@ $\tfrac{3}{4}b_k + \tfrac{1}{4}a_k$ et $b_k$.
     et $\tfrac{1}{2}|b_k - b_{k-1}| > |s - b_k|$.
     - Après un pas d'interpolation, on ajoute les conditions $|b_{k-1} - b_{k-2}| > \delta$
     et $\tfrac{1}{2}|b_{k-1} - b_{k-2}| > |s - b_k|$.
+- Avec ces conditions, le nombre maximale d'itérations est de $M^2$, où $M$ est le nombre d'itérations
+nécessaires pour la méthode de dichotomie.
+
+## Méthode de Gauss-Seidel (exemple)
+
+- Rappelons l'exemple avec trois racines :
+\[
+  f^1(x_1, x_2) = x_1^2 + x_2^2 - 1, \quad f^2(x_1, x_2) = 2x_1^2 - x_2 - 1.
+\]
+- Résoudre $f_i(x_1, x_2) = 0$ pour $x_i$, $i=1,2$, donne une mise à jour possible
+de Seidel :
+\[
+  x_1^{k+1} = \pm \sqrt{1-(x_2^k)^2}, \qquad x_2^{k+1} = 2(x_1^{k+1})^2 - 1
+\]
+- La version linéaire de Seidel donne
+\[
+  x_1^{k+1} = x_1^k - \frac{f^1(x_1^k, x_2^k)}{f_1^1(x_1^k, x_2^k)}
+  = x_1^k - \frac{(x_1^k)^2 + (x_2^k)^2 - 1}{2x_1^k},
+\]
+et $x_2^{k+1}$ comme dans la version non-linéaire.
+
+## La Méthode de Gauss-Seidel avec une permutation
+
+- L'ordre des variables et l'ordre des équations importent.
+- Résoudre $f_1(x_1, x_2)$ pour $x_2$ et $f_2(x_1, x_2)$ pour $x_1$ donne une autre mise à jour de Seidel :
+\[
+  x_1^{k+1} = \sqrt{\tfrac{1}{2}(1+x_2^k)}, \quad x_2^{k+1} = \pm \sqrt{1-(x_1^k)^2}.
+\]
+
+## Illustration Gauss-Seidel
+
+```{r seidel}
+x0 = c(0.6, -0.6); name = 'seidel'
+source('cerc_parab.R')
+```
+
+## Illustration Gauss-Seidel linéaire
+
+```{r seidel_lin}
+x0 = c(0.6, -0.6); name = 'seidel_lin'
+source('cerc_parab.R')
+```
+
+## Illustration Gauss-Seidel (permutation, $+,+$)
+
+```{r perm_seidel}
+x0 = c(0.6, -0.6); name = 'perm_seidel'
+source('cerc_parab.R')
+```
+
+## Illustration Gauss-Seidel (permutation, $+,-$)
+
+```{r perm_seidel+-}
+x0 = c(0.6, -0.6); name = 'perm_seidel+-'
+source('cerc_parab.R')
+```
+
+## Illustration Gauss-Seidel (permutation, $-,+$)
+
+```{r perm_seidel-+}
+x0 = c(0.6, -0.6); name = 'perm_seidel-+'
+source('cerc_parab.R')
+```
+
+## Illustration Gauss-Seidel (permutation, $-,-$)
+
+```{r perm_seidel--}
+x0 = c(0.6, -0.6); name = 'perm_seidel--'
+source('cerc_parab.R')
+```
 
 ## Méthode de Newton
 
@@ -280,5 +409,64 @@ $\tfrac{3}{4}b_k + \tfrac{1}{4}a_k$ et $b_k$.
 \]
 - Si la matrice jacobienne est inversible, il y a un zéro de $g$ à
 \[
-  x^* = x^k - J(x^k)^{-1}f(x^k).
+  \tilde{x}^* = x^k - J(x^k)^{-1}f(x^k).
 \]
+- La mise à jour de Newton sans modification est $x^{k+1} = \tilde{x}^*$ :
+\[
+  x^{k+1} = x^k - J(x^k)^{-1}f(x^k).
+\]
+- La méthode converge rapidement (quadratiquement) d'un point local,
+mais elle n'est pas forcément globalement convergente.
+
+## Méthode de Broyden
+
+- Comme la méthode BFGS (B pour Broyden) pour l'optimisation multivariée,
+la méthode de Broyden pour résoudre les systèmes non-linéaires multivariés
+utilise une approximation $A_k$ de la matrice jacobienne $J(x^k)$ pour donner
+le pas de Broyden :
+\[
+  s^k = -A_k^{-1} f(x^k), \quad x^{k+1} = x^k + s^k.
+\]
+- La mise à jour de $A_k$ est de rang 1 :
+\[
+  A_{k+1} = A_k + \frac{(y_k - A_k s^k)(s^k)^\top}{(s^k)^\top s_k}
+\]
+- Cela permet la mise à jour simultanée de $A_k^{-1}$ à $A_{k+1}^{-1}$ en
+$O(n^2)$ opérations avec le formule Sherman-Morrison.
+
+## Illustration, méthodes de Newton et Broyden
+
+- Code pour la fonction $f(x_1,x_2) = (x_1^2 + x_2^2 - 1,\, 2x_1^2 - x_2 - 1)$
+
+```{r broydenI}
+library(pracma)
+
+# La fonction
+f <- function(x) {
+  f1 <- x[1]^2 + x[2]^2 - 1
+  f2 <- 2*x[1]^2 - x[2] - 1
+  c(f1, f2)
+}
+
+# Sa matrice jacobienne
+J <- function(x) {
+  J <- matrix(0, nrow=2, ncol=2)
+  J[1, 1] <- 2*x[1]; J[1, 2] <- 2*x[2];
+  J[2, 1] <- 4*x[1]; J[2, 2] <- -1;
+  J
+}
+```
+
+## Illustration, méthode de Newton
+
+```{r newton}
+x0 <- c(0.6, -0.6)
+newtonsys(f, x0, Jfun=J)
+```
+
+## Illustration, méthode de Broyden
+
+```{r broyden}
+x0 <- c(0.6, -0.6)
+broyden(f, x0, J0 = J(x0))
+```
