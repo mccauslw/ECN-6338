@@ -147,3 +147,29 @@ Calculer l'inverse de cette matrice et donnez les écarts-types asymptotiques de
 1. Considérez le problème de trouver une racine de la fonction $f(x) = e^x - x - 2$ dans l'intervalle $[0,2]$. Faites avec une calculatrice :
     a. trois cycles de l'algorithme 5.1 (bisection).
     a. trois cycles de l'algorithme 5.2 (Newton).
+
+### Exercices théoriques
+
+1. Si on utilise la méthode de dichotomie pour trouver une racine de la fonction $f(x)$ dans l'intervalle $[0,1]$, combien de fois est-ce qu'il faut évaluer $f$ pour obtenir un intervalle de longeur $\sqrt{\epsilon}$ (ou moins) qui contient une racine, où $\epsilon$ est l'epsilon de la machine utilisée, égale à $2.22 \times 10^{-16}$.
+
+### Exercices numériques
+
+1. Pour le jeu de duopole (pages 162-163 de Judd et plusieurs diapos),
+    a. écrivez des fonctions en R pour évaluer les fonctions $u(e^y,e^z)$, $u_Y(e^y,e^z)$, $u_Z(e^y,e^z)$,
+    $\Pi^Y_1(e^y,e^z)$ et $\Pi^Z_2(e^y,e^z)$ et testez ces fonctions en utilisant
+    les dérivées numériques.
+    a. trouvez l'équilibre en utilisant la fonction \texttt{broyden} du paquet \texttt{pracma}.
+    a. évaluez les gains et les pertes (pour les deux firmes et le consommateur) si firme 2 trouve une technologie qui réduit le coût de production unitaire de $Z$ de 0.08 à 0.06. 
+
+
+
+\pagebreak
+
+## Cours 6. L'approximation de fonctions
+
+### Exercices préliminaires
+
+1. Montrez que les trois premiers polynômes de Legendre, $1$, $x$ et $(3x^2-1)/2$
+sont orthonormaux selon le produit intérieur défini à la page 203 de Judd.
+Regardez le tableau 6.3 pour la spécification de $a$, $b$ et $w(x)$ pour les
+polynômes de Legendre.
