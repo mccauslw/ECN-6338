@@ -191,11 +191,11 @@ Si on prend le point initial $x_0 = 0$, la droite de tangente est
 et le point $x_1$ de l'itération de Newton est l'intersection de cette droite
 et l'axe des abscisses :
 \[
-  x_1 = x_0 - \frac{f'(0)}{f(0)} = 0 - \frac{1}{-3-1} = \frac{1}{4}.
+  x_1 = x_0 - \frac{f(0)}{f'(0)} = 0 - \frac{1}{-3-1} = \frac{1}{4}.
 \]
 Un pas de Newton de plus donne
 \[
-  x_2 = x_1 - \frac{f'(1/4)}{f(1/4)} \approx 0.329892,
+  x_2 = x_1 - \frac{f(1/4)}{f'(1/4)} \approx 0.329892,
 \]
 très près de la racine unique.
 
@@ -204,7 +204,7 @@ très près de la racine unique.
 - On peut commencer à $x_0 = 1$ où la courbature est plus prononcée.
 - On évalue $f(x_0) = -\log 2$, $f'(x_0) = -\tfrac{1}{2}$ et on calcule
 \[
-  x_1 = x_0 - \frac{f'(x_0)}{f(x_0)} \approx -0.3862944,
+  x_1 = x_0 - \frac{f(x_0)}{f'(x_0)} \approx -0.3862944,
 \]
 beaucoup plus loin de la racine et hors de l'intervalle $[0,1]$.
 - À voir aussi : "Pathological Examples", page 153 de Judd.
@@ -281,9 +281,9 @@ abline(h=0)
 
 ## Méthodes du type Dekker-Brent
 
-Intrants à l'itération $k+1$ : points $a_k$, $b_k$, $b_{k-1}$ ($b{-1} = a_0$) et valeurs $f(a_k)$, $f(b_k)$ et $f(b_{k-1})$ tels que
+Intrants à l'itération $k+1$ : points $a_k$, $b_k$, $b_{k-1}$ ($b_{-1} = a_0$) et valeurs $f(a_k)$, $f(b_k)$ et $f(b_{k-1})$ tels que
 
-1. $|f(a_k)| \leq |f(b_k)|$ (point $b_k$, contrepoint $a_k$)
+1. $|f(a_k)| \geq |f(b_k)|$ (point $b_k$, contrepoint $a_k$)
 1. $f(a_k) f(b_k) < 0$.
 
 À l'itération $k+1$ :
@@ -375,7 +375,7 @@ et $x_2^{k+1}$ comme dans la version non-linéaire.
 ## La Méthode de Gauss-Seidel avec une permutation
 
 - L'ordre des variables et l'ordre des équations importent.
-- Résoudre $f_1(x_1, x_2)$ pour $x_2$ et $f_2(x_1, x_2)$ pour $x_1$ donne une autre mise à jour de Seidel :
+- Résoudre $f_1(x_1, x_2) = 0$ pour $x_2$ et $f_2(x_1, x_2) = 0$ pour $x_1$ donne une autre mise à jour de Seidel :
 \[
   x_1^{k+1} = \sqrt{\tfrac{1}{2}(1+x_2^k)}, \quad x_2^{k+1} = \pm \sqrt{1-(x_1^k)^2}.
 \]
@@ -450,7 +450,7 @@ le pas de Broyden :
 \]
 - La mise à jour de $A_k$ est de rang 1 :
 \[
-  A_{k+1} = A_k + \frac{(y_k - A_k s^k)(s^k)^\top}{(s^k)^\top s_k}
+  A_{k+1} = A_k + \frac{(y_k - A_k s^k)(s^k)^\top}{(s^k)^\top s^k}
 \]
 - Cela permet la mise à jour simultanée de $A_k^{-1}$ à $A_{k+1}^{-1}$ en
 $O(n^2)$ opérations avec le formule Sherman-Morrison.
