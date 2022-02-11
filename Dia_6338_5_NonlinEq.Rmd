@@ -7,6 +7,27 @@ output: beamer_presentation
 urlcolor: blue
 ---
 
+## Survol du cours 5
+
+### Le problème de la résolution de systèmes non-linéaires
+
+1. Descriptions des problèmes univariés et multivariés
+1. exemples illustratifs
+1. exemple économique : jeu du duopole
+
+### Méthodes pour problèmes univariés
+
+1. Newton
+1. interpolation linéaire
+1. méthode de dichotomie
+1. méthodes du type Dekker-Brent
+
+### Méthodes pour problèmes multivariées
+
+1. Gauss-Seidel
+1. Newton
+1. Broyden
+
 ## Les problèmes univarié et multivarié
 
 - Problème univarié : trouvez $x \in \mathbb{R}$ qui vérifie
