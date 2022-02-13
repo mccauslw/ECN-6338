@@ -152,6 +152,15 @@ Calculer l'inverse de cette matrice et donnez les écarts-types asymptotiques de
 
 1. Si on utilise la méthode de dichotomie pour trouver une racine de la fonction $f(x)$ dans l'intervalle $[0,1]$, combien de fois est-ce qu'il faut évaluer $f$ pour obtenir un intervalle de longeur $\sqrt{\epsilon}$ (ou moins) qui contient une racine, où $\epsilon$ est l'epsilon de la machine utilisée, égale à $2.22 \times 10^{-16}$.
 
+1. Considérez une économie avec deux agents et deux biens.
+Agent $a$ a une dotation de $(\tfrac{3}{4},\tfrac{1}{4})$ des deux biens et une
+fonction d'utilité $u^a(x_1^a, x_2^a)$, où $(x_1^a, x_2^a)$ représente sa consommation des deux biens.
+Agent $b$ a une dotation de $(\tfrac{1}{4},\tfrac{3}{4})$ et une fonction d'utilité $u^b(x_1^b, x_2^b)$.
+L'agent $b$ peut offrir un échange à l'agent $a$, à prendre ou à laisser.
+Supposons que $a$ accepte n'importe quelle échange où $a$ consomme un panier avec utilité égale ou supérieur à sa dotation (nonobstant les résultats empiriques sur les jeux de l'ultimatum).
+Supposons que les deux fonctions d'utilité sont strictement croissantes et concaves, ainsi que continument dérivables.
+Donnez un système $f(x)=0$ de deux équations en deux variables dont on peut utiliser la solution pour trouver le choix optimal de $b$.
+
 ### Exercices numériques
 
 1. Pour le jeu de duopole (pages 162-163 de Judd et plusieurs diapos),

@@ -141,11 +141,11 @@ Notez que le cours suit la convention "numerator layout".
 ### Matières
 
 1. La résolution d'équations univariées
-    a. la méthode de bissection
+    a. la méthode de dichotomie
     a. la méthode de Newton, la convergence, des règles d'arrêt
 1. La résolution de systèmes d'équation
-    a. itération Gauss-Jacobi et Gauss-Seidel
-    a. itération point fixe
+    a. itération Gauss-Seidel
+    a. itération point fixe (pas fait, 2022)
     a. les méthodes de Newton et Broydon
 1. Application: la computation d'équilibre d'oligopole
 
