@@ -1,0 +1,77 @@
+---
+title: "ECN 6338 Cours 6"
+subtitle: "Approximation de fonctions"
+author: "William McCausland"
+date: "`r Sys.Date()`"
+output: beamer_presentation
+urlcolor: blue
+---
+
+## Survol du cours 5
+
+### Approximations locales
+
+- Approximation de Taylor
+- Approximation de Padé
+
+## L'approximation Taylor
+
+
+## L'approximation Padé
+
+- L'approximation en général est
+\[
+  f(x) \approx r(x) \equiv \frac{p(x)}{q(x)}.
+\]
+- La condition $f^i(x_0) = r^i(x_0)$, $i=0,1,\ldots,m+n$ s'exprime aussi comme
+\[
+  p^i(x) - (f \cdot q)^i(x) = 0, \quad i=0,1,\ldots,m+n.
+\]
+
+## Calcul de l'approximation Padé (2,1) de $e^x$ autour de $x=0$
+
+- L'approximation $r(x)$ est
+\[
+  r(x) = \frac{p_0 + p_1x + p_2x^2}{1 + q_1x}.
+\]
+- Les coefficients $p_0$, $p_1$, $p_2$ et $q_1$ sont donnés par
+\[
+  \left. (p_0 + p_1x + p_2x^2) - e^x(1 + q_1x) \right|_{x=0} = p_0 - 1 = 0,
+\]
+\[
+  \left. (p_1 + 2p_2x) - e^x (1 + q_1x) \right|_{x=0} = p_1 - 1 - q_1 = 0,
+\]
+\[
+  \left. 2p_2 - e^x(1 + q_1x) - 2e^x q_1 \right|_{x=0} = 2p_2 - 1 - 2q_1 = 0,
+\]
+\[
+  \left. -e^x(1 + q_1x) - 3e^x q_1 \right|_{x=0} = -1 - 3q_1 = 0.
+\]
+- La première équation donne $p_0 = 1$; la dernière, $q_1 = -\tfrac{1}{3}$.
+- Ensuite, la deuxième équation donne $p_1 = 1 + q_1 = \tfrac{2}{3}$;
+la troisième, $p_2 = \tfrac{1}{2} + q_1 = \tfrac{1}{6}$.
+
+## Exemple I, Taylor et Padé, $f(x) = e^x$, $x_0 = 0$.
+
+```{r Taylor_Pade_exp}
+source('Taylor_Pade_exp.R')
+```
+
+## Exemple I, erreurs d'approximation
+
+```{r Taylor_Pade_exp_error}
+source('Taylor_Pade_exp_error.R')
+```
+
+## Exemple II, Taylor et Padé, $f(x) = \log x$, $x_0 = 1$.
+
+```{r Taylor_Pade_log}
+source('Taylor_Pade_log.R')
+```
+
+## Exemple II, erreurs d'approximation
+
+```{r Taylor_Pade_log_error}
+source('Taylor_Pade_log_error.R')
+```
+
