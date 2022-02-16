@@ -14,19 +14,48 @@ urlcolor: blue
 - Approximation de Taylor
 - Approximation de Padé
 
-## L'approximation Taylor
+### Expansions avec coefficients simples
 
+- Approximation linéaire par morceaux
+- Approximations Bernstein, Bernstein itéré
+- Approximation Hermite
+
+### Expansions avec projections
+
+- Suites de polynômes orthogonaux
+
+## L'approximation de Taylor
+
+- L'approximation de Taylor utilise l'information locale suivante à un point $x_0$ :
+    - la valeur $f(x_0)$ de la fonction à approximer,
+    - ses $n$ premières dérivées $f'(x_0), f''(x_0), \ldots, f^{(n)}(x_0)$.
+- L'approximation est
+\[
+  \hat{f}(x) = f(x_0) + \sum_{i=1}^n \frac{(x-x_0)^i}{i!} f^{(i)}(x_0).
+\]
+- La valeur de $\hat{f}$ et de ses $n$ premières dérivées concordent avec celles de $f$
+au point $x_0$.
+- L'expansion a $n+1$ paramètres libres à spécifier.
+- Peu importe l'ordre $n$, l'approximation est locale.
 
 ## L'approximation Padé
 
-- L'approximation en général est
+- Comme l'approximation de Taylor, une approximation Padé
+    - utilise la valeur de $f$ et de ses premières $n$ dérivées à $x_0$,
+    - concorde avec $f$ sur ces valeurs à $x_0$,
+    - a $n+1$ paramètres libres à spécifier.
+
+- L'approximation est une fonction rationnelle, un ratio de polynômes :
 \[
-  f(x) \approx r(x) \equiv \frac{p(x)}{q(x)}.
+  f(x) \approx r(x) \equiv \frac{p(x)}{q(x)}
+  = \frac{p_0 + p_1(x-x_0) + \ldots + p_m(x-x_0)^m}{1 + q_1(x-x_0) + \ldots + q_d(x-x_0)^d},
 \]
+où $m + d = n$ et souvent $m = d$ ou $m = d+1$.
 - La condition $f^i(x_0) = r^i(x_0)$, $i=0,1,\ldots,m+n$ s'exprime aussi comme
 \[
-  p^i(x) - (f \cdot q)^i(x) = 0, \quad i=0,1,\ldots,m+n.
+  p^i(x) - (f \cdot q)^i(x) = 0, \quad i=0,1,\ldots,m+d,
 \]
+$n+1$ équations pour trouver $n+1 = (m+1) + d$ coefficients.
 
 ## Calcul de l'approximation Padé (2,1) de $e^x$ autour de $x=0$
 
@@ -53,6 +82,7 @@ la troisième, $p_2 = \tfrac{1}{2} + q_1 = \tfrac{1}{6}$.
 
 ## Exemple I, Taylor et Padé, $f(x) = e^x$, $x_0 = 0$.
 
+Approx. de Taylor (ordres 3, 4, 5, rouge), de Padé ((2,1), vert) :
 ```{r Taylor_Pade_exp}
 source('Taylor_Pade_exp.R')
 ```
@@ -75,7 +105,7 @@ source('Taylor_Pade_log.R')
 source('Taylor_Pade_log_error.R')
 ```
 
-## Approximations constante par morceaux et linéaire par morceaux
+## Approx. constante par morceaux et linéaire par morceaux
 
 ![](./Figures/const_lineaire.pdf)
 
@@ -84,6 +114,21 @@ source('Taylor_Pade_log_error.R')
 ```{r Bernstein}
 source('Bernstein.R')
 ```
+
+## Approximation de Bernstein
+
+- La région d'approximation est un intervalle fini $[a,b]$, normalisé
+à $[0,1]$
+- L'approximation d'ordre $n$ utilise les évaluations de $f$ sur une grille
+$0,\frac{1}{n},\ldots,\frac{n-1}{n}$.
+- L'approximation est
+\[
+  \sum_{i=0}^n f(\tfrac{i}{n}) b_{i,n}(x),
+\]
+où $b_{i,n}$ est le i-ième polynôme de Bernstein de degré $n$ :
+\[
+  b_{i,n}(x) = {n \choose i} x^i (1-x)^{n-i}.
+\]
 
 ## Interpolation à la Hermite
 
