@@ -75,3 +75,53 @@ source('Taylor_Pade_log.R')
 source('Taylor_Pade_log_error.R')
 ```
 
+## Approximations constante par morceaux et linéaire par morceaux
+
+![](./Figures/const_lineaire.pdf)
+
+## Polynômes de Bernstein d'ordre $n=10$
+
+```{r Bernstein}
+source('Bernstein.R')
+```
+
+## Interpolation à la Hermite
+
+Quatre fonctions cubiques sur l'intervalle $[0,1]$ :
+\[
+  \varphi_1(t) = 2t^3 - 3t^2 + 1, \quad \varphi_2(t) = t^3 - 2t^2 + t,
+\]
+\[
+  \varphi_3(t) = -2t^3 + 3t^2, \quad \varphi_4(t) = t^3 - t^2.
+\]
+
+| Fonction $f$ | $f(0)$ | $f'(0)$ | $f(1)$ | $f'(1)$ |
+|--------------|--------|---------|--------|---------|
+| $\varphi_1$ | 1 | 0 | 0 | 0 |
+| $\varphi_2$ | 0 | 1 | 0 | 0 |
+| $\varphi_3$ | 0 | 0 | 1 | 0 |
+| $\varphi_4$ | 0 | 0 | 0 | 1 |
+| $a_1\varphi_1 + a_2\varphi_2 + a_3\varphi_3 + a_4\varphi_4$ | $a_1$ | $a_2$ | $a_3$ | $a_4$ |
+
+## Graphique, cubiques de l'interpolation à la Hermite
+
+```{r Hermite_4}
+source('Hermite_piece.R')
+```
+
+## Notes, interpolation cubique à la Hermite
+
+- Problème : interpoler une fonction avec la valeur et la dérivée spécifié à quelques points.
+- Les intrants :
+    - des points $x_1 < x_2 < \ldots < x_n$,
+    - des valeurs $f(x_1),\ldots,f(x_n)$,
+    - et les dérivées $f'(x_1),\ldots,f'(x_n)$.
+- Le résultat : une fonction
+    - cubique par morceaux $[x_i,x_{i+1}]$, (piecewise cubic function)
+    - $C^1$ dans l'intervalle $[x_1, x_n]$,
+    - ayant une deuxième dérivée discontinu à chaque $i$
+- Il faut tranformer les fonctions $\varphi \colon [0,1] \to \mathbb{R}$ pour
+avoir les fonctions $\varphi \colon [x_i, x_{i+1}]$.
+- Il y a une version (rarement utilisée) avec 6 fonctions quintique $\varphi$
+qui donne une fonction $C^2$ avec les valeurs, premières dérivées et deuxième
+dérivées.
