@@ -41,3 +41,18 @@ Code pour les graphiques sur les approximations quadratiques : [conic.R](conic.R
 Code pour la graphique sur la méthode Newton univariée : [root_uni.R](root_uni.R)
 
 Code pour les graphiques sur la méthode Gauss-Seidel multivariée : [cerc_parab.R](cerc_parab.R)
+
+#### Cours 6, Approximation de fonctions
+
+[Diapos](Dia_6338_6_Approx.pdf)
+
+Code pour les graphiques des approximations Taylor et Padé :
+
+- [Taylor_Pade_exp.R](Taylor_Pade_exp.R),
+- [Taylor_Pade_exp_error.R](Taylor_Pade_exp_error.R),
+- [Taylor_Pade_log.R](Taylor_Pade_log.R),
+- [Taylor_Pade_log_error.R](Taylor_Pade_log_error.R),
+
+Code pour les polynômes Bernstein d'ordre 10 : [Bernstein.R](Bernstein.R)
+
+Code pour les cubiques des splines cubiques d'hermite : [Hermite_piece.R](Hermite_piece.R)

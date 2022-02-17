@@ -105,6 +105,15 @@ source('Taylor_Pade_log.R')
 source('Taylor_Pade_log_error.R')
 ```
 
+## Les approximations suivantes
+
+- Nous passons maintenant aux expansions avec coefficients simples :
+    - Approximation constante par morceaux
+    - Approximation linéaire par morceaux
+    - Approximation par spline cubique d'hermite (cubic Hermite spline,
+    Hermite interpolation polynomials)
+    - Approximation de Bernstein (pas une interpolation)
+
 ## Approx. constante par morceaux et linéaire par morceaux
 
 ![](./Figures/const_lineaire.pdf)
@@ -117,20 +126,64 @@ source('Bernstein.R')
 
 ## Approximation de Bernstein
 
-- La région d'approximation est un intervalle fini $[a,b]$, normalisé
-à $[0,1]$
+- Approximation d'une fonction $g \colon [a,b] \to \mathbb{R}$.
+- On normalise à $f \colon [0,1]$ avec $f(x) \equiv g(a+x(b-a))$.
 - L'approximation d'ordre $n$ utilise les évaluations de $f$ sur une grille
-$0,\frac{1}{n},\ldots,\frac{n-1}{n}$.
+$(0,\frac{1}{n},\ldots,\frac{n-1}{n})$.
 - L'approximation est
 \[
-  \sum_{i=0}^n f(\tfrac{i}{n}) b_{i,n}(x),
+  \hat{f}_n(x) = \sum_{i=0}^n f(\tfrac{i}{n}) b_{i,n}(x),
 \]
 où $b_{i,n}$ est le i-ième polynôme de Bernstein de degré $n$ :
 \[
   b_{i,n}(x) = {n \choose i} x^i (1-x)^{n-i}.
 \]
+- Convergence uniforme : $\lim_{n\to \infty} \sup_{x \in [0,1]} |f(x) - \hat{f}_n(x)| = 0$.
+- $\hat f$ n'est pas une interpolation de $f$ : $\hat f(\tfrac{i}{n}) \neq f(\tfrac{i}{n})$
+en général.
 
-## Interpolation à la Hermite
+## Autres notes sur l'approximation de Bernstein
+
+- La convergence est lente, mais les dérivées qui existent convergent aussi en même temps.
+- $b_{i,n}(x)$ est la densité $\mathrm{Beta}(i+1, n-i+1)$ sur $[0,1]$.
+- Pour $\pi_i \geq 0$, $i=0,1,\ldots,n$, $\sum_{i=0}^n \pi_i = 1$, la fonction
+suivante est une densité, un mélange de densités Beta :
+\[
+  g(x) = \sum_{i=0}^n \pi_i b_{i,n}(x).
+\]
+- Soit $G(x) = \int_0^t g(t)\, dt$, la fonction de répartition, un polynôme d'ordre $n+1$.
+- Pour une fonction de répartition parmétrique $F(x)$ sur $(-\infty, \infty)$,
+$H(x) = G(F(x))$ est une autre fonction de répartition sur $(-\infty, \infty)$.
+- La densité est $h(x) = g(F(x)) f(x)$.
+- Spécifier $F$ et $G$ est une façon de spécifier une loi non-paramétrique, comme une
+perturbation de $F(x)$.
+
+## Approximation de $g(x) = e^x$ sur l'intervalle $[-2,2]$
+
+```{r bernstein_exp}
+# On normalise la fonction g:[-2,2] -> R, où g(x) = exp(x),
+# à la fonction f:[0,1] -> R, où f(t) = g(-2 + 4*t)
+f <- function(t) {exp(-2 + 4*t)}
+
+# Grille de points t in [0,1]
+t <- seq(0, 1, by=0.01)
+
+# Grille de points x in [-2,2]
+x <- -2 + 4*t
+
+# Valeurs de f/g sur la grille
+f_grid <- f(t)
+```
+
+## Approximation de Bernstein de $g(x) = e^x$ pour $n=10,20$
+
+```{r bernstein_exp_graph}
+plot(x, f_grid, type='l')
+lines(x, bernstein(f, 10, t), col='green')
+lines(x, bernstein(f, 20, t), col='red')
+```
+
+## Splines cubiques d'hermite
 
 Quatre fonctions cubiques sur l'intervalle $[0,1]$ :
 \[
@@ -148,15 +201,16 @@ Quatre fonctions cubiques sur l'intervalle $[0,1]$ :
 | $\varphi_4$ | 0 | 0 | 0 | 1 |
 | $a_1\varphi_1 + a_2\varphi_2 + a_3\varphi_3 + a_4\varphi_4$ | $a_1$ | $a_2$ | $a_3$ | $a_4$ |
 
-## Graphique, cubiques de l'interpolation à la Hermite
+## Graphique, spline cubiques d'hermite
 
 ```{r Hermite_4}
 source('Hermite_piece.R')
 ```
 
-## Notes, interpolation cubique à la Hermite
+## Notes, splines cubiques d'hermite
 
-- Problème : interpoler une fonction avec la valeur et la dérivée spécifié à quelques points.
+- Problème : interpoler une fonction dont la valeur et la dérivée sont spécifiées
+à quelques points.
 - Les intrants :
     - des points $x_1 < x_2 < \ldots < x_n$,
     - des valeurs $f(x_1),\ldots,f(x_n)$,
@@ -164,9 +218,141 @@ source('Hermite_piece.R')
 - Le résultat : une fonction
     - cubique par morceaux $[x_i,x_{i+1}]$, (piecewise cubic function)
     - $C^1$ dans l'intervalle $[x_1, x_n]$,
-    - ayant une deuxième dérivée discontinu à chaque $i$
-- Il faut tranformer les fonctions $\varphi \colon [0,1] \to \mathbb{R}$ pour
-avoir les fonctions $\varphi \colon [x_i, x_{i+1}]$.
+    - ayant une deuxième dérivée discontinue à chaque $x_i$.
+- Il faut transformer les fonctions $\varphi \colon [0,1] \to \mathbb{R}$ pour
+avoir les fonctions $\varphi \colon [x_i, x_{i+1}] \to \mathbb{R}$.
 - Il y a une version (rarement utilisée) avec 6 fonctions quintique $\varphi$
 qui donne une fonction $C^2$ avec les valeurs, premières dérivées et deuxième
 dérivées.
+
+## Evaluation des splines cubiques d'hermite
+
+```{r spline_cub_herm_eval}
+spline_cub_eval <- function(x, x_g, f_g, fp_g)
+{
+  i = findInterval(x, x_g)
+  t = (x - x_g[i]) / (x_g[i+1] - x_g[i])
+  fch = x_g[i] * (2*t^3 - 1)
+}
+```
+
+## Aparté sur MCO
+
+- Moindres carrées ordinaire (MCO), rappel :
+    - Soit $X$ une matrice $n \times K$ de rang $K$, $y$ un vecteur $n \times 1$.
+    - Le problème MCO est de choisir $\beta$ qui minimise
+$\|y-X\beta\|^2 = (y-X\beta)^\top(y-X\beta)$.
+    - La solution est $b = (X^\top X)^{-1}(X^\top y)$.
+    - La vecteur $\hat{y} \equiv Xb = (X(X^\top X)^{-1}X^\top) y$ est la combinaison linéaire des colonnes de $X$ le plus près de $y$.
+
+- La matrice $M = X(X^\top X)^{-1}X^\top$ de "projection"
+    - Prenons une combinaison linéaire $Xa$ des colonnes de $X$.
+    - Multiplication par $M$ ne change pas $Xa$ :
+\[
+  M(Xa) = X(X^\top X)^{-1}X^\top Xa = Xa.
+\]
+    - Prenons $u$, $n\times 1$, perpendiculaire à toutes les colonnes de $X$.
+\[
+  X(X^\top X)^{-1}X^\top u = X(X^\top X)^{-1} 0 = 0.
+\]
+
+## $X$ avec colonnes orthogonales
+
+- Supposons que les colonnes sont orthogonales (un cas très spécial, inhabituel)
+- Alors,
+\[
+  X^\top X =
+  \begin{bmatrix}
+    x_1^\top x_1  & 0            & \cdots & 0 \\
+    0             & x_2^\top x_2 & \ddots & \vdots \\
+    \vdots        & \ddots       & \ddots & 0 \\
+    0             & \cdots       & 0      & x_K^\top x_K
+  \end{bmatrix},
+  \quad
+  X^\top y = 
+  \begin{bmatrix}
+    x_1^\top y \\
+    x_2^\top y \\
+    \vdots \\
+    x_K^\top y
+  \end{bmatrix}.
+\]
+\[
+  b_k = \frac{x_k^\top y}{x_k^\top x_k},\; k=1,\ldots,K; \quad
+  \hat{y} = Xb = \sum_{k=1}^K \frac{x_k^\top y}{x_k^\top x_k} x_k.
+\]
+- Notez les produits intérieurs.
+
+## Familles de polynômes orthogonaux : produits intérieurs
+
+- Il y a plusieurs produits intérieurs dans l'espace des fonctions,
+y compris
+\[
+  \int_a^b f(x) g(x) w(x) \, dx,
+\]
+pour plusieurs choix de $(a,b)$ et $w \colon [a,b] \to \mathbb{R}$.
+
+- Trois cas classiques
+
+| Nom | $(a,b)$ | $w(x)$ |
+|-----|---------|--------|
+| Jacobi   | $(-1,1)$           | $(1-x)^\alpha (1+x)^\beta$, $\alpha, \beta > -1$ |
+| Laguerre | $(0,\infty)$       | $e^{-x}$ |
+| Hermite  | $(-\infty,\infty)$ | $e^{-x^2}$ | 
+
+- Pour quelles valeurs de $\alpha$, $\beta$ est-ce que la fonction $w(x)$ des cas
+Legendre et Chebyshev est un cas spécial de $w(x) = (1-x)^\alpha (1+x)^\beta$?
+
+## Importance de l'orthogonalité
+
+- Un problème de moindres carré : choisir un polynôme d'ordre $n$ pour minimiser
+la distance (selon le produit intérieur spécifié par $(a,b)$ et $w(\cdot)$) entre
+le polynôme et une fonction $f \colon (a,b) \to \mathbb{R}$ donnée:
+\[
+  \min_{p \in {\cal P}_n} \int_a^b (f(x) - p(x))^2 w(x)\; dx.
+\]
+- Si on a une famille $\{\varphi_k(x)\}_{k=0}^\infty$ de polynômes orthogonaux
+(toujours par rapport à $(a,b)$ et $w(\cdot)$) la solution du problème de moindres carrés
+est
+\[
+  p(x) = \sum_{k=0}^n
+  \frac{\langle f, \varphi_k \rangle}{\langle \varphi_k, \varphi_k \rangle} \varphi_k(x).
+\]
+- Cependant, selon les produits intérieurs classiques, les monômes, $1, x, x^2, \ldots$,
+ne sont pas orthogonaux.
+
+## L'orthogonalisation de polynômes
+
+- Pour un ensemble de vecteurs d'un espace pré-hilbertien
+(inner product space), l'algorithme de Gram-Schmidt crée un ensemble de
+vecteurs orthogonaux engendrant le même espace.
+- L'application de l'algorithme à l'ensemble des monômes donne les formules
+de récursion relativement simples.
+- Par exemple, les polynômes de Tchebyshev ($(a,b) = (-1,1)$, $w(x) = (1-x^2)^{-1/2}$)
+sont définie par $T_0 = 1$, $T_1 = x$, $T_n(x) = 2xT_n(x) - T_{n-1}(x)$, alors
+\[
+  T_2(x) = 2xT_1(x) - T_0(x) = 2x^2 - 1,
+\]
+\[
+  T_3(x) = 2xT_2(x) - T_1(x) = 4x^3 - 2x - x = 4x^3 - 3x.
+\]
+- Pour $n$ pair (impair), $T_n(x)$ est une fonction pair (impair).
+- La solution, en forme réduite, est $T_n(x) = \cos(n\cos^{-1} x)$.
+- Pour évaluer une expansion $\sum_{k=1}^n a_k T_k(x)$ à un point, on peut
+évaluer dans un premier temps, les $T_k(x)$ avec la récursion.
+
+## Notes sur les polynômes
+
+- Le théorème de Weierstrass démontre la force potentielle des polynômes
+pour l'approximation des fonctions sur les intervalles bornés.
+
+    - Pour $f \in C^k[a,b]$, il existe une suite de polynômes $p_n$, où chaque $p_n$ est
+    un polynôme de degré $n$, telle que
+    \[
+      \lim_{n \to \infty} \max_{x\in [a,b]} |f^{(l)}(x) - p_n^{(l)}(x)| = 0.
+    \]
+
+- 
+- Les produits interieurs sont difficiles
+    - rarement possible de façon analytique
+    - les intégrales numérique sont coûteux
