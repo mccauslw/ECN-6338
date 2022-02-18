@@ -17,10 +17,10 @@ urlcolor: blue
 ### Expansions avec coefficients simples
 
 - Approximation linéaire par morceaux
-- Approximations Bernstein, Bernstein itéré
-- Approximation Hermite
+- Approximation de Bernstein
+- Approximation spline cubique d'Hermite
 
-### Expansions avec projections
+### Expansions et projections
 
 - Suites de polynômes orthogonaux
 
@@ -68,7 +68,7 @@ $n+1$ équations pour trouver $n+1 = (m+1) + d$ coefficients.
   \left. (p_0 + p_1x + p_2x^2) - e^x(1 + q_1x) \right|_{x=0} = p_0 - 1 = 0,
 \]
 \[
-  \left. (p_1 + 2p_2x) - e^x (1 + q_1x) \right|_{x=0} = p_1 - 1 - q_1 = 0,
+  \left. (p_1 + 2p_2x) - e^x (1 + q_1x) - e^x q_1 \right|_{x=0} = p_1 - 1 - q_1 = 0,
 \]
 \[
   \left. 2p_2 - e^x(1 + q_1x) - 2e^x q_1 \right|_{x=0} = 2p_2 - 1 - 2q_1 = 0,
@@ -171,7 +171,7 @@ t <- seq(0, 1, by=0.01)
 # Grille de points x in [-2,2]
 x <- -2 + 4*t
 
-# Valeurs de f/g sur la grille
+# Valeurs de f et de g sur la grille
 f_grid <- f(t)
 ```
 
@@ -219,11 +219,11 @@ source('Hermite_piece.R')
     - cubique par morceaux $[x_i,x_{i+1}]$, (piecewise cubic function)
     - $C^1$ dans l'intervalle $[x_1, x_n]$,
     - ayant une deuxième dérivée discontinue à chaque $x_i$.
-- Il faut transformer les fonctions $\varphi \colon [0,1] \to \mathbb{R}$ pour
-avoir les fonctions $\varphi \colon [x_i, x_{i+1}] \to \mathbb{R}$.
-- Il y a une version (rarement utilisée) avec 6 fonctions quintique $\varphi$
-qui donne une fonction $C^2$ avec les valeurs, premières dérivées et deuxième
-dérivées.
+- Il faut transformer les fonctions $\varphi_j \colon [0,1] \to \mathbb{R}$, $j=1,2,3,4$, pour
+avoir les fonctions $\varphi_j \colon [x_i, x_{i+1}] \to \mathbb{R}$.
+- Il y a une version (rarement utilisée) avec six fonctions quintiques d'hermite
+qui donne une fonction $C^2$ à partir des valeurs, des premières dérivées et des deuxième
+dérivées à un ensemble de points.
 
 ## Evaluation des splines cubiques d'hermite
 
@@ -255,10 +255,12 @@ $\|y-X\beta\|^2 = (y-X\beta)^\top(y-X\beta)$.
 \[
   X(X^\top X)^{-1}X^\top u = X(X^\top X)^{-1} 0 = 0.
 \]
+    - $M$ projette un vecteur $n \times 1$ sur l'espace engendré par les colonnes de $X$.
+    - $\hat{y} = My$ est la projection de $y$ sur cet espace.
 
 ## $X$ avec colonnes orthogonales
 
-- Supposons que les colonnes sont orthogonales (un cas très spécial, inhabituel)
+- Supposons que les colonnes de $X$ sont mutuellement orthogonales (un cas très spécial, inhabituel)
 - Alors,
 \[
   X^\top X =
@@ -281,11 +283,11 @@ $\|y-X\beta\|^2 = (y-X\beta)^\top(y-X\beta)$.
   b_k = \frac{x_k^\top y}{x_k^\top x_k},\; k=1,\ldots,K; \quad
   \hat{y} = Xb = \sum_{k=1}^K \frac{x_k^\top y}{x_k^\top x_k} x_k.
 \]
-- Notez les produits intérieurs.
+- Remarquez les produits intérieurs.
 
 ## Familles de polynômes orthogonaux : produits intérieurs
 
-- Il y a plusieurs produits intérieurs dans l'espace des fonctions,
+- Il y a plusieurs produits intérieurs possibles pour les espace des fonctions,
 y compris
 \[
   \int_a^b f(x) g(x) w(x) \, dx,
@@ -300,14 +302,14 @@ pour plusieurs choix de $(a,b)$ et $w \colon [a,b] \to \mathbb{R}$.
 | Laguerre | $(0,\infty)$       | $e^{-x}$ |
 | Hermite  | $(-\infty,\infty)$ | $e^{-x^2}$ | 
 
-- Pour quelles valeurs de $\alpha$, $\beta$ est-ce que la fonction $w(x)$ des cas
-Legendre et Chebyshev est un cas spécial de $w(x) = (1-x)^\alpha (1+x)^\beta$?
+- Pour quelles valeurs de $\alpha$, $\beta$ est-ce que les fonctions $w(x)$ des cas
+Legendre et Chebyshev sont des cas spécial de $w(x) = (1-x)^\alpha (1+x)^\beta$?
 
 ## Importance de l'orthogonalité
 
 - Un problème de moindres carré : choisir un polynôme d'ordre $n$ pour minimiser
 la distance (selon le produit intérieur spécifié par $(a,b)$ et $w(\cdot)$) entre
-le polynôme et une fonction $f \colon (a,b) \to \mathbb{R}$ donnée:
+le polynôme et une fonction $f \colon (a,b) \to \mathbb{R}$ donnée :
 \[
   \min_{p \in {\cal P}_n} \int_a^b (f(x) - p(x))^2 w(x)\; dx.
 \]
@@ -318,7 +320,7 @@ est
   p(x) = \sum_{k=0}^n
   \frac{\langle f, \varphi_k \rangle}{\langle \varphi_k, \varphi_k \rangle} \varphi_k(x).
 \]
-- Cependant, selon les produits intérieurs classiques, les monômes, $1, x, x^2, \ldots$,
+- Cependant, selon chacun des produits intérieurs classiques, les monômes, $1, x, x^2, \ldots$,
 ne sont pas orthogonaux.
 
 ## L'orthogonalisation de polynômes
@@ -352,7 +354,48 @@ pour l'approximation des fonctions sur les intervalles bornés.
       \lim_{n \to \infty} \max_{x\in [a,b]} |f^{(l)}(x) - p_n^{(l)}(x)| = 0.
     \]
 
-- 
-- Les produits interieurs sont difficiles
-    - rarement possible de façon analytique
-    - les intégrales numérique sont coûteux
+- Trouvez $p_n(x)$ qui minimise $\max_{x\in [a,b]} |f^{(l)}(x) - p_n^{(l)}(x)|$
+est difficile, mais une solution moindres carrés est souvent près du minimum.
+
+- Trouvez $p_n(x)$ qui minimise $\langle f - p_n, f - p_n \rangle$ est facile en
+principe, mais
+    - les produits intérieurs sont rarement faisable de façon analytique
+    - les intégrales numériques sont coûteux
+
+## Approximation moindres carrés de $x^3$
+
+- Problème : approximer $f(x) = x^3$ sur l'intervalle $[-1,1]$.
+- Utilisons le produit intérieur avec $(a,b) = (-1,1)$ et $w(x) = 1$.
+- Problème moindres carrés : minimiser $\|f-p_2\|^2 = \langle f-p_2, f-p_2 \rangle$ pour 
+pour un polynôme $p_2$ d'ordre 2 ou moins.
+- La solution est
+\[
+  \begin{aligned}
+    \hat{f}(x) &=
+    \frac{\langle f, P_0 \rangle}{\langle P_0, P_0 \rangle} P_0(x)
+    + \frac{\langle f, P_1 \rangle}{\langle P_1, P_1 \rangle} P_1(x)
+    + \frac{\langle f, P_2 \rangle}{\langle P_2, P_2 \rangle} P_2(x) \\
+    &= \frac{2/5}{2/3} P_1(x) = \tfrac{3}{5} x.
+  \end{aligned}
+\]
+- Le polynôme d'ordre 2 ou moins qui minimise $\max_{x \in (-1,1)} |f(x) - p_2(x)|$
+est $\tfrac{3}{4} x$.
+
+## Meilleures approximations de $x^3$
+
+```{r x_cube}
+x = seq(-1, 1, by=0.001)
+plot(x, x^3, type='l')       # Fonction à approximer
+lines(x, 0.6*x, col='green') # Meilleur approx. MC
+lines(x, 0.75*x, col='red')  # Meilleur approx. uniforme
+```
+
+## Meilleures approximations de $x^3$, cont.
+
+```{r x_cube_error}
+x = seq(-1, 1, by=0.001)
+plot(x, x^3 - 0.6*x, type='l', col='green') # Meilleur approx. MC
+lines(x, x^3 - 0.75*x, col='red')  # Meilleur approx. uniforme
+abline(h=-0.25, lty='dashed', col='grey')
+```
+
