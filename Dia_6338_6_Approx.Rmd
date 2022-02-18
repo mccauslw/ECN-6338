@@ -7,7 +7,7 @@ output: beamer_presentation
 urlcolor: blue
 ---
 
-## Survol du cours 5
+## Survol du cours 6
 
 ### Approximations locales
 
@@ -129,7 +129,7 @@ source('Bernstein.R')
 - Approximation d'une fonction $g \colon [a,b] \to \mathbb{R}$.
 - On normalise à $f \colon [0,1]$ avec $f(x) \equiv g(a+x(b-a))$.
 - L'approximation d'ordre $n$ utilise les évaluations de $f$ sur une grille
-$(0,\frac{1}{n},\ldots,\frac{n-1}{n})$.
+$(0,\frac{1}{n},\ldots,\frac{n-1}{n},1)$.
 - L'approximation est
 \[
   \hat{f}_n(x) = \sum_{i=0}^n f(\tfrac{i}{n}) b_{i,n}(x),
@@ -303,7 +303,7 @@ pour plusieurs choix de $(a,b)$ et $w \colon [a,b] \to \mathbb{R}$.
 | Hermite  | $(-\infty,\infty)$ | $e^{-x^2}$ | 
 
 - Pour quelles valeurs de $\alpha$, $\beta$ est-ce que les fonctions $w(x)$ des cas
-Legendre et Chebyshev sont des cas spécial de $w(x) = (1-x)^\alpha (1+x)^\beta$?
+Legendre et Tchebyshev sont des cas spécial de $w(x) = (1-x)^\alpha (1+x)^\beta$?
 
 ## Importance de l'orthogonalité
 
@@ -331,7 +331,7 @@ vecteurs orthogonaux engendrant le même espace.
 - L'application de l'algorithme à l'ensemble des monômes donne les formules
 de récursion relativement simples.
 - Par exemple, les polynômes de Tchebyshev ($(a,b) = (-1,1)$, $w(x) = (1-x^2)^{-1/2}$)
-sont définie par $T_0 = 1$, $T_1 = x$, $T_n(x) = 2xT_n(x) - T_{n-1}(x)$, alors
+sont définie par $T_0 = 1$, $T_1 = x$, $T_{n+1}(x) = 2xT_n(x) - T_{n-1}(x)$, alors
 \[
   T_2(x) = 2xT_1(x) - T_0(x) = 2x^2 - 1,
 \]
@@ -349,7 +349,7 @@ sont définie par $T_0 = 1$, $T_1 = x$, $T_n(x) = 2xT_n(x) - T_{n-1}(x)$, alors
 pour l'approximation des fonctions sur les intervalles bornés.
 
     - Pour $f \in C^k[a,b]$, il existe une suite de polynômes $p_n$, où chaque $p_n$ est
-    un polynôme de degré $n$, telle que
+    un polynôme de degré $n$, telle que pour $l \leq k$,
     \[
       \lim_{n \to \infty} \max_{x\in [a,b]} |f^{(l)}(x) - p_n^{(l)}(x)| = 0.
     \]

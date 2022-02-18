@@ -179,6 +179,29 @@ Donnez un système $f(x)=0$ de deux équations en deux variables dont on peut ut
 ### Exercices préliminaires
 
 1. Montrez que les trois premiers polynômes de Legendre, $1$, $x$ et $(3x^2-1)/2$
-sont orthonormaux selon le produit intérieur défini à la page 203 de Judd.
+sont orthogonaux selon le produit intérieur défini à la page 203 de Judd.
 Regardez le tableau 6.3 pour la spécification de $a$, $b$ et $w(x)$ pour les
 polynômes de Legendre.
+
+### Exercices théoriques
+
+1. Trouvez l'approximation Padé (2,1) de $f(x) = \log x$ au point $x_0 = 1$.
+
+1. Trouvez les valeurs des paramètres $\alpha$ et $\beta$ de la fonction de
+pondération $w(x)$ associée aux polynômes Jacobi, pour les cas spéciaux
+    a. Legendre
+    a. Tchebyshev
+    
+1. Soit $f(x) = x^3$. Trouvez le polynôme $p_2$ d'ordre 2 qui minimise
+$\langle f - p_2, f - p_2 \rangle$, pour le produit intérieur défini par
+\[
+  \langle f, g \rangle = \int_0^\infty e^{-x} f(x) g(x)\, dx.
+\]
+Notez que
+\[
+  \int_0^\infty x^k e^{-x} = k!.
+\]
+
+1. Montrez que $b_{i,n}'(x) = n(b_{i-1,n-1}(x) - b_{i,n-1}(x))$, où $b_{i,n}(x)$
+est le $i$-ième polynôme Bernstein d'ordre $n$ et $b_{i,n}'(x)$ est sa dérivé.
+
