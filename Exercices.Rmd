@@ -205,3 +205,12 @@ Notez que
 1. Montrez que $b_{i,n}'(x) = n(b_{i-1,n-1}(x) - b_{i,n-1}(x))$, où $b_{i,n}(x)$
 est le $i$-ième polynôme Bernstein d'ordre $n$ et $b_{i,n}'(x)$ est sa dérivé.
 
+### Exercices numériques
+
+1. Considérez l'approximation de la fonction $f(x) = \sin(\pi x/2)$ sur
+l'intervalle $[0,4]$, un cycle complet.
+Faites les graphiques de la fonction et des approximations suivantes :
+    a. Approximation Taylor d'ordre $n=3$ autour de $x_0 = 2$,
+    a. Approximation Bernstein d'ordre $n=10$,
+    a. Approximation spline cubique d'hermite qui utilise la fonction $f$ et sa
+    première dérivé $f'$, évalués aux points $x=0,1,2,3,4$.
