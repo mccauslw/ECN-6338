@@ -214,3 +214,13 @@ Faites les graphiques de la fonction et des approximations suivantes :
     a. Approximation Bernstein d'ordre $n=10$,
     a. Approximation spline cubique d'hermite qui utilise la fonction $f$ et sa
     première dérivé $f'$, évalués aux points $x=0,1,2,3,4$.
+
+\pagebreak
+
+## Cours 7. L'intégration et la dérivation (méthodes déterministes)
+
+### Exercices préliminaires
+
+1. Évaluez l'intégrale $\int_0^{\pi/2} \sin x\, dx$.
+Lisez la page 260 de Judd et approximez l'intégral par quadrature
+Gauss-Legendre avec $N=3$ points.
