@@ -1,0 +1,314 @@
+---
+title: "ECN 6338 Cours 7"
+subtitle: "Intégration et dérivation déterministe"
+author: "William McCausland"
+date: "`r Sys.Date()`"
+output: beamer_presentation
+urlcolor: blue
+---
+
+## Survol du cours 7
+
+- Formules (ou règles) Newton-Cotes pour l'intégration univariée
+- Changements de variable et le domains d'intégration infinies
+- Formules (ou règles) de Gauss pour l'intégration univariée
+    - Règle de Gauss-Laguerre et l'utilité actualisée
+    - Règle de Gauss-Hermite et les espérances gaussiennes
+
+## La règle du point médian et l'analyse de son erreur
+
+- Supposons que $f \in C^2[a,b]$.
+- Par la formule de [Taylor-Lagrange](https://fr.wikipedia.org/wiki/Théorème_de_Taylor), il y a un $\xi \in (a,b)$ tel que
+\[
+  f(x) = f\left(\tfrac{a+b}{2}\right)
+       + f'\left(\tfrac{a+b}{2}\right) \left(x - \tfrac{a+b}{2}\right)
+       + \tfrac{1}{2} f''(\xi) \left(x - \tfrac{a+b}{2}\right)^2
+\]
+- Alors, pour la même valeur de $\xi$,
+\[
+  \begin{aligned}
+  \int_a^b f(x) \, dx
+  &= (b-a) f\left(\tfrac{a+b}{2}\right)
+  + \tfrac{1}{6} f''(\xi) \left[ \left( x - \tfrac{a+b}{2} \right)^3 \right]_a^b \\
+  &= (b-a) f\left(\tfrac{a+b}{2}\right)
+  + \tfrac{1}{6} f''(\xi) \left[ \tfrac{(b-a)^3}{8} - -\tfrac{(b-a)^3}{8}\right] \\
+  &= (b-a) f\left(\tfrac{a+b}{2}\right) + \frac{(b-a)^3}{24} f''(\xi).
+  \end{aligned}
+\]
+- Le premier terme est l'approximation de l'intégrale par la méthode du point médian.
+- Le deuxième terme est l'erreur.
+
+## La version composée de règle du point médian
+
+- Décomposer l'intervalle $[a,b]$ en $n$ sous-intervalles de longueur $h = \tfrac{b-a}{n}$.
+- Les points médians des sous-intervalles sont
+\[
+  x_j = a + (j-\tfrac{1}{2})h, \quad j=1,2,\ldots,n.
+\]
+- Décomposer l'intégral par intervalle et utiliser la règle du point médian, intervalle par
+intervalle, donne, pour un $\xi \in [a,b]$,
+\[
+  \int_a^b f(x)\,dx = h \sum_{j=1}^n f(x_j) + \frac{h^2(b-a)}{24}f''(\xi).
+\]
+
+## La règle de trapèze
+
+- La règle de trapèze utilise les deux points extrêmes, et le résultat est, pour un $\xi \in [a,b]$,
+\[
+  \int_a^b f(x)\,dx = \tfrac{b-a}{2} [f(a) + f(b)] - \tfrac{(b-a)^3}{12} f''(\xi).
+\]
+- Pour la version composée,
+    - on partage l'évaluation entre deux intervalles.
+    - décomposer l'intervalle $[a,b]$ en $n$ sous-intervalles de longueur $h = \tfrac{b-a}{n}$.
+    - les points extrêmes sont $x_i = a + ih$, $i=0,\ldots,n$.
+    - le résultat est, pour $\xi \in [a,b]$,
+\[
+  \int_a^b f(x)\,dx = \tfrac{h}{2} [f(a) + f(b) + 2\sum_{i=1}^{n-1} f(x_i)] - \tfrac{(b-a)^3}{12} f''(\xi).
+\]
+
+## La règle de Simpson I
+
+- Avec le point médian et les points extrêmes, on peut utiliser la règle de Simpson : il y a un $\xi \in [0,1]$ tel que
+\[
+  \int_a^b f(x) \, dx = (b-a)
+  \left[ \tfrac{1}{3} \tfrac{f(a) + f(b)}{2} + \tfrac{2}{3} f\left(\tfrac{a+b}{2}\right) \right]
+  - \tfrac{(b-a)^5}{2880} f^{(4)}(\xi)
+\]
+```{r simpson, echo=FALSE}
+x = seq(0, 1, by=0.01)
+plot(x, 3+3*x-x^2, type='l')
+abline(a=3, b=2, lty='dashed', col='grey')
+abline(h=4, lty='dashed', col='grey')
+abline(h=4.25, lty='dashed', col='grey')
+abline(v=0.5, lty='dashed', col='grey')
+points(c(0, 0.5, 1), c(3, 4.25, 5), pty=18)
+```
+
+## La règle de Simpson II
+
+- La règle de Simpson simple donne l'intégral exacte d'une approximation quadratique
+- La version composée donne, avec les mêmes $n$ évaluations
+(mais $n/2$ intervalles de longueur $2h$ et $n$ doit être pair),
+\[
+  \begin{aligned}
+  \int_a^b f(x)\, dx &= \tfrac{h}{3} [f_0 + 4f_1 + 2f_2 + 4f_3 + \cdots + 4f_{n-1} + f_n] \\
+  &- \tfrac{h^4(b-a)}{180} f^{(4)}(\xi).
+  \end{aligned}
+\]
+où $f_i \equiv f(x_i)$.
+
+## Règles gaussiennes I
+
+- Comme les règles de Newton-Cotes, les règles gaussienne donne des approximations
+de la forme
+\[
+  \int_a^b w(x) f(x)\, dx \approx \sum_{i=1}^N \omega_i f(x_i),
+\]
+pour une collection de paires $(\omega_i,x_i)$.
+- Différences :
+    - les règles gaussiennes donne les intégrales pondérées
+    (avec $w(x)$) des polynômes globaux
+    - les règles sont calculées à partir des suites de polynômes orthogonaux
+    - les règles spécifient et les poids et les noeuds, pour un ordre $N$ donné
+    - Un résultat théorique qui quantifie la qualité de l'approximation : avec $N$ points et $N$ noeuds les règles standards donne la valeur exacte de l'intégral pour les polynômes d'ordre
+$2N-1$. (Cela dit, il y a des formules pour le termes résiduels aussi)
+
+
+## Règles gaussiennes II
+
+- Judd donne des formules pour les intégrales
+\[
+  \int_{-1}^1 f(x) (1-x^2)^{-1/2}\, dx \qquad \text{(Gauss-Tchebyshev)}
+\]
+\[
+  \int_{-1}^1 f(x)\, dx \qquad \text{(Gauss-Legendre)}
+\]
+\[
+  \int_{-\infty}^\infty f(x) e^{x^2/2} \qquad \text{(Gauss-Hermite)}
+\]
+\[
+  \int_0^\infty f(x) e^{-x}\, dx \qquad \text{(Gauss-Laguerre)}
+\]
+- Les deux dernières ont des applications spéciales en économie
+
+## Actualisation
+
+- Deux problèmes d'actualisation en temps continu :
+    - du consommateur,
+    \[
+      \int_0^\infty e^{-\rho t} u(c(t)) \, dt,
+    \]
+    - et de la firme
+    \[
+      \int_0^\infty e^{-r t} \pi(q(t)) \, dt.
+    \]
+- Un changement de variable $s=\rho t$, $ds = \rho\, dt$,
+de l'actualisation du consommateur donne
+\[
+  \frac{1}{\rho} \int_0^\infty e^{-s} u(c(s/\rho)) \, ds,
+\]
+un intégral de la forme $\int_0^\infty e^{-x} g(x)\, dx$ (c.-à-d. $(a,b) = (0,\infty)$ et $w(x) = e^{-x}$), et donc disposé à approximation avec la règle Gauss-Laguerre.
+
+## Exercice 5, chapitre 7 de Judd
+
+- L'exercice concerne le problème d'actualisation du consommateur, pour
+\[
+  c(t) = 1-e^{-\lambda t}, \quad u(c) = -e^{-ac}.
+\]
+
+Calculs pour des graphiques d'illustration :
+```{r actual-t}
+# Une configuration possible des paramètres
+lambda <- 0.02; rho <- 0.04; a <- 0.5
+
+t <- seq(0, 100, by=0.1)  # Temps, en ans
+c <- 1 - exp(-lambda*t)   # Chemin de consommation
+u_inst <- -exp(-a*c)      # Utilité instantanée ...
+u_actu <- exp(-rho*t) * u_inst # ... et actualisée
+```
+
+## Chemin de consommation
+
+```{r actual-t-c}
+plot(t, c, type='l')
+```
+
+## Utilité instantanée, avant et après actualisation
+
+```{r actual-t-u}
+plot(t, u_inst, type='l', ylim=c(-1,0))
+lines(t, u_actu, col='green')
+```
+
+## Une fonction pour l'intégration Gauss-Laguerre
+
+Après le changement de variables $s=\rho t$, on a une fonction $u_s(s)$ à
+intégrer par rapport à $w(s) = e^{-s}$ :
+```{r u_s}
+library(mvQuad)
+
+u_s <- function(s, lambda, rho, a)
+{
+  c <- 1 - exp(-(lambda/rho) * s)
+  u_s <- -exp(-a*c)/rho
+}
+```
+
+## Noeuds et poids pour l'intégration Gauss-Laguerre
+
+```{r gauss-laguerre-noeuds_poids, message=FALSE, warning=FALSE}
+library(knitr)      # Pour kable
+library(tidyverse)  # Pour tibble
+nw <- createNIGrid(d=1, type='GLa', level=5)
+tbl <- tibble(Noeuds=nw$nodes, Poids=nw$weights)
+kable(tbl)
+```
+
+## Valeurs de l'intégral pour $N=3, 5, 10$
+
+```{r int-u-3-5-10}
+nw <- createNIGrid(d=1, type='GLa', level=3)
+I3 = quadrature(u_s, grid=nw, lambda, rho, a)
+I3
+
+nw <- createNIGrid(d=1, type='GLa', level=5)
+I5 = quadrature(u_s, grid=nw, lambda, rho, a)
+I5
+
+nw <- createNIGrid(d=1, type='GLa', level=10)
+I10 = quadrature(u_s, grid=nw, lambda, rho, a)
+I10
+```
+
+## Espérance par rapport à une loi gaussienne
+
+- Problème : évaluer $E[f(Y)]$ pour $Y \sim N(\mu, \sigma^2)$.
+
+- L'intégral est
+\[
+  E[f(Y)] = (2\pi\sigma^2)^{-1/2} \int_{-\infty}^\infty e^{-\tfrac{1}{2\sigma^2}(y-\mu)^2} f(y)\,dy.
+\]
+- Un changement de variables $x = (y-\mu)/(\sqrt{2}\sigma)$, $dx = dy/(\sqrt{2}\sigma)$ donne
+\[
+  E[f(Y)] = \pi^{-1/2} \int_{-\infty}^\infty
+  e^{-\frac{1}{2}x^2}
+  f(\mu + \sqrt{2}\sigma x)\, dx,
+\]
+un intégral de la forme $\int_0^\infty e^{-\frac{1}{2}x^2} g(x)\, dx$ (c.-à-d. $(a,b) = (-\infty,\infty)$ et $w(x) = e^{-\frac{1}{2}x^2}$), et donc disposé à approximation avec la règle Gauss-Hermite.
+
+## Exemple, Section 7.6 de Judd
+
+- Problème du choix de portefeuille :
+\[
+  \max_{\omega} E[u(R(W-\omega) + \omega e^Z)],
+\]
+où
+    - $W$ est la richesse au moment de la décision, au début de la période, en dollars;
+    - $\omega$ est le montant, en dollars, placé en un actif avec risque;
+    - $W-\omega$ est le montant, en dollars, placé en un actif sans risque;
+    - $R$ est le rendement brut, non-aléatoire, de l'actif sans risque
+    pendant la période de l'analyse;
+    - $Z \in N(\mu,\sigma^2)$ est le log-rendement aléatoire de l'actif avec risque;
+    - $u(c) = c^{1+\gamma}/(1+\gamma)$.
+
+## Une fonction pour l'intégration Gauss-Hermite
+
+Après le changement de variables $x=(z-\mu)/(\sqrt{2}\sigma)$, on a une fonction $u_x(x)$ à
+intégrer par rapport à $w(x) = e^{-x^2}$ :
+```{r u_x}
+u_x <- function(x, omega, gamma, mu, sigma, R, W)
+{
+  c = R*(W-omega) + omega*exp(mu + sqrt(2)*sigma*x)
+  u_x = pi^(-0.5) * c^(1+gamma)/(1+gamma)
+}
+```
+Dans un premier temps, on considère le problème du calcul de l'intégral
+suivant pour $\omega$ fixe :
+\[
+  U = \int_{-\infty}^\infty e^{-x^2} u_x(x) \, dx.
+\]
+
+## Noeuds et poids pour l'intégration Gauss-Hermite
+
+```{r gauss-hermite-noeuds_poids, message=FALSE, warning=FALSE}
+library(gaussquad)
+regle <- hermite.h.quadrature.rules(7)[[7]]
+tbl <- tibble(Noeuds=regle$x, Poids=regle$w)
+kable(tbl)
+```
+
+## Une fonction pour évaluer l'utilité $U$ comme fonction de $\omega$
+
+```{r Eu_x}
+Eu_x <- function(omega, gamma, mu, sigma, R, W, regle)
+{
+  hermite.h.quadrature(u_x, regle, -Inf, Inf, weighted=T,
+                       omega, gamma, mu, sigma, R, W)
+}
+
+Eu_x_minus <- function(omega, gamma, mu, sigma, R, W, regle)
+{
+  -Eu_x(omega, gamma, mu, sigma, R, W, regle)
+}
+
+# Valeurs de omega et des paramètres pour
+# l'exemple, pages 262-263
+Eu_x(omega=1, gamma=-0.5, mu=0.15, sigma=0.25, R=1, W=2, regle)
+```
+
+## $U$ pour plusieurs valeurs de $\omega$
+
+```{r U_table}
+omega <- array(seq(0, 2, by=0.4))
+gamma = -5; mu=0.2; sigma=0.3; R=1.1; W=2
+U <- apply(omega, 1, Eu_x, gamma, mu, sigma, R, 2, regle)
+tbl <- tibble(omega=omega, U=U)
+kable(tbl)
+```
+
+## Résolution du problème de portfeuille
+
+```{r U_max}
+optimise(Eu_x_minus, interval=c(0,2),
+         gamma, mu, sigma, R, W, regle)
+```

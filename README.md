@@ -56,3 +56,7 @@ Code pour les graphiques des approximations Taylor et Padé :
 Code pour les polynômes Bernstein d'ordre 10 : [Bernstein.R](Bernstein.R)
 
 Code pour les cubiques des splines cubiques d'hermite : [Hermite_piece.R](Hermite_piece.R)
+
+#### Cours 7, Intégration et dérivation (méthodes déterministes)
+
+[Diapos](Dia_6338_7_IntegDet.pdf)
