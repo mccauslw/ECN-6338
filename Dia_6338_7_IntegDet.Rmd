@@ -10,10 +10,11 @@ urlcolor: blue
 ## Survol du cours 7
 
 - Formules (ou règles) Newton-Cotes pour l'intégration univariée
-- Changements de variable et le domains d'intégration infinies
 - Formules (ou règles) de Gauss pour l'intégration univariée
     - Règle de Gauss-Laguerre et l'utilité actualisée
     - Règle de Gauss-Hermite et les espérances gaussiennes
+- Intégration multivariée
+- Dérivation
 
 ## La règle du point médian et l'analyse de son erreur
 
@@ -63,7 +64,7 @@ intervalle, donne, pour un $\xi \in [a,b]$,
     - les points extrêmes sont $x_i = a + ih$, $i=0,\ldots,n$.
     - le résultat est, pour $\xi \in [a,b]$,
 \[
-  \int_a^b f(x)\,dx = \tfrac{h}{2} [f(a) + f(b) + 2\sum_{i=1}^{n-1} f(x_i)] - \tfrac{(b-a)^3}{12} f''(\xi).
+  \int_a^b f(x)\,dx = \tfrac{h}{2} [f(a) + f(b) + 2\sum_{i=1}^{n-1} f(x_i)] - \tfrac{h^2(b-a)}{12} f''(\xi).
 \]
 
 ## La règle de Simpson I
@@ -76,7 +77,7 @@ intervalle, donne, pour un $\xi \in [a,b]$,
 \]
 ```{r simpson, echo=FALSE}
 x = seq(0, 1, by=0.01)
-plot(x, 3+3*x-x^2, type='l')
+plot(x, 3+3*x-x^2, type='l', ylim=c(0,5))
 abline(a=3, b=2, lty='dashed', col='grey')
 abline(h=4, lty='dashed', col='grey')
 abline(h=4.25, lty='dashed', col='grey')
@@ -124,7 +125,7 @@ $2N-1$. (Cela dit, il y a des formules pour le termes résiduels aussi)
   \int_{-1}^1 f(x)\, dx \qquad \text{(Gauss-Legendre)}
 \]
 \[
-  \int_{-\infty}^\infty f(x) e^{x^2/2} \qquad \text{(Gauss-Hermite)}
+  \int_{-\infty}^\infty f(x) e^{-x^2/2} \qquad \text{(Gauss-Hermite)}
 \]
 \[
   \int_0^\infty f(x) e^{-x}\, dx \qquad \text{(Gauss-Laguerre)}
@@ -231,10 +232,10 @@ I10
 - Un changement de variables $x = (y-\mu)/(\sqrt{2}\sigma)$, $dx = dy/(\sqrt{2}\sigma)$ donne
 \[
   E[f(Y)] = \pi^{-1/2} \int_{-\infty}^\infty
-  e^{-\frac{1}{2}x^2}
+  e^{-x^2}
   f(\mu + \sqrt{2}\sigma x)\, dx,
 \]
-un intégral de la forme $\int_0^\infty e^{-\frac{1}{2}x^2} g(x)\, dx$ (c.-à-d. $(a,b) = (-\infty,\infty)$ et $w(x) = e^{-\frac{1}{2}x^2}$), et donc disposé à approximation avec la règle Gauss-Hermite.
+un intégral de la forme $\int_0^\infty e^{-x^2} g(x)\, dx$ (c.-à-d. $(a,b) = (-\infty,\infty)$ et $w(x) = e^{-x^2}$), et donc disposé à approximation avec la règle Gauss-Hermite.
 
 ## Exemple, Section 7.6 de Judd
 

@@ -163,9 +163,8 @@ Notez que le cours suit la convention "numerator layout".
 1. Approximation locale, développement de Taylor, approximant de Padé
 1. Suites de polynômes orthogonaux, approximation des moindres carrés
 1. Approximation uniforme
-1. Interpolation
-1. Interpolation par morceaux, splines
-1. Application : approximation de la courbe des contrats dans une économie à deux personnes et deux biens
+1. Interpolation (pas fait, 2022)
+1. Interpolation par morceaux, splines (pas fait, 2022)
 
 ### Lectures
 
@@ -181,14 +180,14 @@ Notez que le cours suit la convention "numerator layout".
 1. Newton-Cotes
 1. La quadrature unidimensionnelle et multidimensionnelle
 1. Dérivation numérique
-1. Dérivation automatique
-1. Application : évaluation d'utilité actualisée en temps continu
+1. Applications :
+    a. évaluation d'utilité actualisée en temps continu
+    a. évaluation de l'espérance de l'utilité par rapport à une densité gaussienne
 
 
 ### Lectures
 
-1. Judd: 7.1, 7.2, 7.3, 7.5, 7.6, 7.7
-1. Page Wikipédia sur [la dérivation automatique](https://fr.wikipedia.org/wiki/Dérivation_automatique)
+1. Judd: 7.1, 7.2, 7.5, 7.6, 7.7
 
 
 
