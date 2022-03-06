@@ -16,7 +16,7 @@ Manuel principal
 
 Livres gratuits (fournis par les auteurs) supplémentaires
 
-- Devroye (1986), "Non-Uniform Random Number Generation"
+- [Devroye](http://www.eirene.de/Devroye.pdf) (1986), "Non-Uniform Random Number Generation"
 - Train (2009), "Discrete Choice Methods with Simulation", 2e édition
 
 Papiers scientifiques
@@ -210,7 +210,7 @@ Notez que le cours suit la convention "numerator layout".
 1. Judd: 8.1, 8.2, 8.3
 1. Page Wikipédia sur le [Mersenne Twister](https://en.wikipedia.org/wiki/Mersenne_Twister)
 1. Page Wikipédia sur l'algorithme [Ziggurat](https://en.wikipedia.org/wiki/Ziggurat_algorithm)
-1. Devroye II.2 and II.3 (méthode de l'inverse de la fonction de répartition, méthode de rejet)
+1. [Devroye](http://www.eirene.de/Devroye.pdf) II.2 and II.3 (méthode de l'inverse de la fonction de répartition, méthode de rejet)
 1. Page Wikipédia sur la [méthode de rejet](https://en.wikipedia.org/wiki/Rejection_sampling),
 Sections "Description", "Theory" et "Algorithm"
 

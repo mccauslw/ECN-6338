@@ -3,6 +3,7 @@ title: "Exercices, ECN 6338, Hiver 2022"
 author: "William McCausland"
 date: "`r Sys.Date()`"
 output: pdf_document
+urlcolor: blue
 ---
 
 ## Cours 1. Introduction
@@ -224,3 +225,41 @@ Faites les graphiques de la fonction et des approximations suivantes :
 1. Évaluez l'intégrale $\int_0^{\pi/2} \sin x\, dx$.
 Lisez la page 260 de Judd et approximez l'intégral par quadrature
 Gauss-Legendre avec $N=3$ points.
+
+### Exercices théoriques
+
+1. Supposez que $f \in C^4$.
+Utilisez le théorème de Taylor-Lagrange pour trouvez la deuxième dérivée $f''(x)$ comme la somme des deux termes suivants :
+    a. une formule, une fonction linéaire de $f(x)$, $f(x+h)$ et $f(x-h)$,
+    a. un terme résiduel proportionnel à $h^2$.
+
+### Exercices numériques
+
+1. Dans l'exemple de la section 7.6 de Judd, trouvez la valeur optimale de $\omega$ pour les valeurs suivantes des paramètres : $\gamma = -5$, $\mu=0,2$, $\sigma=0,3$, $R=1,1$  $W=2$.
+Utilisez l'option BFGS de la commande \texttt{optim} pour faire l'optimisation (voir la diapos "Résultats BFGS", cours 4.).
+Utilisez la commande hermite.h.quadrature pour calculer $U'(\omega) = E[u'(c)(e^Z-R)]$.
+Vous pouvez utiliser le code de mes diapos.
+
+\pagebreak
+
+## Cours 8. La génération de variables aléatoires univariées
+
+### Exercices préliminaires
+
+Si vous avez besoin d'aide pour ces exercices, je suggère le site Wikipédia [ici](https://en.wikipedia.org/wiki/Inverse_transform_sampling).
+Sous "References" il y a un lien au livre célèbre et gratuit de [Devroye](http://www.eirene.de/Devroye.pdf) (1986) qui donne plus de détail 
+
+1. Soit $U \sim U([0,1])$ une variable aléatoire uniforme sur l'intervalle $[0,1]$.
+Trouvez la densité de la variable aléatoire $X \equiv -(\log U)/\lambda$.
+Je suggère les étapes suivantes :
+    a. Exprimez $F_X(x)$, la fonction de répartition de $X$ évaluée à $x$, comme la probabilité de l'évènement $X \leq x$.
+    a. Replacez $X$ par sa définition, une fonction de $U$.
+    a. Exprimez la probabilité en termes de la fonction de répartition de $U$.
+    a. Notez que la fonction de répartition d'une v.a. $U([0,1])$ est
+    \[
+      F_U(u) = \begin{cases} 0 & u \leq 0 \\ u & 0 < u \leq 1 \\ 1 & u > 1 \end{cases}
+    \]
+    a. Prenez la dérivée de $F_X(x)$ pour obtenir la densité.
+
+1. Supposez que $F$ est une fonction de répartition univariée et que $U \sim U([0,1])$.
+Montrez que la fonction de répartition de la variable aléatoire $F^{-1}(U)$ est $F$.
