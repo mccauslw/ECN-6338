@@ -60,3 +60,7 @@ Code pour les cubiques des splines cubiques d'hermite : [Hermite_piece.R](Hermit
 #### Cours 7, Intégration et dérivation (méthodes déterministes)
 
 [Diapos](Dia_6338_7_IntegDet.pdf)
+
+#### Cours 8, La génération de variables aléatoires univariées
+
+[Diapos](Dia_6338_8_UniRand.pdf)

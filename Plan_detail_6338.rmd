@@ -196,12 +196,12 @@ Notez que le cours suit la convention "numerator layout".
 
 ### Matières
 
+1. Les suites de nombres quasi-aléatoires
 1. La génération de nombres pseudo-aléatoires et le Mersenne Twister
-1. La génération de variables aléatoires non-uniformes
-    a. méthode de l'inverse de la fonction de répartition (avec exemple Weibull)
-    a. méthode de rejet (avec exemple gamma)
+1. La génération de variables (pseudo)-aléatoires non-uniformes
+    a. méthode de l'inverse de la fonction de répartition (avec exemples Weibull, Pareto, Exponentiel)
+    a. méthode de rejet (avec exemple gaussien tronqué)
     a. l'algorithme Ziggurat (avec exemple gaussien)
-1. Les nombres quasi-aléatoires et les suites à discrépance faible
 1. La génération directe faisable de quelques variables aléatoires multivariées (gaussiennes, dirichlet, wishart)
 1. Application : intégration stochastique dans l'exemple de l'évaluation d'utilité actualisée en temps continu
 
