@@ -236,7 +236,6 @@ Sections "Description", "Theory" et "Algorithm"
 1. Page Wikipédia sur l'algorithme [Metropolis-Hastings](https://en.wikipedia.org/wiki/Metropolis–Hastings_algorithm),
 Sections "Intuition" et "Formal Derivation"
 1. Page Wikipédia sur l'[échantillonage de Gibbs](https://en.wikipedia.org/wiki/Gibbs_sampling), Section "Implementation"
-1. Train: chapitres 5, 6, 10
 
 
 

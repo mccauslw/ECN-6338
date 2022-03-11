@@ -263,3 +263,45 @@ Je suggère les étapes suivantes :
 
 1. Supposez que $F$ est une fonction de répartition univariée et que $U \sim U([0,1])$.
 Montrez que la fonction de répartition de la variable aléatoire $F^{-1}(U)$ est $F$.
+
+### Exercices théoriques
+
+1. On veut tirer les variables aléatoires de la loi $\mathrm{Ga}(\alpha, 1)$, pour $\alpha \in (0,1)$.
+La densité cible est
+\[
+  f(x) = \frac{1}{\Gamma(\alpha)} x^{\alpha-1} e^{-x}.
+\]
+On utilise la densité de proposition $\pi g_1(x) + (1-\pi) g_2(x)$, où $\pi \in (0,1)$,
+\[
+  g_1(x) = \alpha x^{\alpha - 1} 1_{[0,1]}(x), \quad g_2(x) = e^{x-1} 1_{(1,\infty)}(x).
+\]
+    a. Démontrez que la densité $f(x)$ n'est pas bornée.
+    a. Démontrez que la densité $g(x)$ est non-négative et que $\int_0^\infty g(x)\, dx = 1$ pour tous $\pi \in (0,1)$. Donnez les chiffres pour $\alpha = 0.01, 0.1, 0.5, 0.9$. La fonction R \texttt{gamma} calcule la fonction $\Gamma(x)$.
+    a. Trouvez
+    \[
+      M_1 \equiv \inf_{x \in [0,1]} \frac{f(x)}{g(x)}, \quad M_2 \equiv \inf_{x \in (1,\infty)} \frac{f(x)}{g(x)}.
+    \]
+    a. Trouvez $\pi \in (0,1)$ qui minimise $M = \min(M_1, M_2)$.
+    a. Quelle est la probabilité d'acceptation si on utilise $g(x)$ (avec $\pi$ optimal) comme densité de proposition pour tirer de la loi $\mathrm{Ga}(\alpha, 1)$, $\alpha \in (0,1)$.
+    a. Comment peut-on tirer de la loi de proposition (avec densité $g(x)$)?
+
+1. Démontrez que si $X \sim \mathrm{Ga}(\alpha, 1)$, $X/\beta \sim \mathrm{Ga}(\alpha, \beta)$.
+Quelle est la pertinence de ce résultat pour le tirage des variables aléatoires gamma.
+
+### Exercice numérique
+
+1. Calculez une approximation au ratio de volumes entre une $d$-hypersphère et un $d$-hypercube.
+    a. Exprimez la volume d'une $d$-hypersphère de rayon $\frac{1}{2}$, centrée au point $(\tfrac{1}{2},\ldots,\tfrac{1}{2})$, comme un intégral sur l'hypercube $[0,1]^d$.
+    a. Pour $d \in \{4, 8\}$ et $n \in \{1000, 10000\}$, calculez une approximation de l'intégral
+        i. avec $n$ $d$-vecteurs pseudo-aléatoires.
+        i. avec $n$ $d$-vecteurs quasi-aléatoires du type Halton.
+    a. Pour les séquences pseudo-aléatoires, calculez une estimation de l'écart-type de l'approximation.
+    a. Comparez vos résultats avec les résultats analytiques [ici](https://en.wikipedia.org/wiki/Volume_of_an_n-ball).
+
+\pagebreak
+
+## Cours 9. La génération de variables aléatoires multivariées
+
+### Exercices préliminaires
+
+Pas d'exercice préliminaire cette semaine, pas de quiz en classe.
