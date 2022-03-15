@@ -276,13 +276,14 @@ On utilise la densité de proposition $\pi g_1(x) + (1-\pi) g_2(x)$, où $\pi \i
   g_1(x) = \alpha x^{\alpha - 1} 1_{[0,1]}(x), \quad g_2(x) = e^{x-1} 1_{(1,\infty)}(x).
 \]
     a. Démontrez que la densité $f(x)$ n'est pas bornée.
-    a. Démontrez que la densité $g(x)$ est non-négative et que $\int_0^\infty g(x)\, dx = 1$ pour tous $\pi \in (0,1)$. Donnez les chiffres pour $\alpha = 0.01, 0.1, 0.5, 0.9$. La fonction R \texttt{gamma} calcule la fonction $\Gamma(x)$.
+    a. Démontrez que la densité $g(x)$ est non-négative et que $\int_0^\infty g(x)\, dx = 1$ pour tous $\pi \in (0,1)$.
     a. Trouvez
     \[
-      M_1 \equiv \inf_{x \in [0,1]} \frac{f(x)}{g(x)}, \quad M_2 \equiv \inf_{x \in (1,\infty)} \frac{f(x)}{g(x)}.
+      M_1(\pi) \equiv \sup_{x \in [0,1]} \frac{f(x)}{g(x)}, \quad M_2(\pi) \equiv \sup_{x \in (1,\infty)} \frac{f(x)}{g(x)}.
     \]
-    a. Trouvez $\pi \in (0,1)$ qui minimise $M = \min(M_1, M_2)$.
+    a. Trouvez $\pi \in (0,1)$ qui minimise $M(\pi) = \max(M_1(\pi), M_2(\pi))$.
     a. Quelle est la probabilité d'acceptation si on utilise $g(x)$ (avec $\pi$ optimal) comme densité de proposition pour tirer de la loi $\mathrm{Ga}(\alpha, 1)$, $\alpha \in (0,1)$.
+Donnez les chiffres pour $\alpha = 0.01, 0.1, 0.5, 0.9$. La fonction R \texttt{gamma} calcule la fonction $\Gamma(x)$.
     a. Comment peut-on tirer de la loi de proposition (avec densité $g(x)$)?
 
 1. Démontrez que si $X \sim \mathrm{Ga}(\alpha, 1)$, $X/\beta \sim \mathrm{Ga}(\alpha, \beta)$.
