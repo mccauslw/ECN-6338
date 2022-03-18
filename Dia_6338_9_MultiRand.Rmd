@@ -163,7 +163,6 @@ Ainsi
 ## Données artificielles pour le modèle à deux paramètres
 
 ```{r don.art}
-
 # Vraies valeurs des paramètres
 vrai_mu <- 6
 vrai_h <- 0.04
@@ -175,6 +174,12 @@ n <- 10
 y <- rnorm(n, vrai_mu, vrai_sigma)
 y_bar <- mean(y)
 y2_bar <- mean(y^2)
+
+# Hyperparamètres
+nu_bar <- 4
+s2_bar <- 0.01
+mu_bar <- 10
+omega_bar <- 0.01
 ```
 
 ## Fonctions de log densité
@@ -219,6 +224,36 @@ lnp_post <- function() {
 
 ```{r graph_post}
 lnp_post()
+```
+
+## Code Metropolis pour le modèle à deux paramètres
+
+```{r muh_Metro}
+Metro.sim = function(M) {
+  mu <- vector('numeric',M); mu[1] <- 0
+  h <- vector('numeric',M); h[1] <- 0.1
+  p <- ((nu_bar+n-2)/2)*log(h[1]) -
+    (omega_bar/2)*(mu[1]-mu_bar)^2 -
+    (h[1]/2)*(s2_bar+n*(y2_bar-2*mu[1]*y_bar+mu[1]^2))
+  for (m in seq(2, M)) {
+    h_et <- rnorm(1, h[m-1], 0.05)
+    mu_et <- rnorm(1, mu[m-1], 2.0)
+    p_et <- ((nu_bar+n-2)/2)*log(h_et) -
+      (omega_bar/2)*(mu_et-mu_bar)^2 -
+      (h_et/2)*(s2_bar + n*(y2_bar-2*mu_et*y_bar+mu_et^2))
+    if (runif(1) < exp(p_et - p) && (h_et > 0.0)) {
+      h[m] <- h_et;	mu[m] <- mu_et;	p <- p_et
+    }
+    else { h[m] <- h[m-1]; mu[m] <- mu[m-1] }
+  }
+  list(mu=mu, h=h)
+}
+```
+
+## Trajet Metropolis
+
+```{r trajet_Metro, message=FALSE, warning=FALSE}
+lnp_post(); set.seed(123); sim <- Metro.sim(100); lines(sim$mu, sim$h, col='red')
 ```
 
 ## Échantillonage de Gibbs
@@ -313,16 +348,16 @@ Gibbs.sim <- function(M) {
   mu <- vector('numeric', M); mu[1] <- 0
   h <- vector('numeric', M); h[1] <- 0.1
 
-  nu.bar.bar <- nu.bar + n; y.bar = mean(y)
+  nu_bar.bar <- nu_bar + n; y.bar = mean(y)
   for (m in seq(2,M)) {
-    s2.bar.bar <- s2.bar + sum((y-mu[m-1])^2)
-    h[m] <- rchisq(1, nu.bar.bar) / s2.bar.bar
+    s2_bar.bar <- s2_bar + sum((y-mu[m-1])^2)
+    h[m] <- rchisq(1, nu_bar.bar) / s2_bar.bar
 
-    omega.bar.bar <- omega.bar + h[m]*n
-    mu.bar.bar <- (omega.bar*mu.bar+h[m]*n*y.bar)/
-                  omega.bar.bar
-    mu[m] <- rnorm(1, mu.bar.bar,
-		               1/sqrt(omega.bar.bar))
+    omega_bar.bar <- omega_bar + h[m]*n
+    mu_bar.bar <- (omega_bar*mu_bar+h[m]*n*y.bar)/
+                  omega_bar.bar
+    mu[m] <- rnorm(1, mu_bar.bar,
+		               1/sqrt(omega_bar.bar))
   }
   list(mu=mu, h=h)
 }
@@ -331,7 +366,6 @@ Gibbs.sim <- function(M) {
 ## Résultats, trace
 
 ```{r Gibbs resultat, echo=FALSE}
-nu.bar=4; s2.bar=0.01; mu.bar=10; omega.bar=0.01
 sim_G <- Gibbs.sim(1000)
 par(mfrow = c(2, 1), mar = c(4, 4, 0.5, 0.5))
 plot(sim_G$mu); plot(sim_G$h)
