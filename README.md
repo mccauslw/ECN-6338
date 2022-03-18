@@ -64,3 +64,10 @@ Code pour les cubiques des splines cubiques d'hermite : [Hermite_piece.R](Hermit
 #### Cours 8, La génération de variables aléatoires univariées
 
 [Diapos](Dia_6338_8_UniRand.pdf)
+
+#### Cours 9, La génération de variables aléatoires multivariées
+
+[Diapos](Dia_6338_9_MultiRand.pdf)
+
+Code pour l'échantillonage de Gibbs : [pop_active.R](pop_active.R)
+

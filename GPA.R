@@ -33,4 +33,4 @@ R <- chol(XX)
 Rb <- forwardsolve(R, Xy, upper.tri=T, transpose=T)
 b_Chol <- backsolve(R, Rb)   # MCO b, avec Cholesky
 
-# Une exercice est de calcular l'estimation MCO b avec la décomposition QR
+# Une exercice est de calculer l'estimation MCO b avec la décomposition QR
