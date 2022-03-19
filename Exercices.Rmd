@@ -306,3 +306,40 @@ Quelle est la pertinence de ce résultat pour le tirage des variables aléatoire
 ### Exercices préliminaires
 
 Pas d'exercice préliminaire cette semaine, pas de quiz en classe.
+
+### Exercice théorique
+
+1. Pour le modèle de régression gaussien suivant, dérivez les distributions
+conditionnelles a posteriori $\beta|h,y$ et $h|\beta,y$.
+La loi des données est
+\[
+  y = X\beta + \epsilon, \quad \epsilon|X \sim N(0,h^{-1}I_n),
+\]
+et les lois a priori sont
+\[
+  \beta \sim N(\bar{\beta}, \bar{H}_\beta),
+  \quad \bar{s}^2h \sim \chi^2(\bar\nu).
+\]
+
+### Exercice numérique
+
+1. Avec l'échantillage de Gibbs, simulez la loi a posterior pour
+le modèle 3.1 de Wooldridge (2016) "Introductory Econometrics".
+(Regardez le fichier \texttt{GPA.R})
+Utilisez $M=10000$ tirages, $\bar{\beta} = 0$, $\bar{H} = 0.01I$, $\bar{s}^2 = 0.01$, $\bar{\nu} = 2$.
+Donnez la moyenne et l'écart-type a posteriori des éléments de $\beta$ et les écarts-types numériques pour la moyenne (avec \texttt{mcse} du paquet R \texttt{mcmcse}).
+
+\pagebreak
+
+## Cours 10. La simulation Monte Carlo séquentielle
+
+### Exercice préliminaire
+
+1. Lisez la section "Importance Sampling", pages 293-294 de Judd.
+Supposez qu'on veut évaluer l'intégral $E_f[g(x)] = \int f(x) g(x)\, dx$, où $f(x)$
+est une densité.
+On peut évaluer une fonction $k(x)$ qui est proportionnelle à $f(x)$ : $f(x) = ck(x)$, où $c$ est une constante de normalisation inconnue.
+On peut aussi évaluer et simuler une densité normalisée $p(x)$, similaire à la densité $f(x)$, avec le même support et avec la propriété que $f(x)/p(x)$ est borné.
+    a. Montrez que $E_p[h_1(x)] = 1/c$ où $h_1(x) = k(x)/p(x)$. Avec un échantillon iid $\{x^{(m)}\}_{m=1}^M$ de la loi avec densité $p(x)$, comment peut-on estimer $1/c$ par Monte Carlo?
+    a. Trouvez une fonction $h_2(x)$ telle que $E_p[h_2(x)] = E_f[g(x)]/c$.
+    Notez que $E_f[g(x)] = E_p[h_2(x)]/E_p[h_1(x)]$. Avec le même échantillon, comment peut-on estimer $E_f[g(x)]$ comme un ratio d'estimateurs Monte Carlo.

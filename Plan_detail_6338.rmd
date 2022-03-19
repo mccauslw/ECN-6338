@@ -222,17 +222,14 @@ Sections "Description", "Theory" et "Algorithm"
 
 ### Matières
 
-1. L'échantillonnage préférentiel (importance sampling)
 1. L'algorithme Metropolis-Hastings
 1. L'échantillonnage de Gibbs
-1. Applications :
+1. Application :
     a. simulation postérieure pour un modèle probit de choix discret
-    a. maximum de vraisemblance simulée pour un modèle mixed-logit de choix discret
 
 ### Lectures
 
 1. Judd: 8.1, 8.2, 8.3, 8.4, 8.5
-1. Page Wikipédia sur l'[échantillonage préférentiel](https://en.wikipedia.org/wiki/Importance_sampling), Sections "Basic Theory" et "Application to Simulation"
 1. Page Wikipédia sur l'algorithme [Metropolis-Hastings](https://en.wikipedia.org/wiki/Metropolis–Hastings_algorithm),
 Sections "Intuition" et "Formal Derivation"
 1. Page Wikipédia sur l'[échantillonage de Gibbs](https://en.wikipedia.org/wiki/Gibbs_sampling), Section "Implementation"
@@ -244,16 +241,19 @@ Sections "Intuition" et "Formal Derivation"
 
 ### Matières
 
+1. L'échantillonnage préférentiel (importance sampling)
 1. La simulation Monte Carlo séquentielle 
 1. Familles d'algorithmes reliées
     a. le recuit simulé (simulated annealing)
     a. le filtre particulaire (particle filter)
 1. Applications
+
     a. maximum de vraisemblance pour un modèle EGARCH avec un vraisemblance autrement infaisable
     a. inférence bayésienne pour le même modèle
 
 ### Lectures
 
+1. Page Wikipédia sur l'[échantillonage préférentiel](https://en.wikipedia.org/wiki/Importance_sampling), Sections "Basic Theory" et "Application to Simulation"
 1. Geweke et Durham (2019)
 1. Creal (2012)
 1. Judd: 8.3, section "Simulated Annealing"
