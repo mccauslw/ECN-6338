@@ -21,7 +21,7 @@ Situations où l'intégration par Monte Carlo est convenable :
 L'exercise Monte Carlo est de générer un échantillon $\theta^{(m)}$, $m=1,\ldots,M$
 tel que 
 \[
-  \sum_{m=1}^M g(\theta^{(m)}) \overset{p}{\to} \int p(\theta) g(\theta)\,d\theta
+  \frac{1}{M} \sum_{m=1}^M g(\theta^{(m)}) \overset{p}{\to} \int p(\theta) g(\theta)\,d\theta
 \]
 quand l'espérance à droite est finie.
 

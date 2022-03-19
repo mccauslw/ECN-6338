@@ -65,6 +65,9 @@ Code pour les cubiques des splines cubiques d'hermite : [Hermite_piece.R](Hermit
 
 [Diapos](Dia_6338_8_UniRand.pdf)
 
+Code pour l'intégration avec des suites quasi- et pseudo-aléatoires :
+[quasi_pseudo_integrales.R](quasi_pseudo_integrales.R)
+
 #### Cours 9, La génération de variables aléatoires multivariées
 
 [Diapos](Dia_6338_9_MultiRand.pdf)
