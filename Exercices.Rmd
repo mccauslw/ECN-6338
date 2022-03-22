@@ -317,7 +317,7 @@ La loi des données est
 \]
 et les lois a priori sont
 \[
-  \beta \sim N(\bar{\beta}, \bar{H}_\beta),
+  \beta \sim N(\bar{\beta}, \bar{H}^{-1}_\beta),
   \quad \bar{s}^2h \sim \chi^2(\bar\nu).
 \]
 
