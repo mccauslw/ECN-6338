@@ -74,3 +74,8 @@ Code pour l'intégration avec des suites quasi- et pseudo-aléatoires :
 
 Code pour l'échantillonage de Gibbs : [pop_active.R](pop_active.R)
 
+#### Cours 10, La Simulation Monte Carlo Séquentielle
+
+[Diapos](Dia_6338_10_SMC.pdf)
+
+Code pour la simulation : [SMC.R](SMC.R)
