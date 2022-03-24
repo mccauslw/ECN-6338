@@ -348,3 +348,25 @@ La solution :
   \hat{\sigma}_g^2 = J^{-1} \sum_{j=1}^J (\bar{g}_j - \bar{g})^2.
 \]
 
+## Parallélisme
+
+- Computation qu'on peut faire en parallèle pour chaque particule :
+    - Simulation préliminaire de $f^{(0)}(\theta)$
+    - Computation des poids préférentiels
+    - Rééchantillonage (une fois qu'un tableau de probabilités est construit)
+    - Mutation. Par exemple,
+        - Tirage d'une proposition Metropolis
+        - Computation de la ratio de Hastings
+        - Tirage d'une $U(0,1)$ pour la règle d'acceptation ou rejet
+    - Évaluation des fonctions $g(\cdot)$, particule par particule
+
+- Ce qu'on ne peut pas faire de façon parallèle est trivial :
+    - Tableau de probabilités (computation préliminaire pour le rééchantillonage)
+
+- Souvent, le parallélisme n'est pas seulement
+    - "embarassant", dans le sens du manque de communication entre particules,
+    - mais aussi SIMD, dans le sens qu'on fait les mêmes opérations (mais avec l'information locale) pour chaque particule.
+
+## Exemple empirque de Geweke et Durham (2019)
+
+![](DurhamGeweke.png)
