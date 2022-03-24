@@ -7,6 +7,16 @@ output: beamer_presentation
 urlcolor: blue
 ---
 
+## Survol du cours 10
+
+1. Échantillonage préférentiel
+1. Rééchantillonage
+1. SMC (Monte Carlo séquentiel)
+    a. Séquence de densités
+    a. L'algorithme SMC
+    a. Détails
+    a. Exemple empirique
+
 ## Une densité à quatre modes
 
 La fonction de Himmelblau :
@@ -112,7 +122,7 @@ où $w^{(m)} \equiv h(x^{(m)})/p(x^{(m)})$.
     - Méthodes de réduction de variance
     - Nombres quasi-aléatoires aléatorisés
     - Méthodes MCMC
-- L'interprétation de l'intégration par l'échantillonage préférentiel comme un changement de variables est très intéressante.
+- L'interprétation de l'intégration par l'échantillonage préférentiel comme un changement de variables (Judd, pages 294-5) est très intéressante.
 
 ## L'erreur numérique de l'échantillonage préférentiel
 
@@ -187,7 +197,7 @@ points(x_rnd, cex=2*sqrt(w2))
 ## Rééchantillonage (Resampling)
 
 - À noter : un changement de notation pour être cohérent avec Geweke et Durham (2019), $\theta^{(m)}$ devient $\theta_n$.
-- Problème : on a un échantillon $(w_n, \theta_n)$, $n=1,\ldots,N$, pour le noyau de densité $k(\theta)$, et on veut un échantillon $\theta_n^*$, $n=1,\ldots,N$ avec poids égaux pour $k(\theta)$.
+- Problème : on a un échantillon $(w_n, \theta_n)$, $n=1,\ldots,N$, pour le noyau de densité $k(\theta)$, et on veut un échantillon $\theta_n^*$, $n=1,\ldots,N$, avec poids égaux pour $k(\theta)$.
 - Solution : échantillonnez $\theta_n^*$, $n=1,\ldots,N$, avec remise, de l'échantillon $\theta_n$, $n=1,\ldots,N$, avec les poids de probabilité $w_n$.
 - Le nombre de fois $\theta_n$ se trouve dans l'échantillon $\theta_n^*$, $n=1,\ldots,N$, est binomial : $\mathrm{Bi}(N, w_n/\sum_{n=1}^N w_n)$.
 - $\theta_n^*$, $n=1,\ldots,N$, est un échantillon pour $k(\theta)$.
@@ -199,11 +209,11 @@ points(x_rnd, cex=2*sqrt(w2))
 $k^{(0)}(\theta),\, k^{(1)}(\theta),\, \ldots k^{(L)}(\theta)$, où
 $k^{(0)}(\theta) = f^{(0)}$ est normalisée.
 
-* Il est facile de simuler de la loi avec densité $f(\theta)$.
+* Il est facile de simuler la loi avec densité $f(\theta)$.
 
 * Le dernier noyau de densité $k^{(L)}(\theta)$ est de la loi cible.
 
-* Les loi intermédiaires peut être ou ne pas être de l'intérêt, mais
+* Les lois intermédiaires peuvent être ou ne pas être de l'intérêt, mais
 elles sont utiles pour diviser le problème en parties gérables.
 
 * Une exemple courant :
@@ -255,24 +265,24 @@ lines(x, target_fcn(x, 0.8), col='green')
   p(x_t|y_{1:t}), \quad t=1,\ldots,T.
 \]
 
-Les lois intermédiare peuvent être de l'intérêt dans les cas 2 et 4.
+Les lois intermédiares peuvent être de l'intérêt dans les cas 2 et 4.
 
 ## L'algorithme SMC (version de Geweke et Durham (2019))
 
 ### Initialisation
 
-Tirer $\theta_n^{(0)} \sim f^{(0)}(\theta)$, $n=1,\ldots,N$ pour avoir un échantillon $(N^{-1}, \theta_n^{(0)})$ qui représente $f^{(0)}(\theta)$.
+Tirer $\theta_n^{(0)} \sim f^{(0)}(\theta)$, $n=1,\ldots,N$, pour avoir un échantillon $(N^{-1}, \theta_n^{(0)})$ qui représente $f^{(0)}(\theta)$.
 
-### Itération à faire pour $l=1,\ldots,L$
+### Itération pour $l=1,\ldots,L$
 
 1. Phase C (Correction, avec échantillonage préférentiel)
-    - L'intrant est un échantillon $(N^{-1}, \theta_n^{(l-1)})$ représente $f^{(l-1)}(\theta)$.
+    - L'intrant, un échantillon $(N^{-1}, \theta_n^{(l-1)})$, représente $k^{(l-1)}(\theta)$.
     - On calcule $w_n^{(l)} = k^{(l)}(\theta_n^{(l-1)})/k^{(l-1)}(\theta_n)$.
     - Le résultat est un échantilon $(w_n^{(l)}, \theta_n^{(l-1)})$ qui représente $k^{(l)}(\theta)$.
 
 1. Phase S (Sélection, avec rééchantillonage)
     - On rééchantillone l'échantillon pondéré $(w_n^{(l)}, \theta_n^{(l-1)})$, qui représente $k^{(l)}(\theta)$.
-    - Le résultat est un échantillon $(N^{-1}, \theta_n^{l,0})$ qui représente $k^{(l)}(\theta)$.
+    - Le résultat est un échantillon $(N^{-1}, \theta_n^{(l,0)})$ qui représente $k^{(l)}(\theta)$.
 
 1. Phase M (Mutation, avec transtions MCMC)
     - Pour chaque $\theta_n^{(l,0)}$, effectuer $K_l$ itérations d'une transition markovienne
@@ -313,7 +323,7 @@ Deux questions à résoudre pour mettre en oeuvre l'algorithme :
 
 1. Comment sélectionner la séquence $k^{(l)}(\theta)$, $l=1,\ldots,L-1$, entre
 $f^{(0)}(\theta)$ et la cible $k^{(L)}(\theta)$?
-1. À la phase $M$ de l'itération $l$, comment décider le nombre d'itérations $K_l$ dans la phase M et quelle transitions markoviennes à utiliser?
+1. À la phase $M$ de l'itération $l$, comment choisir le nombre d'itérations $K_l$ dans la phase M et quelles transitions markoviennes à utiliser?
 
 L'idée d'adaptation (version naive)
 
@@ -333,7 +343,7 @@ La solution :
 
 - Executer deux versions de l'algorithme, en ordre :
     1. Une version adaptative, où on enregistre toutes les décisions, comme les $k^{(l)}(\theta)$, les $K_l$, les variances des propositions Metropolis.
-    1. Une version non-adaptive où on utilise toutes les décisions utilisées dans la version adaptative.
+    1. Une version non-adaptive où on utilise toutes les mêmes décisions utilisées dans la version adaptative.
 - Utiliser seulement les résultats de la deuxième version.
 
 ## Calcul des erreurs numérique
@@ -364,8 +374,8 @@ La solution :
     - Tableau de probabilités (computation préliminaire pour le rééchantillonage)
 
 - Souvent, le parallélisme n'est pas seulement
-    - "embarassant", dans le sens du manque de communication entre particules,
-    - mais aussi SIMD, dans le sens qu'on fait les mêmes opérations (mais avec l'information locale) pour chaque particule.
+    - "embarassant", dans le sens du manque de communication entre particules, mais aussi
+    - SIMD, dans le sens qu'on fait les mêmes opérations (mais avec l'information locale) pour chaque particule.
 
 ## Exemple empirque de Geweke et Durham (2019)
 
