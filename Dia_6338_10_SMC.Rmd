@@ -207,9 +207,9 @@ points(x_rnd, cex=2*sqrt(w2))
 
 * Simulation d'une suite de lois, avec noyaux de densité
 $k^{(0)}(\theta),\, k^{(1)}(\theta),\, \ldots k^{(L)}(\theta)$, où
-$k^{(0)}(\theta) = f^{(0)}$ est normalisée.
+$k^{(0)}(\theta) = f^{(0)}(\theta)$ est normalisée.
 
-* Il est facile de simuler la loi avec densité $f(\theta)$.
+* Il est facile de simuler la loi avec densité $f^{(0)}(\theta)$.
 
 * Le dernier noyau de densité $k^{(L)}(\theta)$ est de la loi cible.
 

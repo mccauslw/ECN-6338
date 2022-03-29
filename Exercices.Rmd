@@ -343,3 +343,7 @@ On peut aussi évaluer et simuler une densité normalisée $p(x)$, similaire à 
     a. Montrez que $E_p[h_1(x)] = 1/c$ où $h_1(x) = k(x)/p(x)$. Avec un échantillon iid $\{x^{(m)}\}_{m=1}^M$ de la loi avec densité $p(x)$, comment peut-on estimer $1/c$ par Monte Carlo?
     a. Trouvez une fonction $h_2(x)$ telle que $E_p[h_2(x)] = E_f[g(x)]/c$.
     Notez que $E_f[g(x)] = E_p[h_2(x)]/E_p[h_1(x)]$. Avec le même échantillon, comment peut-on estimer $E_f[g(x)]$ comme un ratio d'estimateurs Monte Carlo.
+
+### Autres exercices
+
+Il n'y a pas d'autres exercices pour ce cours.
