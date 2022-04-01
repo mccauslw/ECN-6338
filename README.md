@@ -79,3 +79,7 @@ Code pour l'échantillonage de Gibbs : [pop_active.R](pop_active.R)
 [Diapos](Dia_6338_10_SMC.pdf)
 
 Code pour la simulation : [SMC.R](SMC.R)
+
+#### Cours 12-13, La programmation dynamique
+
+[Diapos, Cours 12](Dia_6338_12_DP.pdf)

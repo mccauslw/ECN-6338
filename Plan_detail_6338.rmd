@@ -247,7 +247,6 @@ Sections "Intuition" et "Formal Derivation"
     a. le recuit simulé (simulated annealing)
     a. le filtre particulaire (particle filter)
 1. Applications
-
     a. maximum de vraisemblance pour un modèle EGARCH avec un vraisemblance autrement infaisable
     a. inférence bayésienne pour le même modèle
 
