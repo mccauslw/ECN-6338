@@ -354,14 +354,14 @@ Il n'y a pas d'autres exercices pour ce cours.
 
 ### Exercice numérique
 
-1. $k$ ans aprés la plantation d'un arbre, la quantité de bois vendable est
+1. $k$ ans après la plantation d'un arbre, la quantité de bois vendable est
 \[
   g(k) = e^{-\lambda} \sum_{j=0}^k \frac{\lambda^j}{j!}, \quad \lambda = 30.
 \]
-On peut utiliser la fonction R \texttt{ppois(k, lambda)} pour évaluer $g(k)$, mais notez qu'il n'y a pas d'interprétation stochastique; la forme sigmoïdique de la fonction de répartition d'une variable aléatoire poissonienne est qualitivement réaliste pour le croissance d'une arbre.
+On peut utiliser la fonction R \texttt{ppois(k, lambda)} pour évaluer $g(k)$, mais notez qu'il n'y a pas d'interprétation stochastique; la forme sigmoïde de la fonction de répartition d'une variable aléatoire poissonnienne est qualitativement réaliste pour le croissance d'une arbre.
 Un propriétaire possède une ferme avec une capacité d'un arbre.
-À chaque période $t$, il peut couper l'arbre et vendre le bois à un prix réel de 1, ou laisser continuer à pousser l'arbre. Le taux d'intérêt réel est de $R = 5\%$.
+À chaque période $t$, il peut ou couper l'arbre, vendre tout le bois à un prix réel de 1 et planter un nouvel arbre ou laisser continuer à pousser l'arbre. Le taux d'intérêt réel est de $R = 5\%$.
 Le propriétaire maximise la valeur actuelle de la récolte du bois.
 Il commence avec un arbre d'âge $k_0 = 20$.
-    a. Écrivez le problème dynamique du propriétaire dans la forme exposée dans la diapo "La version à horizon fini".
+    a. Écrivez le problème dynamique du propriétaire dans la forme exposée dans la diapo "La version à horizon infini".
     a. Avec itération par fonction de valeur, trouver la fonction de valeur et la fonction de politique, deux fonctions sur $K \equiv \{0,1,\ldots,100\}$.
