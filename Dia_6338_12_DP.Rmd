@@ -1,5 +1,5 @@
 ---
-title: "ECN 6338 Cours 12"
+title: "ECN 6338 Cours 12 et 13"
 subtitle: "La Programmation Dynamique"
 author: "William McCausland"
 date: "`r Sys.Date()`"
@@ -309,3 +309,310 @@ Itérez les étapes suivantes jusqu'à ce que $\|V^{l+1} - V^l\| < \epsilon$ :
 \[
   V^{l+1} \equiv \hat{V}^{U^{l+1}}
 \]
+
+## Problèmes dynamiques avec incertitude
+
+- Soit $X$ l'ensemble d'états possibles.
+- Rappel, évolution des états dans les modèles déterministes :
+\[
+  x_{t+1} = F(x_t, u_t, t) \quad \text{ou} \quad x_{t+1} = F(x_t, u_t).
+\]
+- Dans les modèles stochastiques, l'évolution de l'état devient stochastique :
+\[
+  F(A, x_t, u_t, t) \equiv \Pr[x_{t+1} \in A | x_t, u_t, t],\; A  \subseteq X.
+\]
+- Le problème général est la maximisation de
+\[
+  E\left[
+    \sum_{t=1}^T \pi(x_t, u_t, t) + W(x_{T+1})
+  \right]
+   \quad \text{ou} \quad 
+  E\left[
+    \sum_{t=0}^\infty \beta^t \pi(x_t, u_t)
+  \right].
+\]
+sous les contraintes décrites en termes de $F(\cdot)$, $D(\cdot)$ et $x_0$.
+- Notez la séparabilité et la linéarité :
+    - temporelle dans les problèmes déterministes et stochastiques,
+    - l'espérance dans les problèmes stochastiques.
+
+## Structure intertemporelle avec incertitude
+
+![Deux structure avec autosimilarité](./Figures/line_tree.png)
+
+## Les équations de Bellman dans le cas stochastique
+
+Horizon fini :
+\[
+  V(x,t) = \sup_{u \in D(x_t,t)} \pi(x, u, t)
+  + E\left[
+    V(x_{t+1}, t+1) | x_t = x, u_t = u
+  \right],
+\]
+\[
+  V(x, T+1) = W(x).
+\]
+Horizon infini :
+\[
+  V(x) = \sup_{u \in D(x)} \pi(x, u) + \beta E[V(x^+)|x, u].
+\]
+
+## Exemple, modèle de recherche de McCall
+
+- Une simplification du modèle de McCall (1970) dans "Quantitative Economics with Python" par
+Sargent et Stachurski, section
+[Job Search I: The McCall Search Model](https://python.quantecon.org/mccall_model.html)
+- L'état est la réalisation $w_t$ d'une offre de salaire aléatoire.
+- La densité $q(w_t|w_{t-1},u_{t-1}) = q(w_t)$ ne dépend pas de $w_{t-1}$, $u_{t-1}$.
+Soit $W$ l'ensemble de valeurs possibles des $w_t$.
+- L'action $u_t$ est d'accepter l'offre $w_t$ et gagner $w_t$ chaque période à tout jamais ($u_t = 1$) ou de rejeter l'offre, gagner $c$ à $t$ et attendre une autre offre ($u_t = 0$).
+- L'agent maximise 
+\[
+  E\left[\sum_{t=0}^\infty \beta^t y_t \right],
+\]
+où $y_t$ dépend du moment $t^*$ où l'agent accepte l'offre :
+\[
+  y_t \equiv \begin{cases} c & t < t^* \\ w_{t^*} & t \geq t^* \end{cases}
+\]
+
+## L'équation de Bellman
+
+L'équation de Bellman est
+\[
+  \begin{aligned}
+    V(w) &= \max\left\{ \frac{w}{1-\beta},\, c + \beta E[V(w')] \right\} \\
+    &= \max\left\{ \frac{w}{1-\beta},\, c + \beta \sum_{v\in W} V(v) q(v) \right\}.
+  \end{aligned}
+\]
+Notes :
+
+- Le terme $c + \beta E[V(w')]$ ne dépend pas de $w$, ce qui simplifie énormément le problème.
+- L'action optimale $\sigma(w) \in \{0,1\}$ doit être de la forme où l'agent accepte une offre plus grande ou égale à $\bar{w}$ et rejette une offre moins grande que $\bar{w}$.
+- Le salaire de réserve $\bar{w}$ est $(1-\beta)(c + \beta E[V(w')])$.
+- Intuition : $\bar{w}$ devrait être croissant en $\beta$ et $c$.
+
+## La spécification du problème
+
+La spécification :
+
+- Valeurs des paramètres : $\beta = 0.99$, $c = 25$.
+- Loi de $w$ : $w-10 \sim \mathrm{Bb}(50, 200, 100)$ (beta-binomial)
+- $k \equiv w-10$ est un mélange : $\pi \sim \mathrm{Be}(200, 100)$, $k|\pi \sim \mathrm{Bi}(50, \pi)$.
+
+```{r McCall_spec}
+# Valeurs des paramètres
+beta <- 0.99
+c <- 25
+
+# Loi de w : valeurs w, probabilités q
+w <- 10:60
+n = 50; a <- 200; b <- 100; k <- w-10
+lnq <- lchoose(n, k) + lbeta(a+k, b+n-k) - lbeta(a, b)
+q <- exp(lnq)
+```
+
+## La loi discrète des offres de salaire
+
+```{r offre_dist}
+plot(w, q, type='p')
+```
+
+## L'itération de la fonction de valeur
+
+- Dans un premier temps, on ne profite pas de la structure du problème.
+- On commence par la fonction de valeur qui correspond à la politique $\sigma_0(w) = 1$, selon laquelle on accepte chaque offre :
+\[
+  V^{\sigma_0}(w) = \frac{w}{1-\beta}.
+\]
+- On applique l'operateur $T$ de façon répétitive jusqu'à la convergence, où
+\[
+  (TV)(w) = \max\left\{ \frac{w}{1-\beta},\, c + \beta \sum_{v\in W} V(v) q(v) \right\}.
+\]
+```{r Tdef}
+library(geometry)
+V0 <- w/(1-beta)
+T <- function(V) {pmax(w/(1-beta), c+beta*dot(V, q))}
+```
+
+## Iteration de la fonction de valeur en graphiques
+
+```{r Titer}
+V = V0; plot(w, V, type='l')
+for (i in 1:5) {V = T(V); lines(w, V, col='blue')}
+```
+
+## L'itération du salaire de réserve
+
+- On définit $h = \bar{w}/(1-\beta) = c + \beta E[V(w')]$.
+- En termes de $h$, l'équation de Bellman s'écrit
+\[
+  V(w) = \max \left\{ \frac{w}{1-\beta},\, h \right\}.
+\]
+- Si on substitue $V(w)$ dans la définition de $h$, on obtient
+\[
+  h = c + \beta E\left[ \max \left\{ \frac{w'}{1-\beta},\, h \right\} \right]
+\]
+- On peut résoudre cette équation non-linéaire avec l'itération
+\[
+  h' = c + \beta \sum_{v \in W} \max \left\{ \frac{v}{1-\beta},\, h \right\} q(v)
+\]
+- C'est une équation scalaire, mais il faut toujours calculer un produit intérieur par itération.
+
+## L'itération du salaire de réserve
+
+```{r hiter}
+wbar <- function(beta_c, tol) {
+  beta <- beta_c[1]; c <- beta_c[2]
+  h <- c / (1-beta)
+  repeat {
+    h_plus <- c + beta * dot(pmax(w/(1-beta), h), q)
+    if (abs(h - h_plus) < tol) break
+    h <- h_plus
+  }
+  wbar <- (1-beta) * h
+}
+```
+
+## Code préliminaire pour les graphiques
+
+```{r code_gr, cache=TRUE}
+# Grilles de points pour beta et c
+beta_gr <- seq(0.9, 0.99, by=0.001)
+c_gr <- seq(10, 30, by=0.1)
+
+# Tableau des pairs (beta, c)
+bc <- as.matrix(expand.grid(beta_gr, c_gr))
+colnames(bc) <- c('beta', 'c')
+
+# Évaluer la fonction wbar à chaque pair (beta, c)
+wbar_c <- apply(bc, 1, wbar, tol = 1e-6)
+df <- data.frame(wbar_fn = wbar_c, bc)
+```
+
+## Salaire de réserve comme fonction de $\beta$ et $c$
+
+```{r wbar_plot}
+library(lattice)
+contourplot(wbar_fn ~ c*beta, data=df, cuts=12)
+```
+
+## Un modèle avec séparation
+
+- Un autre modèle du type McCall au site QuantEcon
+- [Job Search II: Search and Separation](https://python.quantecon.org/mccall_model_with_separation.html)
+- L'agent entre dans la période $t$
+    - ou avec emploi à salaire $w_e$, auquel cas l'agent reçoit le flux d'utilité $u(w_e)$ et ensuite est congédié avec probabilité $\alpha$.
+    - ou sans emploi, auquel cas l'agent reçoit une offre $w_t$ et choisit entre travailler au salaire $w_t$ (jusqu'au congédiement) ou recevoir $c$ et rester sans emploi au début de la prochaine période. Le flux d'utilité est $u(w_t)$ ou $u(c)$, respectivement.
+- La fonction d'utilité est
+\[
+  E\left[ \sum_{t=0}^\infty \beta^t u(y_t) \right].
+\]
+- Soit $v(w_e)$ l'utilité d'un agent avec emploi au début de la période, au salaire $w_e$.
+- Soit $h(w)$ l'utilité d'un agent sans emploi qui reçoit une offre $w$ au début de la période.
+
+## Les équations de Bellman
+
+Les deux équations tiennent de façon simultanée :
+\[
+  v(w_e) = u(w_e) + \beta \left[(1-\alpha) v(w_e) + \alpha \sum_{w' \in W} h(w') q(w')\right],
+\]
+\[
+  h(w) = \max\left\{v(w),\, u(c) + \beta \sum_{w' \in W} h(w') q(w') \right\}.
+\]
+Encore une fois, une simplification est utile :
+\[
+  d \equiv E[h(w')] = \sum_{w' \in W} h(w') q(w').
+\]
+On peut écrire maintenant (pas besoin de distinguer $w$ et $w_e$)
+\[
+  v(w) = u(w) + \beta[(1-\alpha)v(w) + \alpha d],
+\]
+\[
+  h(w) = \max\{v(w), u(c) + \beta d\},
+\]
+\[
+  d = \sum_{w' \in W} h(w') q(w') = \sum_{w' \in W} \max\{v(w'), u(c) + \beta d\} q(w').
+\]
+
+## Notes sur le problème
+
+- L'équation pour $h(w)$ étant éliminée, on peut itérer :
+\[
+  d_{n+1}(w) = \sum_{w' \in W} \max\{v_n(w'), u(c) + \beta d_n\} q(w'),
+\]
+\[
+  v_{n+1}(w) = u(w) + \beta[(1-\alpha)v_n(w) + \alpha d_n].
+\]
+
+- Le salaire de réserve $\bar{w}$ est maintenant la solution de l'équation
+\[
+  v(\bar{w}) = u(c) + \beta d.
+\]
+
+## La spécification du problème
+
+- La fonction d'utilité :
+\[
+  u(c) = \frac{c^{1-\sigma}-1}{1-\sigma}
+\]
+- Les valeurs des paramètres sont : $\alpha = 0.2$, $\beta = 0.98$, $\sigma = 2$, $c = 6$.
+- Loi de $w$ : $\tfrac{59}{19}(w-10) \sim \mathrm{Bb}(59, 600, 400)$ (beta-binomial)
+
+```{r McCall2_spec}
+# Valeurs des paramètres
+alpha <- 0.2; beta <- 0.98; sigma <- 2; c <- 6
+
+# Loi de w : valeurs w, probabilités q
+w <- seq(10, 20, length=60)
+n = 59; a <- 600; b <- 400; k <- (59/10)*(w-10)
+lnq <- lchoose(n, k) + lbeta(a+k, b+n-k) - lbeta(a, b)
+q <- exp(lnq)
+```
+
+## La loi discrète des offres de salaire
+
+```{r offre_dist2}
+plot(w, q, type='p')
+```
+
+## L'itération en code
+
+```{r McCall2_iter}
+# Fonction d'utilité et des évaluations préliminaires
+u <- function(w, sigma) { (w^(1-sigma)-1) / (1-sigma) }
+uw = u(w, sigma)
+uc = u(c, sigma)
+
+# Itération de Bellman
+T <- function(vd) {
+  v_plus <- uw + beta * ((1-alpha) * vd$v + alpha * vd$d)
+  d_plus <- sum(pmax(vd$v, uc + beta * vd$d) * q)
+  list(v = v_plus, d = d_plus)
+}
+```
+
+## Trouver les fonctions de valeur
+
+```{r VF_iter_2}
+solve_model <- function(tol=1e-5, max_iter=2000) {
+  vd <- list(v = rep(1, length(w)), d=1)
+  for (i in 1:max_iter) {
+    Tvd <- T(vd)
+    err1 <- max(abs(vd$v - Tvd$v))
+    err2 <- abs(vd$d - Tvd$d)
+    if (max(err1, err2) < tol)
+      break
+    vd <- Tvd
+  }
+  Tvd
+}
+
+vd <- solve_model()
+```
+
+## Graphique de la fonction de valeur
+
+```{r graphique2}
+plot(w, vd$v, type='l', xlab='w', ylab='v, h')
+abline(h = uc + beta * vd$d)
+```

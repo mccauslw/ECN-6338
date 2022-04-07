@@ -326,7 +326,7 @@ et les lois a priori sont
 1. Avec l'échantillage de Gibbs, simulez la loi a posterior pour
 le modèle 3.1 de Wooldridge (2016) "Introductory Econometrics".
 (Regardez le fichier \texttt{GPA.R})
-Utilisez $M=10000$ tirages, $\bar{\beta} = 0$, $\bar{H} = 0.01I$, $\bar{s}^2 = 0.01$, $\bar{\nu} = 2$.
+Utilisez $M=10000$ tirages, $\bar{\beta} = 0$, $\bar{H}_\beta = 0.01I$, $\bar{s}^2 = 0.01$, $\bar{\nu} = 2$.
 Donnez la moyenne et l'écart-type a posteriori des éléments de $\beta$ et les écarts-types numériques pour la moyenne (avec \texttt{mcse} du paquet R \texttt{mcmcse}).
 
 \pagebreak
