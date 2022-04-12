@@ -538,7 +538,7 @@ On peut écrire maintenant (pas besoin de distinguer $w$ et $w_e$)
 
 - L'équation pour $h(w)$ étant éliminée, on peut itérer :
 \[
-  d_{n+1}(w) = \sum_{w' \in W} \max\{v_n(w'), u(c) + \beta d_n\} q(w'),
+  d_{n+1} = \sum_{w' \in W} \max\{v_n(w'), u(c) + \beta d_n\} q(w'),
 \]
 \[
   v_{n+1}(w) = u(w) + \beta[(1-\alpha)v_n(w) + \alpha d_n].
