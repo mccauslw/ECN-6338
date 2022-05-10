@@ -1,7 +1,7 @@
 ---
 title: "Plan de cours détaillé pour ECN 6338: Analyse numérique en économie"
 author: "William McCausland"
-date: "19/10/2021"
+date: "`r Sys.Date()`"
 output: pdf_document
 urlcolor: blue
 ---

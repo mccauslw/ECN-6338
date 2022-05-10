@@ -125,7 +125,7 @@ $2N-1$. (Cela dit, il y a des formules pour le termes résiduels aussi)
   \int_{-1}^1 f(x)\, dx \qquad \text{(Gauss-Legendre)}
 \]
 \[
-  \int_{-\infty}^\infty f(x) e^{-x^2/2} \qquad \text{(Gauss-Hermite)}
+  \int_{-\infty}^\infty f(x) e^{-x^2}\, dx \qquad \text{(Gauss-Hermite)}
 \]
 \[
   \int_0^\infty f(x) e^{-x}\, dx \qquad \text{(Gauss-Laguerre)}
