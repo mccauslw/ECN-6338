@@ -357,7 +357,7 @@ Questions pratiques en commun :
 1. Évaluation d'une fonction sur une grille de points
 1. Intégration numérique
 1. Simulation Monte Carlo indépendant
-1. Évaluation d'une fonction de log vraisemblance (souvent)
+1. Évaluation d'une fonction de log vraisemblance (souvent) 
 \[
   L(\theta;y) = \sum_{t=1}^T \log f(y_t|\theta).
 \]
