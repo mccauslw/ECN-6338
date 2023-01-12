@@ -1,5 +1,5 @@
 ---
-title: "Exercices, ECN 6338, Hiver 2022"
+title: "Exercices, ECN 6338, Hiver 2023"
 author: "William McCausland"
 date: "`r Sys.Date()`"
 output: pdf_document

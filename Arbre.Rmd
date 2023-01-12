@@ -1,0 +1,25 @@
+---
+title: "Équation de Bellman pour l'exercice de programmation dynamique"
+author: "William McCausland"
+date: "19/04/2022"
+output: pdf_document
+---
+
+Si on coupe un arbre de $k$ ans, la valeur est $g(k)$ plus la valeur actualisée d'un arbre d'un an.
+Si on ne le coupe pas, la valeur est la valeur actualisée d'une arbre de $k+1$ ans.
+L'équation de Bellman est
+\[
+  V(k) = \max\left[ g(k) + \frac{V(1)}{1+R}, \frac{V(k+1)}{1+R} \right].
+\]
+
+En termes du problème général, l'état $k$ est l'âge de l'arbre, $u \in \{0,1\}$ est la décision de couper ($u=1$) ou non ($u=0$).
+Le facteur d'actualisation est $\beta = 1/(1+R)$.
+La fonction de transition est
+\[
+  F(k,u) = \begin{cases} k+1 & u=0 \\ 1 & u=1. \end{cases}
+\]
+Le flux de profit est
+\[
+  \pi(k, u) = \begin{cases} 0 & u=0 \\ g(k) & u=1. \end{cases}
+\]
+L'ensemble faisable est $D(k) = \{0,1\}$ (on peut couper ou non, peu importe l'âge $k$).

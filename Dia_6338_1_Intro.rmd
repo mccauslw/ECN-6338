@@ -77,29 +77,26 @@ Le but ici est de présenter les cas les plus simples et de vous guider vers la 
 |-------------------------|----------------------|------------|
 |~10 interrogations de 10 minutes    |Au début des classes                     |20\%|
 |||
-|Quatres exercices computationnelles |28 janvier, 18 février, 18 mars, 8 avril |40\%|
+|Quatres exercices computationnelles |2 février, 23 février, 23 mars, 20 avril |40\%|
 |||
-|Projet computationnel               |8 avril                                  |15\%|
-|||
-|Examen final                        |22 avril                                 |25\%|
+|Examen final                        |20 avril                                 |40\%|
 
 ## Documents et Communication
 
 ### Site Github du cours
 
-1. Diapos (code source, pdf)
-1. Démonstrations
+1. Diapos (code source en [R Markdown](https://rmarkdown.rstudio.com), pdf)
+1. Démonstrations (en [R](https://www.r-project.org))
 1. Lectures, exercices
 1. Devoirs avec computation
 1. Liens vers les enregistrements des cours à distance
-
-README.md comme page d'acceuil
+1. README.md comme page d'acceuil
 
 ### Site StudiUM du cours
 
-1. Messages
+1. Messages aux étudiants
 1. Documents avec droit d'auteur
-1. Téléversement de vos devoirs computationnels, interrogations
+1. Téléversement de vos devoirs computationnels
 1. Forums (possiblement)
     
 ## Logiciels (pour les travaux pratiques, votre choix)
@@ -215,7 +212,7 @@ m$double.xmax
 
 ## Propogation de l'erreur
 
-* L'erreur relative du résultat d'un calcul peut être très différente de l'erreur des intrants.
+* L'erreur relative du résultat d'un calcul peut être très différente de l'erreur relative des intrants.
 * Supposez qu'on évalue la dérivée numérique suivante, pour approximer la dérivée de la fonction $f(x) = e^x$ à $x=0$ :
 \[
   d_h = \frac{f(0+h) - f(0-h)}{2h} = \frac{e^h - e^{-h}}{2h},
@@ -266,16 +263,16 @@ La valeur exacte de la fonction exponentielle est
 \[
   e^x = \sum_{n=0}^\infty \frac{x^n}{n!},
 \]
-mais on pratique il faut tronquer et utiliser
+mais on pratique il faut tronquer et utiliser un nombre fini $N$ de termes :
 \[
   \sum_{n=0}^N \frac{x^n}{n!}.
 \]
 
 ## Troncation mathématique, plus généralement
 
-* Souvent un algorithme iteratif génére une suite de vecteurs $x_k$, $k=1,2,\ldots$, qui converge au résultat voulu $x^* \equiv \lim_{k\to \infty} x^k$.
+* Souvent un algorithme iteratif génére une suite de vecteurs $x^k$, $k=1,2,\ldots$, qui converge au résultat voulu $x^* \equiv \lim_{k\to \infty} x^k$.
 * Il faut accepter une valeur approximative $x^k$, pour $k$ fini.
-* On ne connait pas la valeur $x^*$ pour évaluer l'erreur $\|x^k - x^*\|$.
+* On ne connait pas la valeur $x^*$ alors on ne peut pas évaluer l'erreur $\|x^k - x^*\|$.
 * Il faut utiliser $\|x^{k+1}-x^k\|$, ...
 * ... mais prudemment, parce que (par exemple) pour
 \[
@@ -308,13 +305,13 @@ auquel cas, on peut estimer $\beta$ et espérer que cela marche.
 
 ### Notation $O(\cdot)$
 
-* Pour des fonctions $f$ et $g$ sur $\mathbb{N}$, on écrit $f(n) = O(g(n))$ s'il existe $M > 0$ tel que $|f(n)| \leq Mg(n)$.
+* Pour des fonctions $f$ et $g$ sur $\mathbb{N}$, on écrit $f(n) = O(g(n))$ s'il existe $M > 0$ tel que $|f(n)| \leq Mg(n)$ pour chaque $n$.
 * Par exemple $f(n) = 6n^2 + 8n + 2 = O(n^2)$
 
 ### La complexité de certains algorithmes
 
 * $O(1)$ : nombre d'opérations pour trouver le $i$-ième élément dans un $n$-vecteur;
-* $O(\log n)$ : nombre de comparaisons pour trouver un élément donnée dans un $n$-vecteur, par recherche binaire,
+* $O(\log n)$ : nombre de comparaisons pour trouver un élément donnée dans un $n$-vecteur trié, par recherche binaire,
 * $O(n)$ : pour trouver un élément donnée dans un $n$-vecteur, par recherche exhaustive;
 * $O(n^2)$ : nombre de multiplications scalaires pour multiplier une matrice $n\times n$ et un vecteur $n\times 1$,
 * $O(n^3)$ : pour multiplier deux matrices $n\times n$ (méthode évidente)
@@ -340,15 +337,15 @@ auquel cas, on peut estimer $\beta$ et espérer que cela marche.
 
 ## Parallélisme
 
-Vous allez vous habituer à reconnaître deux types de problème où vous pouvez profitez des processeurs en parallèle:
+Vous allez vous habituer à reconnaître deux types de problème où vous pouvez profitez des processeurs en parallèle :
 
-1. problèmes avec l'embarras du parallélisme
+1. problèmes avec l'embarras du parallélisme ([embarrassingly parallel problems](https://en.wikipedia.org/wiki/Embarrassingly_parallel)) où il n'y a pas de communication entre processeurs avant la fin des computations.
 1. problèmes SIMD (single instruction multiple data)
 
-Idées en commun :
+Questions pratiques en commun :
 
-* Les tâches individuelles doivent être suffisamment grandes relatif aux coûts fixes de communication.
-* Les couts fixes varient beaucoup :
+* Les tâches individuelles doivent être suffisamment grandes relatif aux coûts fixes de communication entre processeurs.
+* Ces couts fixes varient beaucoup :
     - coeurs multiples d'un processeur
     - processeurs multiples d'une machine
     - machines multiples d'un cluster
