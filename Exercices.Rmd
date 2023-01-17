@@ -17,7 +17,7 @@ urlcolor: blue
 1. Lisez l'aide sur la fonction \texttt{expm1} et démontrez son avantage par rapport à la fonction \texttt{exp} pour évaluer $e^x - 1$ quand $|x|$ est prés de zéro.
 Vous pouvez suivre l'exemple sur \texttt{log1p} dans les diapos.
 
-1. Téléchargez le paquet R \texttt{microbenchmark}, lisez l'aide sur la fonction \texttt{microbenchmark} et mesurer le temps nécessaire pour faire les opérations \texttt{x * y}, \texttt{x / y}, \texttt{exp(y)} et \texttt{log(x)}, pour un vecteur $x > 0$ de mille éléments et un vecteur $y$ de mille éléments.
+1. Téléchargez le paquet R \texttt{microbenchmark}, lisez l'aide sur la fonction \texttt{microbenchmark} et mesurer le temps nécessaire pour faire les opérations \texttt{x * y}, \texttt{x / y}, \texttt{x\textasciicircum y}, \texttt{exp(y)} et \texttt{log(x)}, pour un vecteur $x > 0$ de mille éléments et un vecteur $y$ de mille éléments.
 
 \pagebreak
 
@@ -36,7 +36,7 @@ Supposez que $L_1$ et $U_1$ sont inversibles.
 1. (Substitution avant et substitution arrière)
 Soit $L$ et $U$ des matrices inversibles $n \times n$, où $L$ est triangulaire inférieure et $U$ est triangulaire supérieure.
 Soit $y$ un vecteur $n \times 1$.
-Notez que Judd utilise le terme "back substitution" pour décrire deux algorithmes distincts (a. et b.).
+Notez que Judd (Algorithme 3.1, page 58) utilise le terme "back substitution" pour décrire deux algorithmes distincts (a. et b. ci-bas).
 Plusieurs auteurs font une distinction entre "back substitution" (b.) et "forward substitution" (a.).
     a. Trouver un algorithme pour résoudre l'équation $Lx = y$.
     Notez que $L_{11} x_1 = y_1$, alors $x_1 = y_1/L_{11}$.
@@ -44,7 +44,7 @@ Plusieurs auteurs font une distinction entre "back substitution" (b.) et "forwar
     Commencez par $x_n$.
 
 1. Soit $x$ un $n$-vecteur aléatoire avec moyenne $\mu$ ($n\times 1$) et variance $\Sigma$ ($n \times n$). Soit $A$ une matrice constante $m \times n$.
-Quelles sont la moyenne et la variance de $Ax$?
+Montrez que la moyenne et la variance de $Ax$ sont $A\mu$ et $A\Sigma A^\top$, pour le cas où $\Sigma$ est diagonal.
 
 ### Exercices théoriques
 
