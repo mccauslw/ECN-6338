@@ -45,8 +45,7 @@ Les éléments de l'évaluation sont
 
 1. Environ dix interrogations de dix minutes (20\%)
 1. Quatre exercices de computation (40\%)
-1. Un projet de computation (15\%)
-1. Un examen final (25\%)
+1. Un examen final (40\%)
 
 # Matière organisée par cours
 

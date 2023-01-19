@@ -9,12 +9,12 @@ urlcolor: blue
 
 ## Survol du Cours 2
 
-- Problème : de trouver le $n$-vecteur $x$ qui résoud le système $Ax = b$. $A$ est $n \times n$ et inversible; $b$ est un $n$-vecteur.
+- Problème : trouver le $n$-vecteur $x$ qui résoud le système $Ax = b$. $A$ est $n \times n$ et inversible; $b$ est un $n$-vecteur.
 - Les systèmes les plus faciles : $A$ triangulaire ou orthogonal
 - Pour les systèmes où $A$ est dense, on peut décomposer $A$ et ainsi réduire le problème en la résolution des systèmes triangulaires et orthogonaux.
 - Pour les systèmes où $n$ est grand et $A$ creuse, il y a deux options :
-    - utiliser les mêmes décompositions et courir le risque que les décompositions soient denses,
-    - utiliser des méthodes iteratives. (Il faut utiliser ces méthodes pour les problèmes non-linéaires de toute façon).
+    - utiliser les mêmes décompositions, (Cependant, les décompositions sont souvent denses)
+    - utiliser des méthodes iteratives. (Il faut utiliser ces méthodes pour les systèmes non-linéaires de toute façon).
 
 ## Systèmes triangulaires
 
@@ -95,6 +95,9 @@ Trois décompositions facilite la résolution d'un système plus générale en r
 - Décomposition LU : $A = LU$ pour $A$ général $n\times n$
 - Décomposition Cholesky : $A = LL^\top = R^\top R$, pour $A$ symmétrique et définie positive $n \times n$.
 - Décomposition QR : $A = QR$ pour $A$ général $m \times n$
+
+En général, ne calculez pas l'inverse d'une matrice.
+Il est toujours préférable de faire une décomposition et ensuite de résoudre un (ou des) système triangulaire ou orthogonal.
 
 ## La résolution de systèmes avec la décomposition LU
 
@@ -230,7 +233,7 @@ où $y$ et $\epsilon$ sont $n \times 1$, $X$ est $n \times k$, $\beta$ est $k \t
     - $L = R^\top$ est triangulaire inférieure $n \times n$.
 - C'est une décomposition $LU$ sans permutation.
 - Le calcul est numériquement plus stable, sans recours au pivots.
-- Un tiers le nombre de multiplications scalaires de LU.
+- Un tiers du nombre de multiplications scalaires de la LU.
 - Deux opérations intéressantes dans le contexte des variables aléatoires gaussiennes multivariées.
     - Multiplication directe $Lx$
     - Résolution du système $Lx = b$.
@@ -250,7 +253,7 @@ $LI_nL^\top = LL^\top = \Sigma$.
 M = 100  # Nombre de tirages
 n = 3    # Nombre d'éléments du vecteur aléatoire
 mu = c(4, 1, 3)  # Moyenne mu, variance Sigma
-Sigma = matrix(c(4,1,3, 1,1,1.5, 3,1.5,9), nrow=3, ncol=3)
+Sigma = matrix(c(4,1,3, 1,1,1.5, 3,1.5,9), nrow=n, ncol=n)
 R = chol(Sigma)  # Facteur de Cholesky supérieure
 
 U = matrix(rnorm(n*M), nrow=n, ncol=M) # U_i ~ N(0,I)
@@ -442,7 +445,7 @@ Le système $2 \times 2$ s'écrit
   P = -\begin{bmatrix} 0 & a_{12} \\ a_{21} & 0 \end{bmatrix},\;
   N^{-1}P = -\begin{bmatrix} 0 & a_{12}/a_{11} \\ a_{21}/a_{22} & 0 \end{bmatrix}.
 \]
-- Les valeurs propres de $N^{-1}P$ sont $\pm \sqrt{a_{12}a_{21}/a_{11}a_{22}}$
+- Les valeurs propres de $\Omega = N^{-1}P$ sont $\pm \sqrt{a_{12}a_{21}/a_{11}a_{22}}$
 
 
 ## Gauss-Seidel pour un système $2 \times 2$
