@@ -146,16 +146,16 @@ Les conditions nécessaires pour un maximum, encore :
 p <- 1; I <- 10  # Prix de x et revenu
 a <- 5;          # Paramètre d'utilité
 q1 <- 1; q2 <- 2; q3 <- 5   # Trois valeurs du prix de y
-x = seq(0, 10, length.out = 1000)  # Grille, valeurs de x
+x <- seq(0, 10, length.out=1000)  # Grille, valeurs de x
 
 # Trois budgets
-b1 = (I - p*x)/q1;
-b2 = (I - p*x)/q2;
-b3 = (I - p*x)/q3;
+b1 <- (I - p*x)/q1;
+b2 <- (I - p*x)/q2;
+b3 <- (I - p*x)/q3;
 
 # Deux courbes d'indifférence
-y1 = 5*log(5)+5 - 5*log(x)  # Qui passe par (5, 5)
-y2 = 5*log(10) - 5*log(x)   # Qui passe par (10, 0)
+y1 <- 5*log(5)+5 - 5*log(x)  # Qui passe par (5, 5)
+y2 <- 5*log(10) - 5*log(x)   # Qui passe par (10, 0)
 ```
 
 ## Exemple, utilité quasi-linéaire IV
