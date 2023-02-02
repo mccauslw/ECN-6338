@@ -33,6 +33,8 @@ urlcolor: blue
 
 ## Méthode de dichotomie (bracketing)
 
+![Méthode de dichotomie](./Figures/Dichotomie.png)
+
 ## Méthode de Newton en une dimension
 
 - Considérez la fonction $f(x) = x - e^x$.
@@ -46,13 +48,13 @@ urlcolor: blue
   g(x) = f(x^k) + f'(x^k) (x-x^k) + \tfrac{1}{2} f''(x^k) (x-x^k)^2.
 \]
 - Le maximum de $g$ résoud l'équation $g'(x) = f'(x^k) + f''(x^k)(x-x^k) = 0$.
-- La solution $x^{k+1} - x^k = -f'(x^k)/f''(x^k)$.
+- La solution de $g'(x^{k+1}) = 0$ est $x^{k+1} = x^k - f'(x^k)/f''(x^k)$.
 - Notez que
 \[
   -\frac{f'(x)}{f''(x)} = \frac{1-e^x}{e^x}.
 \]
-- Pour $x \ll 0$, $x^{k+1} - x^k \approx e^{-x} \gg |x|$.
-- Pour $x \gg 0$, $x^{k+1} - x^k \approx -1$.
+- Pour $x^k \ll 0$, $x^{k+1} - x^k \approx e^{-x} \gg |x|$.
+- Pour $x^k \gg 0$, $x^{k+1} - x^k \approx -1$.
 
 ## Pas de Newton pour $x=-2,-1,1,2$
 
@@ -160,7 +162,7 @@ C = c(0.62, 0.60)         # Coûts marginaux
 alpha = 0.98; eta = 0.85  # Paramètres de l'utilité
 
 yz <- as.matrix(expand.grid(seq(-2, 1, length=301),
-                            seq(0, 2, length=301)))
+                            seq(0, 2, length=201)))
 colnames(yz) <-c('y', 'z')
 df <- data.frame(
   pi_fn = apply(yz, 1, pi_val, C, alpha, eta), yz)
@@ -303,7 +305,7 @@ vgh1$hessien %*% h
 
 ## La méthode Newton
 
-La méthode Newton est $x^{k+1} - x^k$ = $-H(x^k)^{-1} \nabla f(x^k)$.
+La méthode Newton est $x^{k+1} - x^k$ = $-H(x^k)^{-1} \nabla f(x^k)$, où $H(x^k)$ est la matrice hessienne de $f$ évaluée à $x^k$.
 
 ### Avantages
 
