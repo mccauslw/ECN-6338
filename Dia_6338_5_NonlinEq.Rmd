@@ -42,7 +42,7 @@ où $f \colon \mathbb{R} \to \mathbb{R}$.
 \]
 où $f \colon \mathbb{R}^n \to \mathbb{R}^n$.
 
-- Problème multivarié, élément par élément : trouvez $(x_1,\ldots,x_n)$ qui vérifie
+- Problème multivarié, écrit élément par élément : trouvez $(x_1,\ldots,x_n)$ qui vérifie
 \[
   \begin{aligned}
     f^1(x_1,\ldots,x_n) &= 0 \\
@@ -55,16 +55,16 @@ où $f \colon \mathbb{R}^n \to \mathbb{R}^n$.
 
 La solution $x^*$ au problème d'optimisation
 \[
-  \max_{x \in \mathbb{R}} f(x),
+  \max_{x \in \mathbb{R}^n} f(x),
 \]
-où $f \colon \mathbb{R} \to \mathbb{R}$ et $f \in C^2$, est aussi la solution du système
+où $f \colon \mathbb{R}^n \to \mathbb{R}$ et $f \in C^2$, est aussi la solution du système
 \[
-  \frac{\partial f(x)}{\partial x^\top} = 0.
+  \frac{\partial f(x)}{\partial x^\top} = 0_n.
 \]
 Cependant, la résolution du système $g(x) = 0$, $g \in C^1$, est plus générale :
 
-- La matrice jacobienne de $g$ n'est pas forcément symmétrique
-- La matrice jabobienne de $\nabla f$ est la matrice hessienne symmétrique de $g$.
+- La matrice jacobienne de $g$ n'est pas forcément symmétrique.
+- La matrice jabobienne de $\frac{\partial f(x)}{\partial x^\top}$ est la matrice hessienne symmétrique de $f$.
 
 ## Systèmes non-linéaires et le nombre de solutions
 
@@ -102,6 +102,7 @@ Dans le cas général, il peut y avoir
 x = seq(-2, 2, length=201)
 plot(x, -(x+1)^2, type='l', ylim=c(-2, 2), xlab='x1', ylab='x2')
 lines(x, (x-1)^2)
+text(c(-1,1), c(0,0), pos=c(3,1), labels=c('f^1(x_1,x_2)=0', 'f^2(x_1,x_2)=0'))
 ```
 
 ## Exemple : solutions multiples
@@ -120,6 +121,7 @@ plot(x, 2*x^2 - 1, type='l', ylim=c(-1.5, 1.5), xlab='x1', ylab='x2', asp=1)
 th = seq(0, 2*pi, length=401)
 lines(cos(th), sin(th))
 points(c(0, sqrt(0.75), -sqrt(0.75)), c(-1, 0.5, 0.5), pch=20)
+text(c(1.5,1.5), c(0,1.2), labels=c('f^1(x_1,x_2)=0', 'f^2(x_1,x_2)=0'))
 ```
 
 ## Jeu du duopole (Judd, pages 162-3)
@@ -147,12 +149,12 @@ où $p_Y$ et $p_Z$ sont les prix de $Y$ et $Z$.
 - On cherche une équilibre de Nash $(Y^*, Z^*)$ où
     - $Y^*$ maximise le profit de la firme 1, pour $Z^*$ donnée,
     - $Z^*$ maximise le profit de la firme 2, pour $Y^*$ donnée.
-- La meilleure réponse $Y$ à $Z$ la maximise le profit :
+- La meilleure réponse $Y$ à $Z$ maximise le profit :
 \[
   \begin{aligned}
     \Pi^Y(Y,Z) &= Yu_Y(Y,Z) - C_Y Y \\
-    &= \eta(1 + Y^\alpha + Z^\alpha)^{\eta/\alpha - 1} Y^\alpha - C_Y Y \\
-    &= \eta(1 + e^{\alpha y} + e^{\alpha z})^{\eta/\alpha - 1} e^{\alpha y} - C_Y e^y,
+    &= \eta(1 + Y^\alpha + Z^\alpha)^{(\eta/\alpha) - 1} Y^\alpha - C_Y Y \\
+    &= \eta(1 + e^{\alpha y} + e^{\alpha z})^{(\eta/\alpha) - 1} e^{\alpha y} - C_Y e^y,
   \end{aligned}
 \]
 où $y = \log Y$, $z = \log Z$.
@@ -160,8 +162,8 @@ où $y = \log Y$, $z = \log Z$.
 \[
   \begin{aligned}
     \Pi^Y_1(Y,Z) &= \alpha \eta (\tfrac{\eta}{\alpha} - 1)
-    (1 + e^{\alpha y} + e^{\alpha z})^{\eta/\alpha - 2} e^{2\alpha y} \\
-    &+ \alpha \eta (1 + e^{\alpha y} + e^{\alpha z})^{\eta/\alpha - 1} e^{\alpha y}
+    (1 + e^{\alpha y} + e^{\alpha z})^{(\eta/\alpha) - 2} e^{2\alpha y} \\
+    &+ \alpha \eta (1 + e^{\alpha y} + e^{\alpha z})^{(\eta/\alpha) - 1} e^{\alpha y}
     - C_Y e^y = 0.
   \end{aligned}
 \]
@@ -186,12 +188,12 @@ Considérons la fonction $f$ et sa dérivée, définie sur l'intervalle $[0,1]$ 
 \]
 Si on prend le point initial $x_0 = 0$, la droite de tangente est
 \[
-  g(x) = f(0) + f'(0)(x-0) = 1-4x,
+  g(x) = f(x_0) + f'(x_0)(x-x_0) = f(0) + f'(0)(x-0) = 1-4x,
 \]
 et le point $x_1$ de l'itération de Newton est l'intersection de cette droite
 et l'axe des abscisses :
 \[
-  x_1 = x_0 - \frac{f(0)}{f'(0)} = 0 - \frac{1}{-3-1} = \frac{1}{4}.
+  x_1 = x_0 - \frac{f(x_0)}{f'(x_0)} = 0 - \frac{f(0)}{f'(0)} = -\frac{1}{-3-1} = \frac{1}{4}.
 \]
 Un pas de Newton de plus donne
 \[
@@ -201,7 +203,7 @@ très près de la racine unique.
 
 ## Illustration univariée II : échec de la méthode de Newton
 
-- On peut commencer à $x_0 = 1$ où la courbature est plus prononcée.
+- On peut commencer à $x_0 = 1$ plus loin de la racine et où la pente est moins raide.
 - On évalue $f(x_0) = -\log 2$, $f'(x_0) = -\tfrac{1}{2}$ et on calcule
 \[
   x_1 = x_0 - \frac{f(x_0)}{f'(x_0)} \approx -0.3862944,
@@ -265,9 +267,10 @@ abline(h=0)
 
 ## Discussion, méthode de dichotomie
 
-- Pour la méthode de dichotomie,
-    - on gagne 1 bit de précision à chaque itération (pas beaucoup, mais sûr),
-    - on sait à l'avance combien d'itérations il faut pour atteindre
+- On évalue seuelement la fonction et non les dérivées.
+- La fonction doit être continue, pas forcément différentiable.
+- On gagne 1 bit de précision à chaque itération (pas beaucoup, mais sûr),
+- On sait à l'avance combien d'itérations il faut pour atteindre
     ces deux conditions : $b_k - a_k < \delta$, $[a_k,b_k]$ contient une racine.
 - Considérez des jeux zéro-somme entre
     - joueur 1 qui choisit une fonction continue $f(x)$ avec $f(a_0)f(b_0) < 0$,
@@ -289,12 +292,16 @@ Intrants à l'itération $k+1$ : points $a_k$, $b_k$, $b_{k-1}$ ($b_{-1} = a_0$)
 À l'itération $k+1$ :
 
 1. Calculer $m = \frac{1}{2}(a_k + b_k)$.
-1. Calculer $s$ comme fonction de $a_k$, $b_k$, $f(a_k)$, $f(b_k)$, $b_{k-1}$, $f(b_{k-1})$. (détails à venir)
+1. Calculer $s$ comme fonction de $a_k$, $b_k$, $f(a_k)$, $f(b_k)$, $b_{k-1}$, $f(b_{k-1})$. (deux façons, détails à venir)
 1. Choisir entre $b_{k+1} = s$ et $b_{k+1} = m$. (détails à venir)
 1. Évaluer $f(b_{k+1})$, si $f(b_{k+1}) = 0$, terminer avec $b_{k+1}$.
 1. Choisir entre $a_{k+1} = a_k$ et $a_{k+1} = b_k$ tel que $f(a_{k+1})f(b_{k+1}) < 0$. (Condition 2.)
-1. Si $|f(a_{k+1})| < f(b_{k+1})|$, échanger $a_{k+1}$ et $b_{k+1}$. (Condition 1.)
+1. Si $|f(a_{k+1})| < |f(b_{k+1})|$, échanger $a_{k+1}$, $b_{k+1}$. (Condition 1.)
 1. Si $|a_{k+1} - b_{k+1}| < \delta$, terminer avec $b_{k+1}$.
+
+## Une itération de Dekker-Brent
+
+![De $(a_k, b_k, b_{k-1})$ à $(a_{k+1},b_{k+1},b_k)$](./Figures/Dekker_Brent.png)
 
 ## Calculer $s$ (étape 2) par interpolation linéaire (droite sécante)
 
@@ -304,6 +311,7 @@ Intrants à l'itération $k+1$ : points $a_k$, $b_k$, $b_{k-1}$ ($b_{-1} = a_0$)
 
 Notes :
 
+1. Si $b_{k-1} = a_k$, l'interpolation linéaire est obligatoire.
 1. $s$ n'est pas une fonction de $a_k$.
 1. Si on choisit $s$ par interpolation linéaire, une condition nécessaire pour
 choisir $b_{k+1} = s$ (étape 3) est que $s$ se trouve entre $m$ et $b_k$.
@@ -365,7 +373,7 @@ de Seidel :
 \[
   x_1^{k+1} = \pm \sqrt{1-(x_2^k)^2}, \qquad x_2^{k+1} = 2(x_1^{k+1})^2 - 1
 \]
-- La version linéaire de Seidel donne
+- La version linéaire (méthode de Newton) de Seidel donne
 \[
   x_1^{k+1} = x_1^k - \frac{f^1(x_1^k, x_2^k)}{f_1^1(x_1^k, x_2^k)}
   = x_1^k - \frac{(x_1^k)^2 + (x_2^k)^2 - 1}{2x_1^k},
@@ -443,15 +451,18 @@ mais elle n'est pas forcément globalement convergente.
 
 - Comme la méthode BFGS (B pour Broyden) pour l'optimisation multivariée,
 la méthode de Broyden pour résoudre les systèmes non-linéaires multivariés
-utilise une approximation $A_k$ de la matrice jacobienne $J(x^k)$ pour donner
-le pas de Broyden :
+utilise une approximation $A_k$ de $J(x^k)$ pour donner
+un pas $s^k$ :
 \[
   s^k = -A_k^{-1} f(x^k), \quad x^{k+1} = x^k + s^k.
 \]
 - La mise à jour de $A_k$ est de rang 1 :
 \[
   A_{k+1} = A_k + \frac{(y_k - A_k s^k)(s^k)^\top}{(s^k)^\top s^k}
+  \quad \mbox{où} \quad
+  y_k = f(x^{k+1}) - f(x^k).
 \]
+- Notez que $A_{k+1} s^k = A_k s^k + (y_k - A_k s^k) = y_k$, une condition de chorde.
 - Cela permet la mise à jour simultanée de $A_k^{-1}$ à $A_{k+1}^{-1}$ en
 $O(n^2)$ opérations avec le formule Sherman-Morrison.
 

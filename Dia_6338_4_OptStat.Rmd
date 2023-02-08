@@ -131,13 +131,13 @@ où
 - Le revenu associé à $Y$ est
 \[
   Yu_Y(Y,Z)
-  = Y \frac{\eta}{\alpha}(Y^\alpha + Z^\alpha)^{\eta/\alpha - 1} \alpha Y^{\alpha - 1}
-  = \eta(Y^\alpha + Z^\alpha)^{\eta/\alpha - 1} Y^\alpha
+  = Y \frac{\eta}{\alpha}(Y^\alpha + Z^\alpha)^{(\eta/\alpha) - 1} \alpha Y^{\alpha - 1}
+  = \eta(Y^\alpha + Z^\alpha)^{(\eta/\alpha) - 1} Y^\alpha
 \]
 - Après la même démarche pour $Zu_Z$ on peut écrire
 \[
   \begin{aligned}
-    \Pi(Y,Z) &= \eta (Y^\alpha + Z^\alpha)^{\eta/\alpha - 1}
+    \Pi(Y,Z) &= \eta (Y^\alpha + Z^\alpha)^{(\eta/\alpha) - 1}
   (Y^\alpha + Z^\alpha) - c_Y(Y) - c_Z(Z) \\
     &= \eta (Y^\alpha + Z^\alpha)^{\eta/\alpha} - C_Y Y - C_Z Z.
   \end{aligned}
@@ -196,7 +196,7 @@ Valeur :
 Gradient :
 \[
   \frac{\partial \pi}{\partial x^\top}
-  = \eta^2(e^{\alpha y} + e^{\alpha z})^{\eta/\alpha - 1}
+  = \eta^2(e^{\alpha y} + e^{\alpha z})^{(\eta/\alpha) - 1}
   \begin{bmatrix} e^{\alpha y} \\ e^{\alpha z} \end{bmatrix}
   - \begin{bmatrix} C_Ye^y \\ C_Ze^z \end{bmatrix}
 \]
@@ -205,11 +205,11 @@ Matrice hessienne :
   \begin{aligned}
     \frac{\partial^2 \pi}{\partial x \partial x^\top}
     &= \alpha \eta^2 (\tfrac{\eta}{\alpha}-1)
-    (e^{\alpha y} + e^{\alpha z})^{\eta/\alpha - 2}
+    (e^{\alpha y} + e^{\alpha z})^{(\eta/\alpha) - 2}
     \begin{bmatrix} e^{\alpha y} \\ e^{\alpha z} \end{bmatrix}
     \begin{bmatrix} e^{\alpha y} & e^{\alpha z} \end{bmatrix} \\
     &+ \alpha \eta^2
-    (e^{\alpha y} + e^{\alpha z})^{\eta/\alpha - 1}
+    (e^{\alpha y} + e^{\alpha z})^{(\eta/\alpha) - 1}
     \begin{bmatrix} e^{\alpha y} & 0 \\ 0 & e^{\alpha z} \end{bmatrix}
     - \begin{bmatrix} C_Ye^y & 0 \\ 0 & C_Ze^z \end{bmatrix}
   \end{aligned}
