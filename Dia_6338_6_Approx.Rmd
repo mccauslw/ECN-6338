@@ -9,18 +9,18 @@ urlcolor: blue
 
 ## Survol du cours 6
 
-### Approximations locales
+### Approximations locales, basées sur les dérivées à un seul point
 
 - Approximation de Taylor
 - Approximation de Padé
 
-### Expansions avec coefficients simples
+### Expansions basées sur les évaluations sur une grille de points
 
 - Approximation linéaire par morceaux
 - Approximation de Bernstein
 - Approximation spline cubique d'Hermite
 
-### Expansions et projections
+### Expansions basées sur les projections
 
 - Suites de polynômes orthogonaux
 
@@ -35,15 +35,19 @@ urlcolor: blue
 \]
 - La valeur de $\hat{f}$ et de ses $n$ premières dérivées concordent avec celles de $f$
 au point $x_0$.
-- L'expansion a $n+1$ paramètres libres à spécifier.
-- Peu importe l'ordre $n$, l'approximation est locale.
+- L'expansion a $n+1$ coefficients.
+- Peu importe l'ordre $n$, l'approximation est locale: il existe $h_n(x)$ telle que
+\[
+  f(x) - \hat{f}(x) = h_n(x)(x-x_0)^n\,\mbox{et}\,\lim_{x\to 0} h_n(x) = 0.
+\]
+
 
 ## L'approximation Padé
 
 - Comme l'approximation de Taylor, une approximation Padé
     - utilise la valeur de $f$ et de ses premières $n$ dérivées à $x_0$,
     - concorde avec $f$ sur ces valeurs à $x_0$,
-    - a $n+1$ paramètres libres à spécifier.
+    - a $n+1$ coefficients.
 
 - L'approximation est une fonction rationnelle, un ratio de polynômes :
 \[
@@ -56,6 +60,14 @@ où $m + d = n$ et souvent $m = d$ ou $m = d+1$.
   p^i(x) - (f \cdot q)^i(x) = 0, \quad i=0,1,\ldots,m+d,
 \]
 $n+1$ équations pour trouver $n+1 = (m+1) + d$ coefficients.
+
+
+## Notes sur l'approximation Padé
+
+- L'approximation est une fonction rationnelle, un ratio de polynômes.
+- L'approximation est souvent meilleure que l'approximation de Taylor en pratique.
+- Il faut faire attention aux zéros de $q(x)$ où l'approximation n'est pas bien définie.
+
 
 ## Calcul de l'approximation Padé (2,1) de $e^x$ autour de $x=0$
 
@@ -107,20 +119,31 @@ source('Taylor_Pade_log_error.R')
 
 ## Les approximations suivantes
 
-- Nous passons maintenant aux expansions avec coefficients simples :
+- Nous passons maintenant aux expansions basées sur les évaluations sur une grille :
     - Approximation constante par morceaux
     - Approximation linéaire par morceaux
-    - Approximation par spline cubique d'hermite (cubic Hermite spline,
-    Hermite interpolation polynomials)
     - Approximation de Bernstein (pas une interpolation)
+    - Approximation par spline cubique d'hermite
+
+- Les trois premiers utilisent les évaluations $f(x_1),\ldots,f(x_n)$ sur une grille $x_1,\ldots,x_n$ et les approximations $\hat{f}(x)$ sur $[x_1,x_n]$ prennent la forme
+\[
+  \hat{f}(x) = \sum_{i=1}^n f(x_i) \phi_i(x).
+\]
+- Deux propriétés possibles :
+    - partition d'unité : $\sum_{i=1} \phi_i(x) = 1$ pour $x \in [x_i,x_n)$
+    - interpolation : $\hat{f}(x_i) = f(x_i)$ pour $i=1,\ldots,n$.
 
 ## Approx. constante par morceaux et linéaire par morceaux
 
 ![](./Figures/const_lineaire.pdf)
 
+## Approximations par morceaux
+
+![](./Figures/Par_morceaux.png)
+
 ## Polynômes de Bernstein d'ordre $n=10$
 
-```{r Bernstein}
+```{r Bernstein, warning=FALSE}
 source('Bernstein.R')
 ```
 
@@ -151,7 +174,7 @@ suivante est une densité, un mélange de densités Beta :
 \[
   g(x) = \sum_{i=0}^n \pi_i b_{i,n}(x).
 \]
-- Soit $G(x) = \int_0^t g(t)\, dt$, la fonction de répartition, un polynôme d'ordre $n+1$.
+- Soit $G(x) = \int_0^x g(t)\, dt$, la fonction de répartition, un polynôme d'ordre $n+1$.
 - Pour une fonction de répartition parmétrique $F(x)$ sur $(-\infty, \infty)$,
 $H(x) = G(F(x))$ est une autre fonction de répartition sur $(-\infty, \infty)$.
 - La densité est $h(x) = g(F(x)) f(x)$.
@@ -177,7 +200,7 @@ f_grid <- f(t)
 
 ## Approximation de Bernstein de $g(x) = e^x$ pour $n=10,20$
 
-```{r bernstein_exp_graph}
+```{r bernstein_exp_graph, warning=FALSE}
 plot(x, f_grid, type='l')
 lines(x, bernstein(f, 10, t), col='green')
 lines(x, bernstein(f, 20, t), col='red')
@@ -194,7 +217,7 @@ Quatre fonctions cubiques sur l'intervalle $[0,1]$ :
 \]
 
 | Fonction $f$ | $f(0)$ | $f'(0)$ | $f(1)$ | $f'(1)$ |
-|--------------|--------|---------|--------|---------|
+|--------------|----|----|----|----|
 | $\varphi_1$ | 1 | 0 | 0 | 0 |
 | $\varphi_2$ | 0 | 1 | 0 | 0 |
 | $\varphi_3$ | 0 | 0 | 1 | 0 |
@@ -219,8 +242,7 @@ source('Hermite_piece.R')
     - cubique par morceaux $[x_i,x_{i+1}]$, (piecewise cubic function)
     - $C^1$ dans l'intervalle $[x_1, x_n]$,
     - ayant une deuxième dérivée discontinue à chaque $x_i$.
-- Il faut transformer les fonctions $\varphi_j \colon [0,1] \to \mathbb{R}$, $j=1,2,3,4$, pour
-avoir les fonctions $\varphi_j \colon [x_i, x_{i+1}] \to \mathbb{R}$.
+- Il faut transformer les fonctions $\varphi_j \colon [0,1] \to \mathbb{R}$, $j=1,2,3,4$, pour obtenir les fonctions $\varphi_j \colon [x_i, x_{i+1}] \to \mathbb{R}$.
 - Il y a une version (rarement utilisée) avec six fonctions quintiques d'hermite
 qui donne une fonction $C^2$ à partir des valeurs, des premières dérivées et des deuxième
 dérivées à un ensemble de points.
@@ -285,6 +307,17 @@ $\|y-X\beta\|^2 = (y-X\beta)^\top(y-X\beta)$.
 \]
 - Remarquez les produits intérieurs.
 
+## MCO avec colonnes orthogales et l'approximation
+
+| MCO | Approximation par projection |
+|-----------------------|-----------------------|
+| Vecteur $y$                | Fonction $f(\cdot)$ |
+| Valeurs prédites $\hat{y}$ | Approximation $\hat{f}(\cdot)$ |
+| Vecteurs $x_k$, $k=1,\ldots,K$ | Polynômes $\phi_k(\cdot)$, $k=1,\ldots,K$ |
+| Produit intérieur $x_k^\top y$ | Produit intérieur $\langle \phi_k, f \rangle$ |
+| Colonnes orthogonales $x_k^\top x_l = 0$ | Polynômes orthogonales $\langle \phi_k, \phi_l \rangle = 0$. |
+| Projection de $y$ sur $x_k$ : $\frac{x_k^\top y}{x_k^\top x_k} x_k$ | Projection de $f$ sur $\phi_k(\cdot)$ : $\frac{\langle \phi_k, f \rangle}{\langle \phi_k, \phi_k \rangle} \phi_k(\cdot)$ |
+
 ## Familles de polynômes orthogonaux : produits intérieurs
 
 - Il y a plusieurs produits intérieurs possibles pour les espace des fonctions,
@@ -320,8 +353,7 @@ est
   p(x) = \sum_{k=0}^n
   \frac{\langle f, \varphi_k \rangle}{\langle \varphi_k, \varphi_k \rangle} \varphi_k(x).
 \]
-- Cependant, selon chacun des produits intérieurs classiques, les monômes, $1, x, x^2, \ldots$,
-ne sont pas orthogonaux.
+- les monômes, $1, x, x^2, \ldots$ ne sont pas orthogonaux, peu importe le choix de produit intérieur.
 
 ## L'orthogonalisation de polynômes
 
