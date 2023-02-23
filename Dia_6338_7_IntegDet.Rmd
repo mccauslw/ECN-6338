@@ -9,23 +9,60 @@ urlcolor: blue
 
 ## Survol du cours 7
 
+- Exemple, enchères en équilibre
 - Formules (ou règles) Newton-Cotes pour l'intégration univariée
+    - Règle du point médian
+    - Règle de trapèze
+    - Règle de Simpson
 - Formules (ou règles) de Gauss pour l'intégration univariée
     - Règle de Gauss-Laguerre et l'utilité actualisée
     - Règle de Gauss-Hermite et les espérances gaussiennes
 - Intégration multivariée
 - Dérivation
 
+## Exemple 1, enchères en équilibre
+
+- Considérez une vente aux enchères hollandaise (ou descendante, ou à premier prix sous pli cacheté) avec $n$ enchéreurs.
+- Dans ce type de vente aux enchères, celui qui fait l'enchère la plus grande obtient l'objet, au prix égal à son enchère.
+- Supposez que les valeurs privées de l'objet à vendre, $v_1, v_2, \ldots v_n$, sont iid avec fonction de répartition $F$ sur $[v_{\min}, v_{\max}]$.
+- En équilibre de Bayes-Nash, un enchéreur avec une valeur privée de $v$ fait une enchère de
+\[
+  b(v) = v - \frac{ \int_{v_\mathrm{min}}^v [F(x)]^{n-1}\, dx}{[F(v)]^{n-1}}.
+\]
+
+## Une fonction de répartition $F$ pour les valeurs privées
+
+- Supposez que $F(x) = 1-(1-x)^{5/2}$ sur $[0,1]$.
+- La fonction de répartition et le fonction de densité :
+
+```{r Fenchere}
+# Fonction de répartition de la valeur privée
+Fv <- function(x) {1-(1-x)^2.5}
+
+# Fonction de densité de la valeur privée
+fv <- function(x) {2.5 * (1-x)^1.5}
+
+# Grille de points
+x <- seq(0, 1, length=1000)
+```
+
+## Graphiques de $F$, $f$ pour les valeurs privées
+
+```{r FenchereGraph}
+plot(x, fv(x), type='l')
+lines(x, Fv(x), col='blue')
+```
+
 ## La règle du point médian et l'analyse de son erreur
 
 - Supposons que $f \in C^2[a,b]$.
-- Par la formule de [Taylor-Lagrange](https://fr.wikipedia.org/wiki/Théorème_de_Taylor), il y a un $\xi \in (a,b)$ tel que
+- Par la formule de [Taylor-Lagrange](https://fr.wikipedia.org/wiki/Théorème_de_Taylor), pour chaque $x \in [a,b]$ il y a un $\xi \in [\tfrac{a+b}{2},x]$ tel que
 \[
   f(x) = f\left(\tfrac{a+b}{2}\right)
        + f'\left(\tfrac{a+b}{2}\right) \left(x - \tfrac{a+b}{2}\right)
        + \tfrac{1}{2} f''(\xi) \left(x - \tfrac{a+b}{2}\right)^2
 \]
-- Alors, pour la même valeur de $\xi$,
+- Alors il y a un $\xi \in [a,b]$ tel que
 \[
   \begin{aligned}
   \int_a^b f(x) \, dx
@@ -46,8 +83,7 @@ urlcolor: blue
 \[
   x_j = a + (j-\tfrac{1}{2})h, \quad j=1,2,\ldots,n.
 \]
-- Décomposer l'intégral par intervalle et utiliser la règle du point médian, intervalle par
-intervalle, donne, pour un $\xi \in [a,b]$,
+- Décomposer l'intégral par intervalle et utiliser la règle du point médian, intervalle par intervalle, donne, pour un $\xi \in [a,b]$,
 \[
   \int_a^b f(x)\,dx = h \sum_{j=1}^n f(x_j) + \frac{h^2(b-a)}{24}f''(\xi).
 \]
@@ -59,7 +95,7 @@ intervalle, donne, pour un $\xi \in [a,b]$,
   \int_a^b f(x)\,dx = \tfrac{b-a}{2} [f(a) + f(b)] - \tfrac{(b-a)^3}{12} f''(\xi).
 \]
 - Pour la version composée,
-    - on partage l'évaluation entre deux intervalles.
+    - toutes les points d'évaluation, sauf deux, sont des points extrèmes de deux intervalles.
     - décomposer l'intervalle $[a,b]$ en $n$ sous-intervalles de longueur $h = \tfrac{b-a}{n}$.
     - les points extrêmes sont $x_i = a + ih$, $i=0,\ldots,n$.
     - le résultat est, pour $\xi \in [a,b]$,
@@ -69,7 +105,7 @@ intervalle, donne, pour un $\xi \in [a,b]$,
 
 ## La règle de Simpson I
 
-- Avec le point médian et les points extrêmes, on peut utiliser la règle de Simpson : il y a un $\xi \in [0,1]$ tel que
+- Avec le point médian et les points extrêmes, on peut utiliser la règle de Simpson : il y a un $\xi \in [a,b]$ tel que
 \[
   \int_a^b f(x) \, dx = (b-a)
   \left[ \tfrac{1}{3} \tfrac{f(a) + f(b)}{2} + \tfrac{2}{3} f\left(\tfrac{a+b}{2}\right) \right]
@@ -88,7 +124,7 @@ points(c(0, 0.5, 1), c(3, 4.25, 5), pty=18)
 ## La règle de Simpson II
 
 - La règle de Simpson simple donne l'intégral exacte d'une approximation quadratique
-- La version composée donne, avec les mêmes $n$ évaluations
+- La version composée donne, avec les mêmes $n$ évaluations que la version composée de le règle de trapèze
 (mais $n/2$ intervalles de longueur $2h$ et $n$ doit être pair),
 \[
   \begin{aligned}
@@ -98,26 +134,59 @@ points(c(0, 0.5, 1), c(3, 4.25, 5), pty=18)
 \]
 où $f_i \equiv f(x_i)$.
 
+## Trouver la fonction d'enchère $b(v)$
+
+```{r NC}
+NCbf <- function(n, nb, F) {
+  v1 <- (seq(1, n) - 0.5)/n;  f1 <- F(v1)^(nb-1)
+  v2 <- seq(0, n)/n;          f2 <- F(v2)^(nb-1) 
+  v_me <- v_tr <- v2;      b_me <- b_tr <- v2;
+  v_S <- 2*seq(0, n/2)/n;  b_S <- v2[seq(1, n+1, by=2)]
+  I_me <- I_tr <- I_S <- 0
+  for (i in seq(1, n)) {
+    I_me <- I_me + f1[i]/n;
+    b_me[i+1] <- b_me[i+1] - I_me/f2[i+1]
+    I_tr <- I_tr + (f2[i] + f2[i+1]) / (2*n);
+    b_tr[i+1] <- b_tr[i+1] - I_tr/f2[i+1]
+  }
+  for (i in seq(1, n/2)) {
+    I_S <- I_S + (f2[2*i-1] + 4*f2[2*i] + f2[2*i+1])/(3*n)
+    b_S[i+1] <- b_S[i+1] - I_S/f2[2*i+1]
+  }
+  list(v_me=v_me, b_me=b_me, v_tr=v_tr, b_tr=b_tr, v_S=v_S, b_S=b_S)
+}
+```
+
+## Graphiques, fonctions d'enchères
+
+```{r Newton_Cotes}
+NC6 <- NCbf(6, 4, Fv); NC32 <- NCbf(32, 4, Fv)
+plot(NC6$v_me, NC6$b_me, type='l')
+lines(NC6$v_tr, NC6$b_tr, col='red')
+lines(NC6$v_S, NC6$b_S, col='green')
+lines(NC32$v_S, NC32$b_S, col='blue')
+```
+
 ## Règles gaussiennes I
 
-- Comme les règles de Newton-Cotes, les règles gaussienne donne des approximations
+- Comme les règles de Newton-Cotes, les règles gaussienne donnent des approximations
 de la forme
 \[
   \int_a^b w(x) f(x)\, dx \approx \sum_{i=1}^N \omega_i f(x_i),
 \]
 pour une collection de paires $(\omega_i,x_i)$.
+- Résultat théorique  (Judd, théorème 7.2.1) : avec $N$ points et $N$ noeuds les règles standards donnent la valeur exacte de l'intégral pour les polynômes d'ordre
+$2N-1$ et des formules pour le termes résiduels.
 - Différences :
-    - les règles gaussiennes donne les intégrales pondérées
+    - les règles gaussiennes donnent les intégrales pondérées
     (avec $w(x)$) des polynômes globaux
     - les règles sont calculées à partir des suites de polynômes orthogonaux
     - les règles spécifient et les poids et les noeuds, pour un ordre $N$ donné
-    - Un résultat théorique qui quantifie la qualité de l'approximation : avec $N$ points et $N$ noeuds les règles standards donne la valeur exacte de l'intégral pour les polynômes d'ordre
-$2N-1$. (Cela dit, il y a des formules pour le termes résiduels aussi)
 
 
 ## Règles gaussiennes II
 
-- Judd donne des formules pour les intégrales
+- Judd donne des formules pour les intégrales suivants
 \[
   \int_{-1}^1 f(x) (1-x^2)^{-1/2}\, dx \qquad \text{(Gauss-Tchebyshev)}
 \]
@@ -132,7 +201,35 @@ $2N-1$. (Cela dit, il y a des formules pour le termes résiduels aussi)
 \]
 - Les deux dernières ont des applications spéciales en économie
 
-## Actualisation
+## Noeuds et poids pour l'intégration Gauss-Legendre sur [0,1]
+
+```{r gauss-legendre-noeuds_poids, message=FALSE, warning=FALSE}
+library(mvQuad)
+library(knitr)      # Pour kable
+library(tidyverse)  # Pour tibble
+nw <- createNIGrid(dim=1, type="GLe", level=6)
+rescale(nw, domain = c(0,1))
+tbl <- tibble(Noeuds=nw$nodes, Poids=nw$weights)
+kable(tbl)
+```
+
+## Calcul de la fonction $b(v)$ à $v=0.5$ et $v=1$
+
+```{r enchere}
+# Fonction à intégrer
+f_int <- function(v, nb) {Fv(v)^(nb-1)}
+
+# Fonction d'enchère
+b <- function(v, nb) {
+    rescale(nw, domain = c(0,v))
+    (v - quadrature(f_int, grid = nw, nb) / Fv(v)^(nb-1))
+}
+
+c(b(0.5, 4), b(1, 4))
+c(NC32$b_S[9], NC32$b_S[17])
+```
+
+## Exemple 2, Actualisation
 
 - Deux problèmes d'actualisation en temps continu :
     - du consommateur,
@@ -186,8 +283,6 @@ lines(t, u_actu, col='green')
 Après le changement de variables $s=\rho t$, on a une fonction $u_s(s)$ à
 intégrer par rapport à $w(s) = e^{-s}$ :
 ```{r u_s}
-library(mvQuad)
-
 u_s <- function(s, lambda, rho, a)
 {
   c <- 1 - exp(-(lambda/rho) * s)
@@ -198,8 +293,6 @@ u_s <- function(s, lambda, rho, a)
 ## Noeuds et poids pour l'intégration Gauss-Laguerre
 
 ```{r gauss-laguerre-noeuds_poids, message=FALSE, warning=FALSE}
-library(knitr)      # Pour kable
-library(tidyverse)  # Pour tibble
 nw <- createNIGrid(d=1, type='GLa', level=5)
 tbl <- tibble(Noeuds=nw$nodes, Poids=nw$weights)
 kable(tbl)
@@ -221,7 +314,7 @@ I10 = quadrature(u_s, grid=nw, lambda, rho, a)
 I10
 ```
 
-## Espérance par rapport à une loi gaussienne
+## Exemple 3, Espérance par rapport à une loi gaussienne
 
 - Problème : évaluer $E[f(Y)]$ pour $Y \sim N(\mu, \sigma^2)$.
 
