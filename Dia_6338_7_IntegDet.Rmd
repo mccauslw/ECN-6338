@@ -175,7 +175,7 @@ de la forme
   \int_a^b w(x) f(x)\, dx \approx \sum_{i=1}^N \omega_i f(x_i),
 \]
 pour une collection de paires $(\omega_i,x_i)$.
-- Résultat théorique  (Judd, théorème 7.2.1) : avec $N$ points et $N$ noeuds les règles standards donnent la valeur exacte de l'intégral pour les polynômes d'ordre
+- Résultat théorique  (Judd, théorème 7.2.1) : avec $N$ poids et $N$ noeuds les règles standards donnent la valeur exacte de l'intégral pour les polynômes d'ordre
 $2N-1$ et des formules pour le termes résiduels.
 - Différences :
     - les règles gaussiennes donnent les intégrales pondérées
