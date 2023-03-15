@@ -7,32 +7,41 @@ output: beamer_presentation
 urlcolor: blue
 ---
 
+## Survol du cours 9
+
+1. L'idée de l'exercice Monte Carlo, Monte Carlo avec chaînes markoviennes (MCMC)
+1. MCMC avec le marche aléatoire de Metropolis
+1. Un modèle à deux paramètres
+
 ## L'exercice Monte Carlo
 
 Situations où l'intégration par Monte Carlo est convenable :
 
-- Les problèmes de haute dimension ($>20$)
-- Les problèmes où on veut calculer plusieurs intégrales de la forme
+- problèmes de haute dimension ($>20$)
+- problèmes où on veut calculer plusieurs intégrales de la forme
 \[
   E_p[g_i(\theta)] = \int_D p(\theta) g_i(\theta)\, d\theta, \quad i=1,\ldots,J,
 \]
-- Souvent, $p$ est la densité *a posteriori* $p(\theta|y)$ pour un modèle bayésien, où $\theta$ est un vecteur de paramètres et $y$ est un échantillon.
+où $p(\theta)$ est une densité commune, la *densité cible*.
+Souvent, $p$ est la densité *a posteriori* $p(\theta|y)$ d'une analyse bayésienne, $\theta$ est un vecteur de paramètres d'un modèle et $y$ est un échantillon.
 
-L'exercise Monte Carlo est de générer un échantillon $\theta^{(m)}$, $m=1,\ldots,M$
-tel que 
+L'exercice Monte Carlo est de tirer $\theta^{(m)}$, $m=1,\ldots,M$,
+tel que pour chaque $g(\theta)$ où l'espérance à droite est finie,
 \[
-  \frac{1}{M} \sum_{m=1}^M g(\theta^{(m)}) \overset{p}{\to} \int p(\theta) g(\theta)\,d\theta
+  \frac{1}{M} \sum_{m=1}^M g(\theta^{(m)}) \overset{p}{\to} \int p(\theta) g(\theta)\,d\theta,
 \]
-quand l'espérance à droite est finie.
+et un théorème central limite s'applique.
 
 ## Monte Carlo avec chaînes markoviennes (MCMC)
 
-- Le simple fait qu'on peut écrire la densité cible $p(\theta|y)$ sur $\Theta$
-ne veux pas dire qu'il est facile de tirer un échantillon iid de la loi cible $\theta|y$.
+- Le simple fait qu'on peut écrire la densité cible $p(\theta|y)$ ne veux pas dire qu'il est facile de tirer un échantillon iid de $\theta|y$.
 - En fait, les tirages iid sont infaisables pour tous les modèles sauf les plus simples.
 - En pratique, on se contente de simuler une chaîne markovienne dont la loi cible est la loi stationnaire de la chaîne :
     - Une chaîne markovienne sur $\Theta$ a une loi de transition $\theta^{(m+1)}|\theta^{(m)}$.
-    - La loi cible est une loi stationnaire de la chaîne si $\theta^{(m+1)}$ suit la loi cible quand $\theta^{(m)}$ la suit.
+    - La loi cible avec densité $p(\theta|y)$ est une loi stationnaire de la chaîne si
+    \[
+      \theta^{(m)} \sim p(\theta|y) \Rightarrow \theta^{(m+1)} \sim p(\theta|y).
+    \]
     - Quand la loi cible est une loi stationnaire, on peut dire que la transition markovienne *préserve* la loi cible.
     - Si la chaîne est ergodique, la loi stationnaire est unique et il y a une loi de grands nombres et un théorème central limite qui s'appliquent.
 
@@ -40,8 +49,8 @@ ne veux pas dire qu'il est facile de tirer un échantillon iid de la loi cible $
 
 - Supposons que la loi cible $\theta|y$ ait un noyau de densité $k(\theta) \propto p(\theta|y)$.
 
-- La loi cible est l'unique loi invariante de la transition de Markov suivante, de $\theta^{(m)}$ à $\theta^{(m+1)}$ :
-    1. Tirer $\theta^* \sim N(\theta^{(m)}, \Sigma)$.
+- La loi cible est l'unique loi invariante de la transition de Markov suivante, de $\theta^{(m)}$ à $\theta^{(m+1)}$, où $\Sigma$ est n'importe quelle matrice définie positive :
+    1. Tirer $\theta^* \sim N(\theta^{(m)}, \Sigma)$
     1. Tirer $U$ de la loi uniform sur $[0,1]$.
     1. Si $U \leq \frac{k(\theta^*)}{k(\theta^{(m)})}$ fixe $\theta^{(m+1)} = \theta^*$, sinon fixe $\theta^{(m+1)} = \theta^{(m)}$.
 
@@ -87,58 +96,58 @@ for (i in 1:3) {
 
 Nous avons le modèle suivant : pour $i=1,\ldots,n$,
 \[
-  y_i = \mu + e_i
+  y_i = \textcolor{blue}{\mu} + e_i,
   \quad
-	e_i \sim \mathrm{iid}\,N(0,h^{-1}).
+	e_i \sim \mathrm{iid}\,N(0,\textcolor{red}{h}^{-1}).
 \]
 
 La densité des données :
 \[
-  p(y_1,\ldots,y_n|\mu,h) = \left(\frac{h}{2\pi}\right)^{n/2}
-	\exp\left[ -\frac{h}{2} \sum_{i=1}^n (y_t-\mu)^2 \right].
+  p(y_1,\ldots,y_n|\textcolor{blue}{\mu},\textcolor{red}{h}) = \left(\frac{\textcolor{red}{h}}{2\pi}\right)^{n/2}
+	\exp\left[ -\frac{\textcolor{red}{h}}{2} \sum_{i=1}^n (y_t-\textcolor{blue}{\mu})^2 \right].
 \]
 
 ## Une loi *a priori* pour le modèle à deux paramètres
 
-Nous complétons le modèle avec la loi *a priori* où $\mu$ and $h$ sont indépendants et
+Nous complétons le modèle avec la loi *a priori* où $\textcolor{blue}{\mu}$ and $\textcolor{red}{h}$ sont indépendants et
 \[
-  \mu \sim N(\bar{\mu},\bar{\omega}^{-1}),
+  \textcolor{blue}{\mu} \sim N(\bar{\mu},\bar{\omega}^{-1}),
   \quad
-  \bar{s}^2h \sim \chi^2(\bar{\nu}).
+  \bar{s}^2\textcolor{red}{h} \sim \chi^2(\bar{\nu}).
 \]
 Ainsi
 \[
-  p(\mu,h) = p(\mu) p(h),
+  p(\textcolor{blue}{\mu},\textcolor{red}{h}) = p(\textcolor{blue}{\mu}) p(\textcolor{red}{h}),
 \]
 où
 \[
-  p(\mu) = \left(\frac{\bar{\omega}}{2\pi}\right)^{1/2}
-	\exp\left[ -\frac{1}{2} \bar{\omega} (\mu - \bar{\mu})^2\right],
+  p(\textcolor{blue}{\mu}) = \left(\frac{\bar{\omega}}{2\pi}\right)^{1/2}
+	\exp\left[ -\frac{1}{2} \bar{\omega} (\textcolor{blue}{\mu} - \bar{\mu})^2\right],
 \]
 \[
-  p(h) = [2^{\bar{\nu}/2} \Gamma(\bar{\nu}/2)]^{-1}
+  p(\textcolor{red}{h}) = [2^{\bar{\nu}/2} \Gamma(\bar{\nu}/2)]^{-1}
 	(\bar{s}^2)^{\bar{\nu}/2}
-	h^{(\bar{\nu}-2)/2}
-	\exp\left[ -\frac{1}{2} \bar{s}^2 h \right].
+	\textcolor{red}{h}^{(\bar{\nu}-2)/2}
+	\exp\left[ -\frac{1}{2} \bar{s}^2 \textcolor{red}{h} \right].
 \]
 
 ## La loi *a posteriori* pour le modèle gaussien simple
 
-La densité conjointe de $\mu$, $h$ et $y$ :
+La densité conjointe de $\textcolor{blue}{\mu}$, $\textcolor{red}{h}$ et $y$ :
 \[
 \begin{aligned}
-  p(\mu,h,y) &= p(\mu) p(h) p(y|\mu,h) \\
+  p(\textcolor{blue}{\mu},\textcolor{red}{h},y) &= p(\textcolor{blue}{\mu}) p(\textcolor{red}{h}) p(y|\textcolor{blue}{\mu},\textcolor{red}{h}) \\
   &=
   \left( \frac{1}{2\pi} \right)^{n/2}
   \left( \frac{\bar{\omega}}{2\pi} \right)^{1/2}
   [2^{\bar{\nu}/2} \Gamma(\bar{\nu}/2)]^{-1}
   (\bar{s}^2)^{\bar{\nu}/2} \\
   &\cdot
-  h^{(\bar{\nu}+n-2)/2}
+  \textcolor{red}{h}^{(\bar{\nu}+n-2)/2}
   \exp\left\{
-    -\frac{\bar{\omega}}{2}(\mu-\bar{\mu})^2
-    -\frac{h}{2} \left[
-      \bar{s}^2 + \sum_{t=1}^n (y_t - \mu)^2
+    -\frac{\bar{\omega}}{2}(\textcolor{blue}{\mu}-\bar{\mu})^2
+    -\frac{\textcolor{red}{h}}{2} \left[
+      \bar{s}^2 + \sum_{t=1}^n (y_t - \textcolor{blue}{\mu})^2
     \right]
   \right\}
 \end{aligned}
@@ -146,16 +155,16 @@ La densité conjointe de $\mu$, $h$ et $y$ :
 
 La densité *a posteriori* est proportionnelle à la densité conjointe :
 \[
-  p(\mu,h|y) = \frac{p(\mu,h,y)}{p(y)} \propto p(\mu,h,y).
+  p(\textcolor{blue}{\mu},\textcolor{red}{h}|y) = \frac{p(\textcolor{blue}{\mu},\textcolor{red}{h},y)}{p(y)} \propto p(\textcolor{blue}{\mu},\textcolor{red}{h},y).
 \]
 Ainsi
 \[
-  p(\mu,h|y) \propto
-  h^{(\bar{\nu}+n-2)/2}
+  p(\textcolor{blue}{\mu},\textcolor{red}{h}|y) \propto
+  \textcolor{red}{h}^{(\bar{\nu}+n-2)/2}
   \exp\left\{
-    -\frac{\bar{\omega}}{2}(\mu-\bar{\mu})^2
-    -\frac{h}{2} \left[
-      \bar{s}^2 + \sum_{t=1}^n (y_t - \mu)^2
+    -\frac{\bar{\omega}}{2}(\textcolor{blue}{\mu}-\bar{\mu})^2
+    -\frac{\textcolor{red}{h}}{2} \left[
+      \bar{s}^2 + \sum_{t=1}^n (y_t - \textcolor{blue}{\mu})^2
     \right]
   \right\}.
 \]
@@ -271,19 +280,19 @@ lnp_post(); set.seed(123); sim <- Metro.sim(100); lines(sim$mu, sim$h, col='red'
 
 ## Échantillonage de Gibbs pour modèle à deux paramètres
 
-Si on connaissait $h$, tirer $\mu$ de la loi $\mu|h,y$ serait simple :
+Si on connaissait $\textcolor{red}{h}$, tirer $\textcolor{blue}{\mu}$ de la loi $\textcolor{blue}{\mu}|\textcolor{red}{h},y$ serait simple :
 \[
   \begin{aligned}
-  p(\mu|h,y) &\propto
+  p(\textcolor{blue}{\mu}|\textcolor{red}{h},y) &\propto
   \exp\left[
-    -\frac{\bar{\omega}}{2}(\mu-\bar{\mu})^2 
-    -\frac{h}{2} \sum_{t=1}^n (y_t-\mu)^2
+    -\frac{\bar{\omega}}{2}(\textcolor{blue}{\mu}-\bar{\mu})^2 
+    -\frac{\textcolor{red}{h}}{2} \sum_{t=1}^n (y_t-\textcolor{blue}{\mu})^2
   \right] \\
   &=
   \exp\left\{
     -\frac{1}{2}\left[
-      \bar{\omega}(\mu^2 - 2\mu\bar{\mu} + \bar{\mu}^2)
-      + h( n\bar{y}^{(2)} - 2\mu n \bar{y} + n \mu^2 )
+      \bar{\omega}(\textcolor{blue}{\mu}^2 - 2\textcolor{blue}{\mu}\bar{\mu} + \bar{\mu}^2)
+      + \textcolor{red}{h}( n\bar{y}^{(2)} - 2\textcolor{blue}{\mu} n \bar{y} + n \textcolor{blue}{\mu}^2 )
     \right]
   \right\}
 \end{aligned}
@@ -292,52 +301,52 @@ où $\bar{y}^{(2)} = n^{-1} \sum_{t=1}^n y_t^2$ et $\bar{y} = n^{-1} \sum_{t=1}^
 Alors
 \[
   \begin{aligned}
-    p(\mu|h,y) &\propto
+    p(\textcolor{blue}{\mu}|\textcolor{red}{h},y) &\propto
     \exp\left\{
       -\frac{1}{2} \left[
-        (\bar{\omega}+hn) \mu^2
-        - 2(\bar{\omega}\bar{\mu}+hn\bar{y})\mu
+        (\bar{\omega}+\textcolor{red}{h}n) \textcolor{blue}{\mu}^2
+        - 2(\bar{\omega}\bar{\mu}+\textcolor{red}{h}n\bar{y})\textcolor{blue}{\mu}
       \right]
     \right\} \\
     &\propto
     \exp\left[
-      -\frac{1}{2}(\bar{\omega}+hn)
+      -\frac{1}{2}(\bar{\omega}+\textcolor{red}{h}n)
       \left(
-        \mu-\frac{\bar{\omega}\bar{\mu}+hn\bar{y}}{\bar{\omega}+hn}
+        \textcolor{blue}{\mu}-\frac{\bar{\omega}\bar{\mu}+\textcolor{red}{h}n\bar{y}}{\bar{\omega}+\textcolor{red}{h}n}
       \right)^2
     \right].
   \end{aligned}
 \]
 
-Alors $\mu | h,y \sim N(\bar{\bar{\mu}},\bar{\bar{\omega}}^{-1})$,
-où $\bar{\bar{\omega}} = \bar{\omega} + hn$ et
+Alors $\textcolor{blue}{\mu} | \textcolor{red}{h},y \sim N(\bar{\bar{\mu}},\bar{\bar{\omega}}^{-1})$,
+où $\bar{\bar{\omega}} = \bar{\omega} + \textcolor{red}{h}n$ et
 \[
-  \bar{\bar{\mu}} = \frac{\bar{\omega}}{\bar{\omega}+hn} \bar{\mu} +
-  \frac{hn}{\bar{\omega}+hn}\bar{y} = 
-  \bar{\bar{\omega}}^{-1} (\bar{\omega}\bar{\mu} + hn\bar{y}).
+  \bar{\bar{\mu}} = \frac{\bar{\omega}}{\bar{\omega}+\textcolor{red}{h}n} \bar{\mu} +
+  \frac{\textcolor{red}{h}n}{\bar{\omega}+\textcolor{red}{h}n}\bar{y} = 
+  \bar{\bar{\omega}}^{-1} (\bar{\omega}\bar{\mu} + \textcolor{red}{h}n\bar{y}).
 \]
 
-## Échantillonage de Gibbs, tirage de $h$
+## Échantillonage de Gibbs, tirage de $\textcolor{red}{h}$
 
-Si on connaissait $\mu$, tirer $h$ de $h|\mu,y$ serait simple :
+Si on connaissait $\textcolor{blue}{\mu}$, tirer $\textcolor{red}{h}$ de $\textcolor{red}{h}|\textcolor{blue}{\mu},y$ serait simple :
 \[
- 	p(h|\mu,y) \propto h^{(\bar{\nu}+n-2)/2}
+ 	p(\textcolor{red}{h}|\textcolor{blue}{\mu},y) \propto \textcolor{red}{h}^{(\bar{\nu}+n-2)/2}
  	\exp\left\{
-   	-\frac{h}{2}\left[\bar{s}^2 + \sum_{t=1}^n (y_t-\mu)^2\right]
+   	-\frac{\textcolor{red}{h}}{2}\left[\bar{s}^2 + \sum_{t=1}^n (y_t-\textcolor{blue}{\mu})^2\right]
  	\right\}.
 \]
-Rapellons que $\bar{s}^2 h \sim \chi^2(\bar{\nu})$ et
+Rapellons que $\bar{s}^2 \textcolor{red}{h} \sim \chi^2(\bar{\nu})$ et
 \[
-  p(h) = [2^{\bar{\nu}/2} \Gamma(\bar{\nu}/2)]^{-1}
+  p(\textcolor{red}{h}) = [2^{\bar{\nu}/2} \Gamma(\bar{\nu}/2)]^{-1}
   (\bar{s}^2)^{\bar{\nu}/2}
-  h^{(\bar{\nu}-2)/2}
-  \exp\left[ -\frac{1}{2} \bar{s}^2 h \right].
+  \textcolor{red}{h}^{(\bar{\nu}-2)/2}
+  \exp\left[ -\frac{1}{2} \bar{s}^2 \textcolor{red}{h} \right].
 \]
 Alors
 \[
- \bar{\bar{s}}^2 h | \mu,y \sim \chi^2(\bar{\bar{\nu}}),
+ \bar{\bar{s}}^2 \textcolor{red}{h} | \textcolor{blue}{\mu},y \sim \chi^2(\bar{\bar{\nu}}),
 \]
-où $\bar{\bar{s}}^2 = \bar{s}^2 + \sum_{t=1}^n (y_t - \mu)^2$
+où $\bar{\bar{s}}^2 = \bar{s}^2 + \sum_{t=1}^n (y_t - \textcolor{blue}{\mu})^2$
 et $\bar{\bar{\nu}} = \bar{\nu} + n$.
 
 ## Échantillonage de Gibbs, code
@@ -368,17 +377,17 @@ Gibbs.sim <- function(M) {
 ```{r Gibbs resultat, echo=FALSE}
 sim_G <- Gibbs.sim(1000)
 par(mfrow = c(2, 1), mar = c(4, 4, 0.5, 0.5))
-plot(sim_G$mu); plot(sim_G$h)
+plot(sim_G$mu, col='blue'); plot(sim_G$h, col='red')
 ```
 
 ## Résultats, histograms
 
 ```{r Gibbs histogram, echo=FALSE}
 par(mfrow = c(2, 1), mar = c(4, 4, 0.5, 0.5))
-hist(sim_G$mu, 50); hist(sim_G$h, 50)
+hist(sim_G$mu, 50, col='blue'); hist(sim_G$h, 50, col='red')
 ```
 
-## Résultats, écarts-types numériques pour $\mu$
+## Résultats, écarts-types numériques pour $\textcolor{blue}{\mu}$
 
 ```{r nsemu, message=FALSE, warning=FALSE}
 library(mcmcse)
@@ -393,6 +402,28 @@ library(mcmcse)
 mcse(sim_G$h)
 sd(sim_G$h)
 ```
+
+## Exemple économétrique (Exemple 17.1 de Wooldridge)
+
+- Un modèle de la participation des femmes dans la population active (jeu de données MROZ)
+- On observe un échantillon de $n=753$ femmes.
+- La variable endogène est la décision d'être dans la population active ou non :
+\[
+  y_i = \begin{cases} 1 & \text{la femme $i$ est dans la population active} \\ 0 & \text{sinon} \end{cases}
+\]
+- Variables exogènes : \textit{nwifeinc}, \textit{educ}, \textit{exper}, $\textit{exper}^2$, \textit{age}, \textit{kidslt6}, \textit{kidsge6}, \textit{constant}, avec les données de la femme $i$ organisées dans un vecteur $x_i$.
+- Modèle probit : $\Pr[y_i = 1] = \Phi(x_i^\top \beta)$, où $\beta$ est un vecteur de paramètres, $\Phi(\cdot)$ est la fonction de répartition de la loi $N(0,1)$.
+- Une loi *a priori* pour $\beta$ : $\beta \sim N(\bar{\beta}, \bar{H}^{-1})$.
+
+## L'idée de l'augmentation des données
+
+- Un exemple de "reculer pour mieux sauter".
+- Supposez qu'il est difficile de simuler $\theta|y$.
+- Cependant, il y a une variable aléatoire $z$ telle que on peut simuler facilement
+    - $\theta|z,y$,
+    - $z|\theta,y$.
+- On utilise l'échantillonage de Gibbs pour tirer un échantillon de $\theta,z|y$.
+- On peut toujours ignorer $z$, mais $z$ peut être utile.
 
 ## Augmentation des données
 
@@ -493,6 +524,8 @@ où $b = (X^\top X)^{-1} X^\top y^*$.
 \]
 
 ## Quatre femmes
+
+Les deux premières femmes ci-bas sont dans la population active; les deux dernières, non.
 
 ```{r pop_active}
 source('pop_active.R')

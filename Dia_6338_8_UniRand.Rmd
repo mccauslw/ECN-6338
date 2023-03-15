@@ -400,7 +400,7 @@ si $U \leq 1-\frac{(x-\lambda)^2}{2}$, sans évaluer la fonction exponentielle.
   \Delta^n \equiv \left\{x \in \mathbb{R}^n \colon x_i \geq 0,\, i=1,\ldots,n,\, \sum_{i=1}^n = 1 \right\}
 \]
 - Pour tirer $Y \sim \mathrm{Di}(\alpha_1,\ldots,\alpha_n)$,
-    - Tirer $X_i \sim \mathrm{iid}\, \mathrm{Ga}(\alpha_i, \beta)$, $i=1,\ldots,n$.
+    - Tirer $X_i \sim \mathrm{indep.}\, \mathrm{Ga}(\alpha_i, \beta)$, $i=1,\ldots,n$.
     - Soit $X_{\mathrm{tot}} = \sum_{i=1}^n X_i$.
     - $Y \equiv X_{\mathrm{tot}}^{-1} (X_1,\ldots,X_n) \sim \mathrm{Di}(\alpha_1,\ldots,\alpha_n)$.
     

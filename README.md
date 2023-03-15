@@ -6,6 +6,8 @@
 
 [Exercices](Exercices.pdf)
 
+[Examen final 2022](EF_6338_22.pdf)
+
 #### Cours 1, Introduction
 
 [Diapos](Dia_6338_1_Intro.pdf)
