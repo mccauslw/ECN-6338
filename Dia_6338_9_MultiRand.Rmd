@@ -303,7 +303,7 @@ lnp_post(); set.seed(123); sim <- Metro.sim(100); lines(sim$mu, sim$h, col='red'
     - $\vdots$
     - Tirer $\theta_J^{(m+1)}$ de la loi $\theta_J | \theta_1^{(m+1)}, \ldots, \theta_{J-1}^{(m+1)}, y$
 - On répète le balayage $M$ fois pour obtenir un échantillon $\theta^{(m)}$, $m=1,\ldots,M$.
-- "Diviser pour vaincre", si l'ensemble d'étapes et plus facile que le problème entier.
+- "Diviser pour vaincre", si l'ensemble d'étapes est plus facile que le problème entier.
 
 ## Échantillonage de Gibbs, modèle à deux paramètres
 
@@ -445,7 +445,7 @@ sd(sim_G$h)
 ## L'idée de l'augmentation des données
 
 - Un exemple de "reculer pour mieux sauter".
-- Supposez qu'il est difficile de simuler $\theta|y$.
+- Supposez qu'il soit difficile de simuler $\theta|y$.
 - Cependant, il y a une variable aléatoire $z$ telle que on peut simuler facilement
     - $\theta|z,y$,
     - $z|\theta,y$.
@@ -461,7 +461,7 @@ sd(sim_G$h)
 \]
 - Un modèle d'utilité aléatoire où pour chaque femme $i$ :
     - $y_i^*$ est la différence d'utilité entre participer dans la population active et ne pas participer.
-    - Sachant $x_i$ et $\beta$, $y_i^* = x_i \beta - u$ où $u_i \sim N(0, 1)$.
+    - Sachant $x_i$ et $\beta$, $y_i^* = x_i \beta - u_i$ où $u_i \sim N(0, 1)$.
     - $y_i = 1$ si $y_i^* \geq 0$.
 - Notez que
 \[
@@ -557,7 +557,7 @@ où $b = (X^\top X)^{-1} X^\top y^*$.
     - la décision de la femme 119 est relativement inattendue
 - Les 2 dernières ne sont pas dans la population active
     - la décision de la femme 502 est relativement inattendue
-    - la décision de la femme 715 est relativement inattendue
+    - la décision de la femme 715 est relativement attendue
 
 ```{r pop_active}
 source('pop_active.R')
