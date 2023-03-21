@@ -12,6 +12,10 @@ urlcolor: blue
 1. L'idée de l'exercice Monte Carlo, Monte Carlo avec chaînes markoviennes (MCMC)
 1. MCMC avec le marche aléatoire de Metropolis
 1. Un modèle à deux paramètres
+1. Marche aléatoire pour le modèle à deux paramètres
+1. Échantillonage de Gibbs
+1. Exemple probit, participation des femmes dans la population active
+1. Augmentation des données
 
 ## L'exercice Monte Carlo
 
