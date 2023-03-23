@@ -17,6 +17,14 @@ urlcolor: blue
     a. Détails
     a. Exemple empirique
 
+## Pourquoi SMC
+
+1. Approche unifiée pour l'optimisation et la simulation des variables aléatoire.
+1. Souvent meilleur que MCMC pour les problèmes où 
+    a. la densité cible est multimodale, ou
+    a. la matrice hessienne de la log densité cible varie beaucoup.
+1. Parallélisme à exploiter.
+
 ## Une densité à quatre modes
 
 La fonction de Himmelblau :
@@ -98,7 +106,7 @@ variables aléatoires de la loi alternative.
 - Maintenant, supposons qu'on peut tirer $x^{(m)}$, $m=1,\ldots,M$ de la loi alternative (ayant
 la densité $p(x)$).
 
-- Si $E_f[g(x)]$ existe,
+- Si $E_f[g(x)]$ existe et une loi de grands nombres s'applique,
 \[
   \frac{1}{M} \sum_{m=1}^M \frac{h(x^{(m)})}{p(x^{(m)})}
   = \frac{1}{M} \sum_{m=1}^M w^{(m)} \overset{p}{\to} \frac{1}{c}
@@ -108,14 +116,14 @@ la densité $p(x)$).
   = \frac{1}{M} \sum_{m=1}^M w^{(m)} g(x^{(m)}) \overset{p}{\to} \frac{1}{c} E_f[g(x)],
 \]
 où $w^{(m)} \equiv h(x^{(m)})/p(x^{(m)})$.
-- Et alors (par le théorème Mann-Wald)
+- Et alors (par le théorème Mann-Wald ou continuous mapping theorem)
 \[
   \frac{\sum_{m=1}^M w^{(m)} g(x^{(m)})}{\sum_{m=1}^M w^{(m)}} \overset{p}{\to} E_f[g(x)].
 \]
 
 ## Autres notes sur l'échantillonage préférentiel
 
-- Les $w^{(m)}$ sont pareilles pour chaque choix de $g(\cdot)$.
+- Les $w^{(m)}$ sont pareilles pour chaque choix de $g(\cdot)$ : une seule simulation, même pour plusieurs $g(\cdot)$.
 - Dans un sens, l'échantillon pondéré $(w^{(m)}, x^{(m)})$ représente la loi cible.
 - On peut faire les simulations de $p(x)$ par
     - Tirages iid
