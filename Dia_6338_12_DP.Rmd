@@ -131,17 +131,30 @@ définie par
   V(x) = \sup_{u \in D(x)} \pi(x,u) + \beta V(F(x, u)),
 \]
 ou $V = TV$; $V$ est une fonction de $x \in X$, $T$ est un opérateur.
-- La solution $V$ résout une équation *fonctionnelle*.
+- L'équation est une équation *fonctionnelle*, sa solution est $V$, la *fonction* de valeur.
+- Une fonction de politique est maintenant une fonction $U(x)$ qui vérifie
+\[
+  U(x) \in \arg\max_{u \in D(x)} \pi(x,u) + \beta V(F(x, u)).
+\]
+
+## Le théorème des applications contractantes et l'itération de la fonction de valeur
+
 - Le théorème des applications contractantes (contraction mapping theorem) :
 si $0 < \beta < 1$, $\pi(x,u)$ est borné et $X$ est compacte,
     - $T$ est monotone ($y_1 \geq y_2 \Rightarrow Ty_1 \geq Ty_2$)
     - $T$ est une contraction de module $\beta$
     ($\|Ty_1 - Ty_2\| \leq \beta \|y_1 - y_2\|$)
     - $V = TV$ a une solution ($T$ a un point fixe) unique.
-- La fonction de politique est maintenant
+- L'itération de la fonction de valeur donne une suite de fonctions de valeur $V^l$ qui converge vers $V$: $V^{l+1} = TV^l$, ou
 \[
-  U(x) \in \arg\max_{u \in D(x)} \pi(x,u) + \beta V(F(x, u)).
+  V^{l+1}(x) = \sup_{u \in D(x)} \pi(x,u) + \beta V^l(F(x, u)),
 \]
+- Un sous-produit est une suite de fonctions de politique $C^l$ correspondantes:
+\[
+  U^{l+1}(x) \in \arg\max_{u \in D(x)} \pi(x,u) + \beta V^l(F(x, u)).
+\]
+
+
 
 ## Comment appliquer l'operateur en pratique
 
@@ -186,7 +199,7 @@ où $C(\cdot)$ est la fonction de commande optimale.
 ## Choisir une fonction de valeur initiale
 
 - La commande $C(k) = f(k)$ donne $k^+ = k$
-- Elle est faisable mais pas optimale si $k \neq k^{ss} = 1$.
+- Elle est faisable mais pas optimale pour $k \neq k^{ss} = 1$.
 - Autour de $k=k^{ss}$, $C(k)$ devrait être près de la commande optimale.
 - La fonction de valeur (non-optimale) $V^c(k)$ associée à la commande $C(k) = f(k)$ (non-optimale) vérifie
 \[
@@ -245,38 +258,38 @@ VU_suiv <- function(V) {
   for (i in 1:N) {
     # k[i_plus] est la commande optimale à l'état k[i]
     i_plus = which.max(u_tab[i,] + beta*V)
-    U_suiv[i] = k[i_plus]; U_suiv_i = i_plus
+    U_suiv[i] = k[i_plus]; U_suiv_i[i] = i_plus
     # V_suiv[i] est la fonction V suivante à l'état k[i]
     V_suiv[i] = u_tab[i, i_plus] + beta*V[i_plus]
   }
   list(V=V_suiv, U=U_suiv, U_i=U_suiv_i)
 }
 
-# Une itération de T à partir de V_c
-VUs_c <- VU_suiv(V_c)
+# Deux itérations de T à partir de V_c
+VUs_c <- VU_suiv(V_c); VUss_c <- VU_suiv(VUs_c$V)
 ```
 
-## La fonction de valeur $TV_c(k)$ (une itération)
+## La fonction de valeur $TV_c(k)$ (deux itérations)
 
 ```{r graphique_val_c}
 plot(k, V_c, type='l')
-lines(k, VUs_c$V, col='green')
+lines(k, VUs_c$V, col='green'); lines(k, VUss_c$V, col='blue')
 ```
 
-## La fonction de politique après une itération de $V_c(k)$
+## La fonction de politique après deux itération de $V_c(k)$
 
-```{r graphique_pol}
-plot(k, VUs_c$U, type='l')
-lines(k, k, lty='dashed', col='grey')
+```{r graphique_pol_c}
+plot(k, VUs_c$U, type='l', col='green'); lines(k, VUss_c$U, col='blue')
+lines(k, k, lty='dashed', col='grey');
 ```
 
 ## Les fonctions de valeur $T^{i}V_z(k)$, $i=1,2,3$
 
-```{r graphique_val}
-plot(k, V_z, type='l', ylim = c(-160, 0)); V = V_z
-for (i in 1:3) {
-  V <- VU_suiv(V)$V; lines(k, V, col='green')
-}
+```{r graphique_val_z}
+plot(k, V_z, type='l', ylim = c(-180, 0)); V = V_z
+for (i in 1:3)
+  { V <- VU_suiv(V)$V; lines(k, V, col='green') }
+lines(k, VUss_c$V, col='blue')
 ```
 
 ## Itération de la fonction de politique : approximation de $V^U$ pour $U$ donnée
@@ -304,6 +317,23 @@ Cette version rétrograde évite des calculs redondants et se généralise aux p
     \[ W^{j+1}(k) = u(k + f(k) - U(k)) + \beta W^{j}(U(k)). \]
 - $V^U \approx \hat{V}^U \equiv W^{k+1}$ (vecteur!)
 
+## Code, itération de la fonction de politique
+
+```{r PF_iteration}
+# Iteration de la fonction de politique
+VdeU <- function(VU, n_iter) {
+  V <- VU$V; V_suiv = rep(0, N);
+  for (i in 1:n_iter) {
+    for (i in 1:N) {
+      Ui = VU$U_i[i]
+      V_suiv[i] = u_tab[i, Ui] + beta*V[Ui]
+    }
+    V <- V_suiv
+  }
+  V
+}
+```
+
 ## Itération de la fonction de politique
 
 Itérez les étapes suivantes jusqu'à ce que $\|V^{l+1} - V^l\| < \epsilon$ :
@@ -313,6 +343,15 @@ Itérez les étapes suivantes jusqu'à ce que $\|V^{l+1} - V^l\| < \epsilon$ :
 \[
   V^{l+1} \equiv \hat{V}^{U^{l+1}}
 \]
+
+## L'iteration de la fonction de politique
+
+```{r graphique_policy_c}
+plot(k, V_z, type='l', ylim = c(-180, 0)); V <- V_z
+for (i in 1:3)
+  { VU <- VU_suiv(V); V <- VdeU(VU, 100); lines(k, V, col='green') }
+lines(k, VUss_c$V, col='blue')
+```
 
 ## Problèmes dynamiques avec incertitude
 
@@ -381,7 +420,7 @@ où $y_t$ dépend du moment $t^*$ où l'agent accepte l'offre :
 
 ## L'équation de Bellman
 
-L'équation de Bellman est
+L'équation de Bellman est (pour $W$ fini)
 \[
   \begin{aligned}
     V(w) &= \max\left\{ \frac{w}{1-\beta},\, c + \beta E[V(w')] \right\} \\
@@ -395,7 +434,7 @@ Notes :
 - Le salaire de réserve $\bar{w}$ est $(1-\beta)(c + \beta E[V(w')])$.
 - Intuition : $\bar{w}$ devrait être croissant en $\beta$ et $c$.
 
-## La spécification du problème
+## La spécification des détails du problème
 
 La spécification :
 
@@ -511,8 +550,22 @@ contourplot(wbar_fn ~ c*beta, data=df, cuts=12)
 \[
   E\left[ \sum_{t=0}^\infty \beta^t u(y_t) \right].
 \]
-- Soit $v(w_e)$ l'utilité d'un agent avec emploi au début de la période, au salaire $w_e$.
-- Soit $h(w)$ l'utilité d'un agent sans emploi qui reçoit une offre $w$ au début de la période.
+- Soit $v(w_e)$ l'utilité espérée d'un agent avec emploi au début de la période, au salaire $w_e$.
+- Soit $h(w)$ l'utilité espérée d'un agent sans emploi qui reçoit une offre $w$ au début de la période.
+
+## Une autre perspective
+
+- L'état est $(e, w)$, où
+    - $e \in \{0,1\}$, ($e=1$ veut dire avec emploi; $e=0$, sans emploi)
+    - $w$ est le salaire, interprété comme
+        - le salaire d'emploi déjà accepté ($w_e$) dans le passé si $e=1$,
+        - l'offre de salaire actuel si $e=0$.
+- On peut définir une fonction $V(e,w)$ comme
+\[
+  V(e,w) = \begin{cases} v(w) & e = 1 \\ h(w) & e = 0 \end{cases}
+\]
+- Notez que l'agent a un choix (accepter ou rejeter l'offre) seulement quand $e=0$.
+- On n'a pas besoin d'une notation différente pour $w_e$ (salaire actuel) et $w$ (offre de salaire), l'interprétation est déterminée par $e$.
 
 ## Les équations de Bellman
 
@@ -560,7 +613,7 @@ On peut écrire maintenant (pas besoin de distinguer $w$ et $w_e$)
   u(c) = \frac{c^{1-\sigma}-1}{1-\sigma}
 \]
 - Les valeurs des paramètres sont : $\alpha = 0.2$, $\beta = 0.98$, $\sigma = 2$, $c = 6$.
-- Loi de $w$ : $\tfrac{59}{19}(w-10) \sim \mathrm{Bb}(59, 600, 400)$ (beta-binomial)
+- Loi de $w$ : $\tfrac{59}{10}(w-10) \sim \mathrm{Bb}(59, 600, 400)$ (beta-binomial)
 
 ```{r McCall2_spec}
 # Valeurs des paramètres
@@ -617,6 +670,18 @@ vd <- solve_model()
 ## Graphique de la fonction de valeur
 
 ```{r graphique2}
-plot(w, vd$v, type='l', xlab='w', ylab='v, h')
-abline(h = uc + beta * vd$d)
+plot(w, vd$v, type='l', xlab='w', ylab='v, u(c) + beta d')
+abline(h = uc + beta*vd$d, col='red') # Attn : h pour horizontal!
 ```
+
+## Interprétation de la graphique
+
+- $v(w)$, la valeur d'avoir un emploi avec salaire $w$, est en noir.
+- $u(c) + \beta d$, l'utilité de réservation, est en rouge.
+- L'intersection $(\bar{w}, u(c) + \beta d)$ donne le salaire de réservation $\bar{w}$.
+- $h(w)$, la valeur d'avoir une offre de $w$ en état de chômage est le maximum des deux fonctions :
+\[
+  h(w) = \max(v(w), u(c) + \beta d).
+\]
+- Un agent qui a optimisé dans le passé ne devrait jamais être dans l'état $(1,w)$, si $w < \bar{w}$.
+- Attention : l'argument \texttt{h} dans la commande \texttt{abline} est pour spécifier la position d'une droite horizontale.
