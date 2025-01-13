@@ -24,6 +24,7 @@ Par les agents des modèles économiques
 
 * maximisation de l'utilité (choix des actions dans un jeu, des quantités de consommation)
 * maximisation du profit (choix des quantités de production)
+* maximisation statique ou dynamique
 
 Par les économètres
 
@@ -77,7 +78,7 @@ Le but ici est de présenter les cas les plus simples et de vous guider vers la 
 |-------------------------|----------------------|------------|
 |~10 interrogations de 10 minutes    |Au début des classes                     |20\%|
 |||
-|Quatres exercices computationnelles |2 février, 23 février, 23 mars, 20 avril |40\%|
+|Quatres exercices computationnelles |3 février, 24 février, 24 mars, 28 avril |40\%|
 |||
 |Examen final                        |20 avril                                 |40\%|
 
@@ -292,7 +293,7 @@ $|x^k - x^{k-1}| = 1/k \to 0$ mais $x^k$ diverge.
 \]
 * Si on peut établir qu'il y a un $\beta < 1$ connu tel que
 \[
-  \|x^{k+1} - x^*\| \leq \beta \|x^k - x^*\|,
+  \forall k,\; \|x^{k+1} - x^*\| \leq \beta \|x^k - x^*\|,
 \]
 on a un garantie que $\|x^k - x^*\| \leq \|x^k - x^{k+1}\| / (1-\beta)$.
 * Des fois, la convergence est linéaire : il existe $\beta$ tel que
@@ -311,10 +312,10 @@ auquel cas, on peut estimer $\beta$ et espérer que cela marche.
 ### La complexité de certains algorithmes
 
 * $O(1)$ : nombre d'opérations pour trouver le $i$-ième élément dans un $n$-vecteur;
-* $O(\log n)$ : nombre de comparaisons pour trouver un élément donnée dans un $n$-vecteur trié, par recherche binaire,
+* $O(\log n)$ : nombre de comparaisons pour trouver un élément donnée dans un $n$-vecteur trié, par recherche binaire;
 * $O(n)$ : pour trouver un élément donnée dans un $n$-vecteur, par recherche exhaustive;
-* $O(n^2)$ : nombre de multiplications scalaires pour multiplier une matrice $n\times n$ et un vecteur $n\times 1$,
-* $O(n^3)$ : pour multiplier deux matrices $n\times n$ (méthode évidente)
+* $O(n^2)$ : nombre de multiplications scalaires pour multiplier une matrice $n\times n$ et un vecteur $n\times 1$;
+* $O(n^3)$ : pour multiplier deux matrices $n\times n$ (méthode évidente);
 * $O(n^{2.81})$ : pour multiplier deux matrices $n\times n$ (Algorithme de Strassen)
 
 ## L'évaluation des polynomes avec la méthode de Horner
