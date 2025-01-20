@@ -7,27 +7,42 @@ output: beamer_presentation
 urlcolor: blue
 ---
 
+## Applications de la résolution de systèmes linéaires
+
+(Chapitres de « A First Course in Quantitative Economics with Python », QuantEcon)
+
+1. (Ch 8) Trouver les prix d'équilibre dans une économie à $n$ biens, où les quantités demandées $q^d = (q_1^d,\ldots,d_n^d)$ et offertes $q^o = (q_1^o,\ldots,d_n^o)$ sont linéaires en prix $p = (p_1,\ldots,p_n)$ : $q_d = Dp + h$ et $q_o = Cp + e$. Le vecteur $p^*$ d'équilibre vérifie
+\[
+  (D-C)p^* = h-e.
+\]
+1. (Ch 11) Trouver une suite de prix d'un actif dans un modèle de valeurs actuelles.
+1. (Ch 12) Trouver une suite de détention d'actifs dans un modèle de lissage de la consommation.
+1. (Ch 14) Trouver une suite d'inflation dans un modèle monétariste des niveaux de prix.
+1. (Ch 15) Même chose, avec anticipations adaptatives.
+1. Résolution de systèmes locaux linéaire dans les modèles non-linéaires, autres applications indirectes.
+1. Autres exemples plus tard aujourd'hui.
+
 ## Survol du Cours 2
 
 - Problème : trouver le $n$-vecteur $x$ qui résoud le système $Ax = b$. $A$ est $n \times n$ et inversible; $b$ est un $n$-vecteur.
 - Les systèmes les plus faciles : $A$ triangulaire ou orthogonal
 - Pour les systèmes où $A$ est dense, on peut décomposer $A$ et ainsi réduire le problème en la résolution des systèmes triangulaires et orthogonaux.
 - Pour les systèmes où $n$ est grand et $A$ creuse, il y a deux options :
-    - utiliser les mêmes décompositions, (Cependant, les décompositions sont souvent denses)
-    - utiliser des méthodes iteratives. (Il faut utiliser ces méthodes pour les systèmes non-linéaires de toute façon).
+    - utiliser les mêmes décompositions, (attention, les décompositions sont souvent denses)
+    - utiliser des méthodes iteratives. (on recourt à ces méthodes pour les systèmes non-linéaires aussi).
 
 ## Systèmes triangulaires
 
 - Notation :
-    - $L$, une matrice triangulaire inférieure $n \times n$;
-    - $R$ ou $U$, une matrice triangularie supérieure $n \times n$.
+    - $L$, une matrice triangulaire inférieure $n \times n$ ; (Left, Lower)
+    - $R$ ou $U$, une matrice triangularie supérieure $n \times n$. (Right, Upper)
 - Il est facile de voir si la matrice est inversible : ssi aucun élément diagonal n'est nul.
 - Pour le $n$-vecteur colonne $b$, la résolution de
-    - $Lx = b$ est facile par substitution avant
-    - $Rx = b$ est facile par substitution arrière
+    - $Lx = b$ est facile par substitution avant,
+    - $Rx = b$ est facile par substitution arrière.
 - Pour le $n$-vecteur ligne $b$, la solution de $xL = b$ est la transposée de la solution de $L^\top x^\top = b^\top$.
 
-## Systèmes orthogonaux I
+## Systèmes orthogonaux
 
 - Une matrice $n \times n$ $Q$ est *orthogonal* ssi $Q^{-1} = Q^\top$.
 - Définition équivalente : ... ssi $Q^\top Q = QQ^\top = I_n$.
@@ -73,7 +88,7 @@ urlcolor: blue
   \end{bmatrix}
 \]
 
-## Systèmes orthogonaux II
+## Systèmes orthogonaux (suite)
 
 Notes :
 
@@ -107,7 +122,7 @@ Il est toujours préférable de faire une décomposition et ensuite de résoudre
 - En pratique, pour garder contre la division par un nombre près de zéro, la décomposition est $A = PLU$, où
     - $P$ est une matrice de permutation.
 - Pour résoudre le système $Ax = b$,
-    - Calculer la décomposition $A = PLU$.
+    - Calculer la décomposition $A = PLU$. ($(PLU)^{-1} = U^{-1}L^{-1}P^\top$)
     - Le systéme s'écrit $PLUx = b$
     - Permuter $b$ avec $P^\top = P^{-1}$ : $\tilde{b} = P^\top b$.
     - Le système s'écrit $LUx = \tilde{b}$.
@@ -142,10 +157,10 @@ En équation matriciel $Aq = b$, où
 ## L'équilibre Cournot, calculé numériquement
 
 ```{r Oligo}
-data = c(1.0, 0.6, 0.2, 0.5, 1.0, 0.4, 0.3, 0.1, 1.0)
-A = matrix(data, nrow = 3, ncol=3, byrow=FALSE)
-b = c(5, 7, 4)
-q = solve(A, b)
+data <- c(1.0, 0.6, 0.2, 0.5, 1.0, 0.4, 0.3, 0.1, 1.0)
+A <- matrix(data, nrow=3, ncol=3, byrow=FALSE)
+b <- c(5, 7, 4)
+q <- solve(A, b)
 q
 ```
 
@@ -155,7 +170,7 @@ Notes :
 - De la documentation \texttt{LAPACK} : "LU decomposition with partial pivoting and row interchanges"
 - En R de base, pas d'accès à la décomposition $PLU$, paraît-il.
 - Cependant, si on veut résoudre $Ax^i = b^i$ pour plusieurs $i$,
-on peut résoudre $AX = B$, où $X = [x^1 \cdots x^N]$ et $B = [b^1 \cdots b^N]$, avec \texttt{X = solve(A, B)}.
+on peut résoudre $AX = B$, où $X = [x^1 \cdots x^N]$ et $B = [b^1 \cdots b^N]$, avec \texttt{X = solve(A, B)}. La décomposition est faite une seule fois.
 
 ## La décomposition QR
 
@@ -163,7 +178,7 @@ Pour une matrice $A$, $n \times n$, la décomposition suivante existe toujours :
 \[
   A = QR,
 \]
-où $Q$ est orthogonal, $R$ est triangulaire supérieur.
+où $Q$ est $n \times n$ orthogonal, $R$ est $n \times n$ triangulaire supérieur.
 
 - Normalisation habituelle : choisir $Q$ pour que les éléments diagonaux de $R$ soient non-négatifs.
 - Pour $A$ inversible, la décomposition normalisée est unique.
@@ -178,9 +193,16 @@ Pour une matrice $X$, $n \times k$, $n > k$ (souvent $n \gg k$), on peut faire l
 \]
 où $Q$ est $n \times n$, $R$ est $n \times k$, $Q_1$ est $n \times k$ et $R_1$ est $k \times k$.
 
-## La résolution de systèmes avec la décomposition QR, I
+## Une variante de la décomposition QR
 
-Pour $A$ carré est inversible, tout est simple:
+![](Figures/QR_tall_thin.png)
+
+## La résolution de systèmes avec la décomposition QR
+
+Pour $A$ carré est inversible, tout est simple :
+\[
+  A = QR,\quad A^{-1} = R^{-1}Q^\top.
+\]
 
 - Écrire le système à résoudre, $Ax = b$, comme $QRx = b$.
 - Définir $\tilde{b} = Q^\top b$ et maintenant le système s'écrit
@@ -188,6 +210,8 @@ $Rx = \tilde{b}$.
 - Résoudre ce système triangulaire avec la substituion arrière.
 
 Pour $A$ grande et mince ($n \gg k$), l'application principale en économie est le calcul de l'estimation MCO (moindres carrées ordinaire).
+
+Autres applications en finance et macro : modèles à facteurs.
 
 ## Aparté sur la régression linéaire
 
@@ -207,7 +231,7 @@ Pour $A$ grande et mince ($n \gg k$), l'application principale en économie est 
 où $y$ et $\epsilon$ sont $n \times 1$, $X$ est $n \times k$, $\beta$ est $k \times 1$. 
 - L'estimation MCO $b$ de $\beta$ est $b = (X^\top X)^{-1} X^\top y$.
 
-## La résolution de systèmes avec la décomposition QR, II
+## La résolution de systèmes avec la décomposition QR (suite)
 
 - On veut calculer $b \equiv (X^\top X)^{-1} X^\top y$.
 - Décompose $X = QR$.
@@ -223,8 +247,8 @@ où $y$ et $\epsilon$ sont $n \times 1$, $X$ est $n \times k$, $\beta$ est $k \t
       &= R_1^{-1} Q_1^\top y \\
   \end{aligned}
 \]
-- On peut calculer $Q_1$ sans calculer $Q_2$ (Tant mieux, $Q$ a $n \times n$ éléments à calculer)
-- Les résultats sont numériquement plus stables que si on décompose $X^\top X$.
+- On n'a pas besoin de $Q_2$ et on peut calculer $Q_1$ sans calculer $Q_2$ (Tant mieux, $Q$ a $n \times n$ éléments à calculer)
+- Les résultats sont numériquement plus stables que si on décompose $X^\top X$ par la décomposition Cholesky.
 
 ## La décomposition Cholesky
 
@@ -233,8 +257,9 @@ où $y$ et $\epsilon$ sont $n \times 1$, $X$ est $n \times k$, $\beta$ est $k \t
     - $L = R^\top$ est triangulaire inférieure $n \times n$.
 - C'est une décomposition $LU$ sans permutation.
 - Le calcul est numériquement plus stable, sans recours au pivots.
-- Un tiers du nombre de multiplications scalaires de la LU.
-- Deux opérations intéressantes dans le contexte des variables aléatoires gaussiennes multivariées.
+- $O(n^3)$ multiplications, comme les autres décompositions,
+- mais un tiers du nombre de multiplications scalaires de la LU.
+- Deux opérations intéressantes dans le contexte des variables aléatoires gaussiennes multivariées. (La variance $\Sigma = LL^\top$ est positive définie)
     - Multiplication directe $Lx$
     - Résolution du système $Lx = b$.
 
@@ -343,13 +368,6 @@ m[5, 2] <- 52
 m
 ```
 
-## Représentation en format triple
-
-```{r triple_format}
-mT <- as(m, "dgTMatrix")
-str(mT)
-```
-
 ## Représentation en format colonne compressée
 
 ```{r compressed_column}
@@ -402,10 +420,15 @@ str(m)
 \]
 
 - Pour que $x^k \to x^*$, il faut que
-    1. $x^* = \Omega x^* + c$ (la solution est un point fixe) et
-    2. $\rho(\Omega) < 1$ (toutes les valeurs propres ont une module inférieure à 1)
+    1. $x^* = \Omega x^* + c$ (la solution soit un point fixe) et
+    2. $\rho(\Omega) < 1$ (toutes les valeurs propres aient une module inférieure à 1)
 
 - Dans ce cas la convergence est linéaire à taux $\beta = \rho(\Omega)$.
+
+## Deux exemples que illustrent les enjeux
+
+![](Figures/Hog_Oligo.png)
+
 
 ## Splitting
 
@@ -417,6 +440,9 @@ L'idée est de décomposer $A = N - P$, et utiliser $\Omega = N^{-1}P$ et $c = N
 Notes :
 
 - Par construction, $x^*$ est un point fixe : $x^* = N^{-1}(b+Px^*)$.
+\[
+  Nx^* = b + Px^*, \quad (N-P)x^* = b, \quad Ax^* = b.
+\]
 - On veut choisir $N$ telle que
     - $\rho(N^{-1}P) < 1$
     - le système $Nx^{k+1} = b + Px^k$ est plus facile à résoudre que le système $Ax = b$.
@@ -473,7 +499,7 @@ Le système $2 \times 2$ s'écrit
 - Systéme : demande $p + 3q = 21$ et offre $p - 2q = 6$, où $p$ est 
 le prix et $q$ est la quantité dans un marché.
 
-- En matrices, après élimination de $a_{11}$ et $a_{22}$ :
+- En matrices, après une normalisation qui donne $a_{11} = a_{22} = 1$ :
 \[
   \begin{bmatrix} 1 & -\tfrac{1}{2} \\ 3 & 1 \end{bmatrix}
   \begin{bmatrix} q \\ p \end{bmatrix}
@@ -485,7 +511,7 @@ le prix et $q$ est la quantité dans un marché.
 ### Duopole en équilibre Bertrand
 
 - Système : meilleures réponses $p_1 = 1 + 0.75p_2$,
-$p_2 = 2 + 0.80p_2$, où $p_i$ est le prix choisi par la firme $i$, $i=1,2$.
+$p_2 = 2 + 0.80p_1$, où $p_i$ est le prix choisi par la firme $i$, $i=1,2$.
 
 - En matrices :
 \[
