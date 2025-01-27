@@ -9,7 +9,7 @@ urlcolor: blue
 
 ## Survol du Cours 3
 
-Maximisation sous contraintes
+Optimisation sous contraintes
 
 - une contrainte d'égalité
 - plusieures contraintes d'égalité
@@ -27,6 +27,25 @@ Inférence bayésienne
 
 - les lois *a priori* et *a posteriori*
 - les problèmes d'intégration à effectuer
+
+## Exemples d'optimisation sous contraintes en économie
+
+1. Consommateur : choisir un panier qui
+    - maximise une fonction d'utilité sous une contrainte budgétaire
+    - minimise la dépense pour atteindre un niveau donné d'utilité
+    
+1. Producteur : choisir les quantités d'intrants qui
+    - minimisent le coût d'un niveau donné de production
+
+1. Principal d'un problème principal-agent : choisir un contrat qui
+    - maximise le profit sous les contraintes de
+        - participation (inciter l'agent à signer le contrat)
+        - compatibilité des incitations (aligner les incitations de l'agent avec les objectifs du principal)
+
+1. Choix de portefeuille : choisir un portefeuille qui
+    - minimise la variance du rendement sous une contraint sur sa moyenne
+
+1. Beaucoup d'exemples inter-temporels pour plus tard
 
 ## Problème de maximisation avec une contrainte d'égalité
 
@@ -49,6 +68,15 @@ Théorème : Si $x^*$ est une solution et que $g_j(x^*) \neq 0$ pour au moins un
 il existe $\lambda^* \in \mathbb{R}$ tel que
 
 - $L_j(x^*,\lambda^*) = 0$, $j=1,\ldots,n$, et $L_\lambda(x^*,\lambda^*) = 0$.
+
+## Remarques
+
+- La continuité des dérivées de $f$ et $g$ exclue les solutions de coude.
+- L'aspect illimité du domaine ($x \in \mathbb{R}$) exclue les solutions de coin.
+- En économie, la maximisation (de l'utilité, du profit) est plus habituelle que la minimisation (du coût) mais en analyse numérique, la convention est d'écrire un problème comme une minimisation. Il faut faire attention à
+    - la convention utilisée par les logiciels,
+    - l'interprétation de la signe des multiplicateurs de Lagrange.
+- Trouver un candidat $x^*$ pour une solution consiste en resolvant un système d'équations, souvent non-linéaires.
 
 ## Problème avec plusieurs contraintes d'égalité
 
@@ -95,7 +123,7 @@ il existe $\lambda^* \in \mathbb{R}^m$ tel que
 - $L_x(x^*,\lambda^*) \leq 0$, $x^*\geq 0$ avec écarts complémentaires,
 - $L_\lambda(x^*,\lambda^*) = 0$.
 
-## Exemple, utilité quasi-linéaire I (exemple 3.1 de Dixit)
+## Exemple, utilité quasi-linéaire (exemple 3.1 de Dixit)
 
 Le problème : pour prix $p > 0$ et $q > 0$, revenu $I > 0$ et $a > 0$, 
 \[
@@ -107,40 +135,77 @@ La fonction de Lagrange :
 \]
 Les conditions nécessaires pour un maximum :
 \[
-  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0;
+  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0 ; \; \mbox{avec écarts complémentaires}
 \]
 \[
-  L_y = 1 - \lambda q \leq 0,\; y \geq 0;
-\]
-\[
-  I - px - qy = 0.
-\]
-
-- Cas $x = 0$, $y = 0$ : $I - px - qy = 0$ est impossible.
-- Cas $x = 0$, $y > 0$ : $L_x \leq 0$ est impossible.
-
-## Exemple, utilité quasi-linéaire II
-
-Les conditions nécessaires pour un maximum, encore :
-\[
-  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0;
-\]
-\[
-  L_y = 1 - \lambda q \leq 0,\; y \geq 0;
+  L_y = 1 - \lambda q \leq 0,\; y \geq 0 ; \;\mbox{avec écarts complémentaires}
 \]
 \[
   I - px - qy = 0.
 \]
 
-- Cas $x > 0$, $y = 0$ :
-    - dans ce cas $x = I/p$ et $\lambda = a/I$,
-    - il faut que $1 - aq/I \leq 0$, $I \leq aq$.
-- Cas $x > 0$, $y > 0$ :
-    - dans ce cas $\lambda = a/(px) = 1/q$,
-    - $x = aq/p$,
-    - Il faut que $I - px = I - aq > 0$, auquel cas $y = I/q - a$.
+## Exemple, utilité quasi-linéaire, cas $x = 0$, $y = 0$ et $x = 0$, $y > 0$
 
-## Exemple, utilité quasi-linéaire III
+Les conditions de première ordre encore :
+\[
+  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0 ; \; \mbox{avec écarts complémentaires}
+\]
+\[
+  L_y = 1 - \lambda q \leq 0,\; y \geq 0 ; \;\mbox{avec écarts complémentaires}
+\]
+\[
+  I - px - qy = 0.
+\]
+
+On peut écarter les deux cas parce que l'utilité marginal de $x$ est infinie à $x=0$ :
+\[
+  \lim_{x \downarrow 0} L(x,y,\lambda) = \infty,
+\]
+alors $L_x \leq 0$ est impossible.
+
+## Exemple, utilité quasi-linéaire, cas $x > 0$, $y = 0$
+
+Les conditions de première ordre encore :
+\[
+  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0 ; \; \mbox{avec écarts complémentaires}
+\]
+\[
+  L_y = 1 - \lambda q \leq 0,\; y \geq 0 ; \;\mbox{avec écarts complémentaires}
+\]
+\[
+  I - px - qy = 0.
+\]
+
+On a trois équations en trois inconnus :
+\[
+  \frac{a}{x} = \lambda p, \quad y = 0, \quad I = px + qy.
+\]
+La solution du système est $(x^*, y^*, \lambda^*) = (I/p,\, 0,\, a/I)$
+
+Il faut vérifier $1 - aq/I \leq 0$, équivalent à $I \leq aq$.
+
+## Exemple, utilité quasi-linéaire, cas $x > 0$, $y > 0$
+
+Les conditions de première ordre encore :
+\[
+  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0 ; \; \mbox{avec écarts complémentaires}
+\]
+\[
+  L_y = 1 - \lambda q \leq 0,\; y \geq 0 ; \;\mbox{avec écarts complémentaires}
+\]
+\[
+  I - px - qy = 0.
+\]
+
+On a trois équations en trois inconnus :
+\[
+  \lambda = \frac{a}{px} = 1/q, \quad I = px + qy.
+\]
+La solution du système est $(x^*, y^*, \lambda^*) = (aq/p,\, I/q - a,\, 1/q)$.
+
+Il faut vérifier que $x = aq/p > 0$ (toujours vrai) et $y = I/q - a > 0$, équivalent à $I > aq$.
+
+## Exemple, utilité quasi-linéaire (suite)
 
 ```{r ql1}
 p <- 1; I <- 10  # Prix de x et revenu
@@ -158,7 +223,7 @@ y1 <- 5*log(5)+5 - 5*log(x)  # Qui passe par (5, 5)
 y2 <- 5*log(10) - 5*log(x)   # Qui passe par (10, 0)
 ```
 
-## Exemple, utilité quasi-linéaire IV
+## Exemple, utilité quasi-linéaire (suite)
 
 ```{r ql2}
 plot(x, b1, type='l', xlab='x', ylab='y', bty='l');
@@ -209,7 +274,7 @@ Le problème de maximisation est plus naturel pour les économistes mais les log
 
 Le problème :
 
-- Une économie a 300 unités de $L$ (main d'oeuvre) et 450 unités de $T$, pour la production de blé et de boeuf.
+- Une économie a 300 unités de $L$ (main d'oeuvre) et 450 unités de $T$ (terrain), pour la production de blé et de boeuf.
 - Produire une unité de blé prend 2 unités de $L$, 1 unité de $T$.
 - Produire une unité de boeuf prend 1 unité de $L$, 2 unités de $T$.
 - On veut maximiser $W(x,y) = (1-\beta) \ln x + \beta \ln y$, où $x$ et $y$ sont les quantités de blé et de boeuf.

@@ -100,7 +100,7 @@ plot(theta, L, type='l', ylim=c(-200, max(L)))
     1. $L(\theta;y) \equiv \log f(y|\theta)$ a toujours un maximum global unique.
     1. Le gradient de $L(\theta;y)$ (par rapport à $\theta$) est toujours borné.
     1. La matrice ${\cal I}(\theta)$ suivante (matrice d'information de Fisher) est définie positive:
-    $$ {\cal I}(\theta) = E_{y|\theta}\left[ \frac{\partial L(\theta;y)}{\partial \theta^\top} \frac{\partial L(\theta;y)}{\partial \theta} \right]. $$
+    $$ {\cal I}(\theta) \equiv E_{y|\theta}\left[ \frac{\partial L(\theta;y)}{\partial \theta^\top} \frac{\partial L(\theta;y)}{\partial \theta} \right]. $$
 
 ## Maximum de vraisemblance : résultats
 
@@ -132,7 +132,7 @@ Problèmes restants :
   \mathrm{Var}[\hat{\theta}] = \mathrm{Var}\left[\frac{\sum_{i=1}^n y_i}{n}\right]
   = \frac{1}{n^2} n \mathrm{Var}[y_i] = \frac{\theta}{n}.
 \]
-* Pour $n = 60$ et $\sum_{i=1}^n y_i = 230$, $\mathrm{Var}[\hat{\theta}]$ est de $(0.2528)^2$ pour $\theta = \hat\theta \approx 3.833$, $(0.2236)^2$ pour $\theta = 3$ et $(0.2739)^2$ pour $\theta = 4.5$.
+* La variance dépend de $\theta$ inconnu, mais elle est souvent peu sensible à $\theta$ : pour $n = 60$, $\mathrm{Var}[\hat{\theta}]$ est de $(0.2528)^2$ pour $\theta = 23/6 \approx 3.833$, $(0.2236)^2$ pour $\theta = 3$ et $(0.2739)^2$ pour $\theta = 4.5$.
 
 ## Éléments de l'analyse bayésienne
 
@@ -187,7 +187,7 @@ plot(x, dgamma(x, alpha+somme_y, beta+n), type='l')
 lines(x, dgamma(x, alpha, beta), col='red')
 ```
 
-## Exemple gaussien I
+## Exemple gaussien
 
 * Considérez les modèle $y_t \sim \mathrm{iid}\, N(\mu, h^{-1})$.
 * Le vecteur de paramètres est $\theta = (\mu,h)$.
@@ -196,7 +196,7 @@ lines(x, dgamma(x, alpha, beta), col='red')
 $$ \begin{aligned} f(y|\theta) &= \prod_{t=1}^T \sqrt{\frac{h}{2\pi}} \exp\left[-\frac{h}{2}(y_t-\mu)^2\right] \\
 &= \left(\frac{h}{2\pi}\right)^{T/2} \exp \left[-\frac{h}{2} \sum_{t=1}^T (y_t-\mu)^2 \right]. \end{aligned} $$
 
-## Exemple gaussien II
+## Exemple gaussien (suite)
 
 * Mettons qu'on choisit une loi *a priori* où $h$ et $\mu$ sont indépendents,
 avec
