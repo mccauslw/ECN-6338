@@ -31,11 +31,62 @@ urlcolor: blue
 
 ### Mise en oeuvre en R et résultats
 
-## Méthode de dichotomie (bracketing)
+## Notes sur l'optimisation univariée
 
-![Méthode de dichotomie](./Figures/Dichotomie.png)
+- Utile directement
+- Utile pour les problèmes multivariés où la stratégie d'optimisation consiste
+en la répetition des étapes suivantes :
+    - choix d'une direction de recherche,
+    - optimisation univariée dans la direction de recherche (line search).
 
-## Méthode de Newton en une dimension
+## Méthode de dichotomie (bracketing) pour un minimum
+
+Il faut commencer dans un état $(a,b,c)$, $a < b < c$ où $f(b) < \min(f(a), f(c))$.
+
+- Si la fonction est continue et cette condition tient, il doit y avoir un minimum local dans l'intervalle $[a,c]$.
+- À chaque iteration, on calcule un nouvel état qui remplit les mêmes conditions.
+- L'intervalle $[a,c]$ rapetisse à chaque itération.
+- On arrête quand $c-a < \epsilon$, où $\epsilon$ mesure la tolerance.
+
+## Une itération de la méthode de dichotomie
+
+Les étapes pour trouver un état $(a',b',c')$, $a' < b' < c'$ où $f(b') < \min(f(a'), f(c'))$ et $c' - a' < c-a$ :
+
+1. Trouver $d$ :
+\[
+  d = \begin{cases}
+    \frac{a + b}{2} & b-a < c-b, \\
+    \frac{b + c}{2} & b-a \geq c-b.
+  \end{cases}
+\]
+1. Évaluer $f(d)$.
+1. Trouvez $(a',b',c')$ :
+\[
+  (a',b',c') = \begin{cases}
+    (d,b,c) & d < b,\, f(d) > f(b), \\
+    (a,d,b) & d < b,\, f(d) < f(b), \\
+    (b,d,c) & d > b,\, f(d) < f(b), \\
+    (a,b,d) & d > b,\, f(d) > f(b).
+  \end{cases}
+\]
+
+## Méthode de dichotomie (graphique)
+
+![Méthode de dichotomie pour trouver un minimum](./Figures/Dichotomie.png)
+
+## Notes sur la méthode de dichotomie
+
+### Avantages
+
+- L'intervalle rapetisse toujours par au moins 1/4 par itération.
+- Une seule évaluation de $f(\cdot)$ par itération ; pas de dérivées à évaluer.
+- Robuste aux fonctions avec des coudes et des parties concaves.
+
+### Désavantages
+
+- On ne peut pas profiter de l'information dans les dérivées.
+
+## Méthode de Newton en une dimension pour un maximum
 
 - Considérez la fonction $f(x) = x - e^x$.
 - Les deux premières dérivées sont
@@ -47,13 +98,13 @@ urlcolor: blue
 \[
   g(x) = f(x^k) + f'(x^k) (x-x^k) + \tfrac{1}{2} f''(x^k) (x-x^k)^2.
 \]
-- Le maximum de $g$ résoud l'équation $g'(x) = f'(x^k) + f''(x^k)(x-x^k) = 0$.
+- Le maximum de l'expansion $g$ résoud l'équation $g'(x) = f'(x^k) + f''(x^k)(x-x^k) = 0$.
 - La solution de $g'(x^{k+1}) = 0$ est $x^{k+1} = x^k - f'(x^k)/f''(x^k)$.
 - Notez que
 \[
   -\frac{f'(x)}{f''(x)} = \frac{1-e^x}{e^x}.
 \]
-- Pour $x^k \ll 0$, $x^{k+1} - x^k \approx e^{-x} \gg |x|$.
+- Pour $x^k \ll 0$, $x^{k+1} - x^k \approx e^{-x^k} \gg |x^k|$.
 - Pour $x^k \gg 0$, $x^{k+1} - x^k \approx -1$.
 
 ## Pas de Newton pour $x=-2,-1,1,2$
@@ -74,11 +125,23 @@ lines(x, x-exp(x))
 
 ## Un pire cas : minimisation de $f(x) = \log \cosh x$
 
-- $f'(x) = \tanh x$, $f''(x) = (1-\tanh^2 x)$
+- $f'(x) = \tanh x$, $f''(x) = (1-\tanh^2 x) > 0$
 ```{r logcosh}
 x = seq(-3, 3, length=101)
 plot(x, log(cosh(x)), type='l')
 ```
+
+## Notes sur la méthode de Newton
+
+### Avantages
+
+- Convergence très rapide près de la solution, où la deuxième dérivée ne change pas beaucoup.
+
+### Désavantages
+
+- La méthode ne marche pas quand la fonction n'est pas concave (max) ou convexe (min).
+- Même pour une fonction concave (max) ou convexe (min) $x^k$ peut diverger.
+- Il faut calculer deux dérivées de la fonction.
 
 ## Quasi-Newton en une dimension
 
@@ -96,7 +159,7 @@ où
   h^k \equiv \frac{f'(x^k) - f'(x^{k-1})}{x^k - x^{k-1}}.
 \]
 - $h_k$ est la pente d'une corde qui approxime la pente de la tangente de $f'(x)$ à $x=x^k$.
-- Attention : en plusieurs dimensions $H_k (x^k - x^{k-1}) = \nabla f(x^k) - \nabla f(x^{k-1})$ donne $n$ équations, pas assez pour déterminer $H_k$.
+- Attention : en plusieurs dimensions l'équation analogue $H_k (x^k - x^{k-1}) = \nabla f(x^k) - \nabla f(x^{k-1})$ donne $n$ équations, pas assez pour déterminer $H_k$, $n \times n$ et symétrique.
 
 ## Problème du monopole (Judd, page 105)
 
@@ -112,13 +175,13 @@ où $C_Y = 0.62$ et $C_Z = 0.60$.
   U(Y,Z) = u(Y,Z) + M = (Y^\alpha + Z^\alpha)^{\eta/\alpha} + M,
 \]
 où $\alpha = 0.98$, $\eta = 0.85$ et $M$ représente les dépenses en autres biens.
-- La demande est donnée par les équations
+- La demande pour $Y$ et $Z$ est donnée par les équations
 \[
   p_Y = u_Y(Y,Z), \quad p_Z = u_Z(Y,Z),
 \]
 où $p_Y$ et $p_Z$ sont les prix de $Y$ et $Z$.
 
-## Problème du monopole (cont.)
+## Problème du monopole (suite)
 
 - Le problème du monopole est la maximisation du profit :
 \[
@@ -147,7 +210,7 @@ où
 
 - Pour éviter l'évaluation de $\Pi$ à $Y<0$ où $Z<0$, soit
 $y\equiv \log Y$, $z\equiv \log Z$.
-- Notez que $\log(Y^\alpha) = \alpha y$ alors $Y^\alpha = e^{\alpha y}$.
+- Notez que $\log(Y^\alpha) = \alpha y$ et $Y^\alpha = e^{\alpha y}$.
 - Le problème s'écrit $\max_{y,z} \pi(y,z)$,
 où
 \[
@@ -156,7 +219,7 @@ où
 
 ## Comment faire les graphiques en R
 
-```{r trois-D_setup}
+```{r trois-D_setup, warning=FALSE}
 source('pi.R')
 C = c(0.62, 0.60)         # Coûts marginaux
 alpha = 0.98; eta = 0.85  # Paramètres de l'utilité
@@ -187,7 +250,7 @@ contourplot(pi_fn ~ y*z, data=df, cuts=12)
 levelplot(pi_fn ~ y*z, data=df, shade=T, col.regions = terrain.colors(100))
 ```
 
-## Gradient et matrice hessienne
+## Gradient et matrice hessienne du profit du monopole
 
 Valeur :
 \(
@@ -289,6 +352,22 @@ vgh1$hessien %*% h
 
 ## Nelder-Mead (méthode de simplex, méthode de polytope)
 
+(Conventions de la page Wikipedia et non du livre de Judd, illustration de la recherche d'un minimum)
+
+En $n$ dimensions, l'état est $x_1,\ldots,x_{n+1}$ (sommets d'un simplexe) tel que
+\[
+  f(x_1) < f(x_2) < \cdots < f(x_n) < f(x_{n+1}).
+\]
+Autres points d'intérêt :
+
+- $x_0$, le centroïde des points $x_1,x_2,\ldots,x_n$,
+- $x_r = x_0 + \alpha (x_0 - x_{n+1})$, $\alpha > 0$, un point de reflection (r).
+- $x_r = x_0 + \gamma (x_0 - x_{n+1})$, $\gamma > \alpha$, un point d'expansion (e).
+
+Une étape donne une autre ensemble de $n+1$ points, qu'il faut trier.
+
+## Nelder-Mead, graphiques
+
 ![Nelder Mead en deux dimensions](./Figures/Nelder_Mead.png)
 
 ## Notes sur la méthode Nelder-Mead
@@ -328,9 +407,9 @@ L'algorithme générique : faire les étapes suivantes jusqu'à ce que $\|x^k - 
 $\lambda_k = \arg\min_\lambda f(x^k + \lambda s^k)$.
 1. $x^{k+1} = x^k + \lambda_k s^k$.
 
-Si $\|\nabla f(x^k)\| < \delta (1+f(x^k))$, réclamer le succès.
+Si $\|\nabla f(x^k)\| < \delta (1+|f(x^k)|)$, réclamer le succès ; sinon, indique la convergence à un point non-optimal.
 
-## Quelques directions possibles
+## Quelques directions possibles (pour un minimum)
 
 ### Directions possibles
 
@@ -345,12 +424,12 @@ Si $\|\nabla f(x^k)\| < \delta (1+f(x^k))$, réclamer le succès.
 1. Coût de $\nabla f$ relatif aux coûts de ses éléments :
     a. un cas extrême : $f(x) = f_1(x_1) + \ldots + f_n(x_n)$.
     a. un cas avec "rendements à l'échelle" : $f(x) = g(h(x))$, avec $g$ et $h$ scalaires : $g'(h(x))$ est un factor commun du gradient.
-1. Variations de $H(x)$ et la courbature de la fonction.
+1. Variations de $H(x)$ et de la courbature de la fonction.
 1. Régions de non-convexité.
-1. Alignement des valeurs propres de la matrice hessienne et les axes de coordonnées.
+1. Alignement des vecteurs propres de la matrice hessienne et les axes de coordonnées.
 1. Besoin de calculer la matrice hessienne de toute façon?
 
-## Illustration des directions
+## Illustration des directions (pour un minimum)
 
 Dans les graphiques suivantes,
 
@@ -422,11 +501,10 @@ avec le formule [Sherman-Morrison](https://en.wikipedia.org/wiki/Sherman–Morri
   (A \pm uu^\top)^{-1} = A^{-1} \mp \frac{A^{-1}uu^\top A^{-1}}{1+u^\top A^{-1} u}.
 \]
 
-La mise à jour prend $O(n^2)$ opérations :
+Calculer $b_k = A_k^{-1} y_k$ prend $O(n^2)$ opération ; La mise à jour, $O(n^2)$ opérations :
 
 - $v = A^{-1}u$, $O(n^2)$,
-- Numérateur, $vv^\top$, $O(n^2)$; dénominateur, $1+u^\top v$, $O(n)$
-- $b_k = A_k^{-1} y_k$, $O(n^2)$.
+- Numérateur, $vv^\top$, $O(n^2)$; dénominateur, $1+u^\top v$, $O(n)$.
 
 ## Résultats, Nelder-Mead
 
