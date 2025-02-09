@@ -11,24 +11,35 @@ urlcolor: blue
 
 ### Le problème de la résolution de systèmes non-linéaires
 
-1. Descriptions des problèmes univariés et multivariés
-1. exemples illustratifs
-1. exemple économique : jeu du duopole
+1. Description des problèmes univariés et multivariés
+1. Exemples illustratifs
+1. Exemple économique : jeu du duopole
 
 ### Méthodes pour problèmes univariés
 
 1. Newton
-1. interpolation linéaire
-1. méthode de dichotomie
-1. méthodes du type Dekker-Brent
+1. Interpolation linéaire
+1. Méthode de dichotomie
+1. Méthodes de type Dekker-Brent
 
-### Méthodes pour problèmes multivariées
+### Méthodes pour problèmes multivariés
 
 1. Gauss-Seidel
 1. Newton
 1. Broyden
 
-## Les problèmes univarié et multivarié
+## Systèmes d'équations en économie
+
+1. Optimisation statique de l'individu (consommateurs, firmes, économétres)
+    - conditions de premier ordre
+    - contraintes (ressources)
+1. Calcul des équations généraux
+    - équations d'offre et de demande, en prix
+    - conditions d'équilibre
+1. Calcul des équilibres de Nash (oligopoles, principal-agent)
+    - meilleurs réponses de chaque joueur
+
+## Les problèmes univariés et multivariés
 
 - Problème univarié : trouvez $x \in \mathbb{R}$ qui vérifie
 \[
@@ -61,17 +72,17 @@ où $f \colon \mathbb{R}^n \to \mathbb{R}$ et $f \in C^2$, est aussi la solution
 \[
   \frac{\partial f(x)}{\partial x^\top} = 0_n.
 \]
-Cependant, la résolution du système $g(x) = 0$, $g \in C^1$, est plus générale :
+Toutefois, la résolution du système $g(x) = 0$, où $g \in C^1$, est plus générale, car :
 
-- La matrice jacobienne de $g$ n'est pas forcément symmétrique.
-- La matrice jabobienne de $\frac{\partial f(x)}{\partial x^\top}$ est la matrice hessienne symmétrique de $f$.
+- la matrice jacobienne de $g$ n'est pas forcément symmétrique et
+- la matrice jacobienne de $\frac{\partial f(x)}{\partial x^\top}$ est la matrice hessienne symmétrique de $f$.
 
 ## Systèmes non-linéaires et le nombre de solutions
 
 Dans le cas spécial $f(x) = Ax - b = 0$, où $A$ est une matrice $n\times n$,
 
-- si le rang de $A$ est de $n$, il y a une solution unique;
-- si le rang de $A$ est moins grand, il n'y a aucune solution :
+- si le rang de $A$ est de $n$, il y a une solution unique ;
+- si le rang de $A$ est inférieur à $n$, alors il n'existe pas de solution :
 \[
   A = \begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix}
   \quad
@@ -86,7 +97,7 @@ ou il y a un nombre infini de solutions :
 
 Dans le cas général, il peut y avoir
 
-- aucune solution, mème pour les fonctions $f^i$ très différentes,
+- aucune solution, même pour les fonctions $f^i$ très différentes,
 - un nombre fini arbitraire de solutions,
 - un nombre infini de solutions.
 
@@ -146,7 +157,7 @@ où $p_Y$ et $p_Z$ sont les prix de $Y$ et $Z$.
 
 ## Jeu du duopole (cont.)
 
-- On cherche une équilibre de Nash $(Y^*, Z^*)$ où
+- On cherche un équilibre de Nash $(Y^*, Z^*)$ où
     - $Y^*$ maximise le profit de la firme 1, pour $Z^*$ donnée,
     - $Z^*$ maximise le profit de la firme 2, pour $Y^*$ donnée.
 - La meilleure réponse $Y$ à $Z$ maximise le profit :
@@ -169,7 +180,7 @@ où $y = \log Y$, $z = \log Z$.
 \]
 - La même démarche pour la firme 2 donne une expression analogue $\Pi^Z_2(Y,Z) = 0$.
 
-## Le problème de computation pour le jeu du monopole
+## Le problème de calcul pour le jeu du monopole
 
 L'équilibre du jeu du monopole est
 \[
@@ -267,7 +278,7 @@ abline(h=0)
 
 ## Discussion, méthode de dichotomie
 
-- On évalue seuelement la fonction et non les dérivées.
+- On évalue seulement la fonction et non les dérivées.
 - La fonction doit être continue, pas forcément différentiable.
 - On gagne 1 bit de précision à chaque itération (pas beaucoup, mais sûr),
 - On sait à l'avance combien d'itérations il faut pour atteindre
@@ -278,8 +289,8 @@ abline(h=0)
     qui contient une racine.
     - joueur 2 qui choisit un algorithme pour trouver un intervalle $[a,a+\delta]$
     contenant une racine.
-- Conjecture : Si joueur 2 joue en premier, la méthode de dichotomie est optimale (minmax) pour joueur 2.
-- Mais la méthode de dichotomie est très sous-optimale pour les fonctions habituelles.
+- Conjecture : Si joueur 2 joue en premier, la méthode de dichotomie est optimale (minmax) pour lui.
+- Mais la méthode de dichotomie est très sous-optimale pour les fonctions rencontrées en pratique.
 - On veut accélérer la convergence et en même temps garantir un intervalle court en un nombre borné d'itérations.
 
 ## Méthodes du type Dekker-Brent
@@ -330,7 +341,7 @@ $(f(a_k), a_k)$, $(f(b_k), b_k)$ et $(f(b_{k-1}), b_{k-1})$ :
 \]
 
 - La fonction inverse $x = f^{-1}(y)$ passe par les mêmes points.
-- Défine $s = g(0)$, un zéro de la fonction $g^{-1}(x)$
+- On définit $s \equiv g(0)$, qui est un zéro de la fonction $g^{-1}(x)$
 
 ## Calculer $s$ par interpolation inverse quadratique (cont.)
 
@@ -353,13 +364,13 @@ $\tfrac{3}{4}b_k + \tfrac{1}{4}a_k$ et $b_k$.
 
 ## Choisir entre $s$ et $m$ (étape 3)
 
-- $b_{k+1} = m$ est plus sécure que $b_{k+1} = s$, mais le deuxième est habituellement meilleur.
+- $b_{k+1} = m$ est plus sûr que $b_{k+1} = s$, mais le deuxième est habituellement meilleur.
 - On ajoute aux conditions nécessaires déjà mentionnées pour choisir $s$ d'autres conditions :
     - Après un pas de bisection (pour $b_k$), on ajoute les conditions $|b_k - b_{k-1}| > \delta$
     et $\tfrac{1}{2}|b_k - b_{k-1}| > |s - b_k|$.
     - Après un pas d'interpolation, on ajoute les conditions $|b_{k-1} - b_{k-2}| > \delta$
     et $\tfrac{1}{2}|b_{k-1} - b_{k-2}| > |s - b_k|$.
-- Avec ces conditions, le nombre maximale d'itérations est de $M^2$, où $M$ est le nombre d'itérations
+- Avec ces conditions, le nombre maximal d'itérations est de $M^2$, où $M$ est le nombre d'itérations
 nécessaires pour la méthode de dichotomie.
 
 ## Méthode de Gauss-Seidel (exemple)
