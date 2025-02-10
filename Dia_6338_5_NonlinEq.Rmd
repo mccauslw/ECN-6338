@@ -30,10 +30,10 @@ urlcolor: blue
 
 ## Systèmes d'équations en économie
 
-1. Optimisation statique de l'individu (consommateurs, firmes, économétres)
+1. Optimisation statique de l'individu (consommateurs, firmes, économètres)
     - conditions de premier ordre
     - contraintes (ressources)
-1. Calcul des équations généraux
+1. Calcul des équilibres généraux
     - équations d'offre et de demande, en prix
     - conditions d'équilibre
 1. Calcul des équilibres de Nash (oligopoles, principal-agent)
