@@ -64,11 +64,11 @@ où $f \colon \mathbb{R}^n \to \mathbb{R}^n$.
 
 ## La résolution de systèmes d'équations et l'optimisation
 
-La solution $x^*$ au problème d'optimisation
+Une solution $x^*$ au problème d'optimisation libre
 \[
   \max_{x \in \mathbb{R}^n} f(x),
 \]
-où $f \colon \mathbb{R}^n \to \mathbb{R}$ et $f \in C^2$, est aussi la solution du système
+où $f \colon \mathbb{R}^n \to \mathbb{R}$ et $f \in C^2$, est aussi une solution du système
 \[
   \frac{\partial f(x)}{\partial x^\top} = 0_n.
 \]
@@ -86,13 +86,13 @@ Dans le cas spécial $f(x) = Ax - b = 0$, où $A$ est une matrice $n\times n$,
 \[
   A = \begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix}
   \quad
-  b = \begin{bmatrix} 1 \\ 2 \end{bmatrix}
+  b = \begin{bmatrix} 1 \\ 2 \end{bmatrix},
 \]
 ou il y a un nombre infini de solutions :
 \[
   A = \begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix}
   \quad
-  b = \begin{bmatrix} 2 \\ 2 \end{bmatrix}
+  b = \begin{bmatrix} 2 \\ 2 \end{bmatrix}.
 \]
 
 Dans le cas général, il peut y avoir
@@ -148,14 +148,14 @@ où $C_Y = 0.07$ et $C_Z = 0.08$.
 \[
   U(Y,Z) = u(Y,Z) + M = (1 + Y^\alpha + Z^\alpha)^{\eta/\alpha} + M,
 \]
-où $\alpha = 0.999$, $\eta = 0.2$ et $M$ représente les dépenses en autres biens.
+où $\alpha = 0.999$, $\eta = 0.2$ et $M$ représente les dépenses pour d'autres biens.
 - La demande pour $Y$, $Z$ est donnée par les équations
 \[
   p_Y = u_Y(Y,Z), \quad p_Z = u_Z(Y,Z),
 \]
 où $p_Y$ et $p_Z$ sont les prix de $Y$ et $Z$.
 
-## Jeu du duopole (cont.)
+## Jeu du duopole (suite)
 
 - On cherche un équilibre de Nash $(Y^*, Z^*)$ où
     - $Y^*$ maximise le profit de la firme 1, pour $Z^*$ donnée,
@@ -236,7 +236,7 @@ entre $(x_0, f(x_0))$ et $(x_1, f(x_1))$ :
 \[
   s = x_0 + \frac{(x_1 - x_0)}{f(x_1) - f(x_0)} f(x_0) \approx 0.3120053,
 \]
-un peu plus loin de la racine.
+un peu plus loin de la racine, mais trouvé sans évaluation de la dérivée $f'(x_0)$.
 
 
 
@@ -284,10 +284,10 @@ abline(h=0)
 - On sait à l'avance combien d'itérations il faut pour atteindre
     ces deux conditions : $b_k - a_k < \delta$, $[a_k,b_k]$ contient une racine.
 - Considérez des jeux zéro-somme entre
-    - joueur 1 qui choisit une fonction continue $f(x)$ avec $f(a_0)f(b_0) < 0$,
+    - joueur 1, qui choisit une fonction continue $f(x)$ avec $f(a_0)f(b_0) < 0$,
     et veut maximiser le nombre d'itérations pour trouver un intervalle $[a,a+\delta]$
-    qui contient une racine.
-    - joueur 2 qui choisit un algorithme pour trouver un intervalle $[a,a+\delta]$
+    qui contient une racine ; et
+    - joueur 2, qui choisit un algorithme pour trouver un intervalle $[a,a+\delta]$
     contenant une racine.
 - Conjecture : Si joueur 2 joue en premier, la méthode de dichotomie est optimale (minmax) pour lui.
 - Mais la méthode de dichotomie est très sous-optimale pour les fonctions rencontrées en pratique.
@@ -343,7 +343,7 @@ $(f(a_k), a_k)$, $(f(b_k), b_k)$ et $(f(b_{k-1}), b_{k-1})$ :
 - La fonction inverse $x = f^{-1}(y)$ passe par les mêmes points.
 - On définit $s \equiv g(0)$, qui est un zéro de la fonction $g^{-1}(x)$
 
-## Calculer $s$ par interpolation inverse quadratique (cont.)
+## Calculer $s$ par interpolation inverse quadratique (suite)
 
 \[
   \begin{aligned}
@@ -396,9 +396,14 @@ et $x_2^{k+1}$ comme dans la version non-linéaire.
 - L'ordre des variables et l'ordre des équations importent.
 - Résoudre $f_1(x_1, x_2) = 0$ pour $x_2$ et $f_2(x_1, x_2) = 0$ pour $x_1$ donne une autre mise à jour de Seidel :
 \[
-  x_1^{k+1} = \sqrt{\tfrac{1}{2}(1+x_2^k)}, \quad x_2^{k+1} = \pm \sqrt{1-(x_1^k)^2}.
+  x_1^{k+1} = \pm \sqrt{\tfrac{1}{2}(1+x_2^k)}, \quad x_2^{k+1} = \pm \sqrt{1-(x_1^k)^2}.
 \]
-
+- Quatre versions : $++$, $+-$, $-+$, $--$.
+- Le choix de permutation et des signes peut faire la différence entre
+    - convergence ou non,
+    - convergence rapide ou lente,
+    - racines différentes.
+    
 ## Illustration Gauss-Seidel
 
 ```{r seidel}

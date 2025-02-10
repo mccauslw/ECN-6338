@@ -93,7 +93,7 @@ Les étapes pour trouver un état $(a',b',c')$, $a' < b' < c'$ où $f(b') < \min
 \[
   f'(x) = 1-e^x, \quad f''(x) = -e^x
 \]
-- $f(x)$ est convexe avec un maximum unique à $x=0$.
+- $f(x)$ est concave avec un maximum unique à $x=0$.
 - L'expansion quadratique de Taylor autour de $x^k$ est
 \[
   g(x) = f(x^k) + f'(x^k) (x-x^k) + \tfrac{1}{2} f''(x^k) (x-x^k)^2.
