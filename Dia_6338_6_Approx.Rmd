@@ -9,7 +9,7 @@ urlcolor: blue
 
 ## Survol du cours 6
 
-### Approximations locales, basées sur les dérivées à un seul point
+### Approximations locales, basées sur les dérivées en un seul point
 
 - Approximation de Taylor
 - Approximation de Padé
@@ -24,31 +24,28 @@ urlcolor: blue
 
 - Suites de polynômes orthogonaux
 
-## L'approximation de Taylor
+## L'approximation (locale) de Taylor
 
-- L'approximation de Taylor utilise l'information locale suivante à un point $x_0$ :
-    - la valeur $f(x_0)$ de la fonction à approximer,
-    - ses $n$ premières dérivées $f'(x_0), f''(x_0), \ldots, f^{(n)}(x_0)$.
+- L'approximation d'une fonction $f(\cdot)$ est autour d'un point $x_0$.
+- Elle utilise la valeur $f(x_0)$ et les $n$ premières dérivées $f'(x_0), f''(x_0), \ldots, f^{(n)}(x_0)$.
 - L'approximation est
 \[
   \hat{f}(x) = f(x_0) + \sum_{i=1}^n \frac{(x-x_0)^i}{i!} f^{(i)}(x_0).
 \]
-- La valeur de $\hat{f}$ et de ses $n$ premières dérivées concordent avec celles de $f$
+- Les valeurs de $\hat{f}$ et de ses $n$ premières dérivées coïncident avec celles de $f$
 au point $x_0$.
-- L'expansion a $n+1$ coefficients.
-- Peu importe l'ordre $n$, l'approximation est locale: il existe $h_n(x)$ telle que
+- Peu importe l'ordre $n$, l'approximation est locale : il existe une fonction $h_n(x)$ telle que
 \[
-  f(x) - \hat{f}(x) = h_n(x)(x-x_0)^n\,\mbox{et}\,\lim_{x\to 0} h_n(x) = 0.
+  f(x) - \hat{f}(x) = h_n(x-x_0) \cdot (x-x_0)^n\,\mbox{et}\,\lim_{x\to 0} h_n(x) = 0.
 \]
 
 
-## L'approximation Padé
+## L'approximation (locale) Padé
 
-- Comme l'approximation de Taylor, une approximation Padé
+- L'approximation Padé $\hat f$ de $f$, comme celle de Taylor,
     - utilise la valeur de $f$ et de ses premières $n$ dérivées à $x_0$,
-    - concorde avec $f$ sur ces valeurs à $x_0$,
-    - a $n+1$ coefficients.
-
+    - concorde avec $f$ sur ces valeurs,
+    - a $n+1$ coefficients libres.
 - L'approximation est une fonction rationnelle, un ratio de polynômes :
 \[
   f(x) \approx r(x) \equiv \frac{p(x)}{q(x)}
@@ -64,9 +61,8 @@ $n+1$ équations pour trouver $n+1 = (m+1) + d$ coefficients.
 
 ## Notes sur l'approximation Padé
 
-- L'approximation est une fonction rationnelle, un ratio de polynômes.
 - L'approximation est souvent meilleure que l'approximation de Taylor en pratique.
-- Il faut faire attention aux zéros de $q(x)$ où l'approximation n'est pas bien définie.
+- Il convient de prêter attention aux zéros de $q(x)$ où l'approximation n'est pas bien définie.
 
 
 ## Calcul de l'approximation Padé (2,1) de $e^x$ autour de $x=0$
@@ -77,16 +73,16 @@ $n+1$ équations pour trouver $n+1 = (m+1) + d$ coefficients.
 \]
 - Les coefficients $p_0$, $p_1$, $p_2$ et $q_1$ sont donnés par
 \[
-  \left. (p_0 + p_1x + p_2x^2) - e^x(1 + q_1x) \right|_{x=0} = p_0 - 1 = 0,
+  \left[ (p_0 + p_1x + p_2x^2) - e^x(1 + q_1x) \right]_{x=0} = p_0 - 1 = 0,
 \]
 \[
-  \left. (p_1 + 2p_2x) - e^x (1 + q_1x) - e^x q_1 \right|_{x=0} = p_1 - 1 - q_1 = 0,
+  \left[ (p_1 + 2p_2x) - e^x (1 + q_1x) - e^x q_1 \right]_{x=0} = p_1 - 1 - q_1 = 0,
 \]
 \[
-  \left. 2p_2 - e^x(1 + q_1x) - 2e^x q_1 \right|_{x=0} = 2p_2 - 1 - 2q_1 = 0,
+  \left[ 2p_2 - e^x(1 + q_1x) - 2e^x q_1 \right]_{x=0} = 2p_2 - 1 - 2q_1 = 0,
 \]
 \[
-  \left. -e^x(1 + q_1x) - 3e^x q_1 \right|_{x=0} = -1 - 3q_1 = 0.
+  \left[ -e^x(1 + q_1x) - 3e^x q_1 \right]_{x=0} = -1 - 3q_1 = 0.
 \]
 - La première équation donne $p_0 = 1$; la dernière, $q_1 = -\tfrac{1}{3}$.
 - Ensuite, la deuxième équation donne $p_1 = 1 + q_1 = \tfrac{2}{3}$;
@@ -117,13 +113,13 @@ source('Taylor_Pade_log.R')
 source('Taylor_Pade_log_error.R')
 ```
 
-## Les approximations suivantes
+## Les approximations basées sur les évaluations sur une grille
 
-- Nous passons maintenant aux expansions basées sur les évaluations sur une grille :
-    - Approximation constante par morceaux
-    - Approximation linéaire par morceaux
-    - Approximation de Bernstein (pas une interpolation)
-    - Approximation par spline cubique d'hermite
+- Abordons maintenant les expansions basées sur les évaluations sur une grille :
+    - approximation constante par morceaux
+    - approximation linéaire par morceaux
+    - approximation de Bernstein (pas une interpolation)
+    - approximation par spline cubique d'hermite
 
 - Les trois premiers utilisent les évaluations $f(x_1),\ldots,f(x_n)$ sur une grille $x_1,\ldots,x_n$ et les approximations $\hat{f}(x)$ sur $[x_1,x_n]$ prennent la forme
 \[
@@ -150,7 +146,7 @@ source('Bernstein.R')
 ## Approximation de Bernstein
 
 - Approximation d'une fonction $g \colon [a,b] \to \mathbb{R}$.
-- On normalise à $f \colon [0,1]$ avec $f(x) \equiv g(a+x(b-a))$.
+- On normalise à $f \colon [0,1] \to \mathbb{R}$ avec $f(x) \equiv g(a+x(b-a))$.
 - L'approximation d'ordre $n$ utilise les évaluations de $f$ sur une grille
 $(0,\frac{1}{n},\ldots,\frac{n-1}{n},1)$.
 - L'approximation est
@@ -167,7 +163,7 @@ en général.
 
 ## Autres notes sur l'approximation de Bernstein
 
-- La convergence est lente, mais les dérivées qui existent convergent aussi en même temps.
+- La convergence est lente, mais les dérivées existantes convergent également.
 - $b_{i,n}(x)$ est la densité $\mathrm{Beta}(i+1, n-i+1)$ sur $[0,1]$.
 - Pour $\pi_i \geq 0$, $i=0,1,\ldots,n$, $\sum_{i=0}^n \pi_i = 1$, la fonction
 suivante est une densité, un mélange de densités Beta :
@@ -234,7 +230,7 @@ source('Hermite_piece.R')
 
 - Problème : interpoler une fonction dont la valeur et la dérivée sont spécifiées
 à quelques points.
-- Les intrants :
+- Les données d'entrée :
     - des points $x_1 < x_2 < \ldots < x_n$,
     - des valeurs $f(x_1),\ldots,f(x_n)$,
     - et les dérivées $f'(x_1),\ldots,f'(x_n)$.
@@ -247,27 +243,50 @@ source('Hermite_piece.R')
 qui donne une fonction $C^2$ à partir des valeurs, des premières dérivées et des deuxième
 dérivées à un ensemble de points.
 
-## Evaluation des splines cubiques d'hermite
+## Évaluation des splines cubiques d'hermite
 
 ```{r spline_cub_herm_eval}
-spline_cub_eval <- function(x, x_g, f_g, fp_g)
+sp_cub_h <- function(x, x_g, f_g, fp_g)
 {
-  i = findInterval(x, x_g)
-  t = (x - x_g[i]) / (x_g[i+1] - x_g[i])
-  fch = x_g[i] * (2*t^3 - 1)
+  i <- findInterval(x, x_g)
+  t <- (x - x_g[i]) / (x_g[i+1] - x_g[i])
+  t2 <- t*t; t3 <- t2*t
+  fch <- f_g[i] * (2*t3 - 3*t2 + 1) +
+    fp_g[i] * (t3 - 2*t2 + t) +
+    f_g[i+1] * (-2*t3 + 3*t2) +
+    fp_g[i+1] * (t3 - t2)
 }
+
+x_grid <- seq(-2, 3, by=1)
+f_grid <- exp(2*x_grid)
+fp_grid <- 2*f_grid
+x <- array(seq(-2, 2, by=0.01))
+f_approx <- apply(x, 1, sp_cub_h, x_grid, f_grid, fp_grid)
+```
+
+## Évaluation des splines cubiques d'hermite (suite)
+
+```{r spline_cub_herm_eval_suite}
+plot(x, exp(2*x), 'l', col='black')
+lines(x, f_approx, col='red')
+```
+
+## Évaluation des splines cubiques d'hermite (erreur)
+
+```{r spline_cub_herm_eval_erreur}
+plot(x, f_approx - exp(2*x), 'l', col='black')
 ```
 
 ## Aparté sur MCO
 
 - Moindres carrées ordinaire (MCO), rappel :
     - Soit $X$ une matrice $n \times K$ de rang $K$, $y$ un vecteur $n \times 1$.
-    - Le problème MCO est de choisir $\beta$ qui minimise
-$\|y-X\beta\|^2 = (y-X\beta)^\top(y-X\beta)$.
-    - La solution est $b = (X^\top X)^{-1}(X^\top y)$.
+    - Problème MCO : choisir $\beta$ qui minimise la somme de carrés
+$(y-X\beta)^\top(y-X\beta)$.
+    - Solution : $b = (X^\top X)^{-1}(X^\top y)$.
     - La vecteur $\hat{y} \equiv Xb = (X(X^\top X)^{-1}X^\top) y$ est la combinaison linéaire des colonnes de $X$ le plus près de $y$.
 
-- La matrice $M = X(X^\top X)^{-1}X^\top$ de "projection"
+- La matrice $M = X(X^\top X)^{-1}X^\top$ de "projection" :
     - Prenons une combinaison linéaire $Xa$ des colonnes de $X$.
     - Multiplication par $M$ ne change pas $Xa$ :
 \[
@@ -275,14 +294,14 @@ $\|y-X\beta\|^2 = (y-X\beta)^\top(y-X\beta)$.
 \]
     - Prenons $u$, $n\times 1$, perpendiculaire à toutes les colonnes de $X$.
 \[
-  X(X^\top X)^{-1}X^\top u = X(X^\top X)^{-1} 0 = 0.
+  Mu = X(X^\top X)^{-1}X^\top u = X(X^\top X)^{-1} 0 = 0.
 \]
     - $M$ projette un vecteur $n \times 1$ sur l'espace engendré par les colonnes de $X$.
     - $\hat{y} = My$ est la projection de $y$ sur cet espace.
 
 ## $X$ avec colonnes orthogonales
 
-- Supposons que les colonnes de $X$ sont mutuellement orthogonales (un cas très spécial, inhabituel)
+- Supposons que les colonnes de $X$ sont orthogonales. (Pas réaliste pour les données observées, possible dans le cas où $X$ est une matrice de conception pour une expérience.)
 - Alors,
 \[
   X^\top X =
@@ -305,25 +324,26 @@ $\|y-X\beta\|^2 = (y-X\beta)^\top(y-X\beta)$.
   b_k = \frac{x_k^\top y}{x_k^\top x_k},\; k=1,\ldots,K; \quad
   \hat{y} = Xb = \sum_{k=1}^K \frac{x_k^\top y}{x_k^\top x_k} x_k.
 \]
-- Remarquez les produits intérieurs.
+- Chaque $\frac{x_k^\top y}{x_k^\top x} x_k$ est la projection de $y$ sur $x_k$.  
+- Notez bien les produits intérieurs.
 
-## MCO avec colonnes orthogales et l'approximation
+## MCO avec colonnes orthogales et l'approximation par projection
 
 | MCO | Approximation par projection |
 |-----------------------|-----------------------|
-| Vecteur $y$                | Fonction $f(\cdot)$ |
-| Valeurs prédites $\hat{y}$ | Approximation $\hat{f}(\cdot)$ |
-| Vecteurs $x_k$, $k=1,\ldots,K$ | Polynômes $\phi_k(\cdot)$, $k=1,\ldots,K$ |
-| Produit intérieur $x_k^\top y$ | Produit intérieur $\langle \phi_k, f \rangle$ |
-| Colonnes orthogonales $x_k^\top x_l = 0$ | Polynômes orthogonales $\langle \phi_k, \phi_l \rangle = 0$. |
-| Projection de $y$ sur $x_k$ : $\frac{x_k^\top y}{x_k^\top x_k} x_k$ | Projection de $f$ sur $\phi_k(\cdot)$ : $\frac{\langle \phi_k, f \rangle}{\langle \phi_k, \phi_k \rangle} \phi_k(\cdot)$ |
+| vecteur $y$                | fonction $f(\cdot)$ |
+| valeurs prédites $\hat{y}$ | approximation $\hat{f}(\cdot)$ |
+| vecteurs $x_k$, $k=1,\ldots,K$ | polynômes $\phi_k(\cdot)$, $k=1,\ldots,K$ |
+| produit intérieur $x_k^\top y$ | produit intérieur $\langle \phi_k, f \rangle$ |
+| colonnes orthogonales $x_k^\top x_l = 0$ | polynômes orthogonales $\langle \phi_k, \phi_l \rangle = 0$. |
+| projection de $y$ sur $x_k$ : $\frac{x_k^\top y}{x_k^\top x_k} x_k$ | projection de $f$ sur $\phi_k(\cdot)$ : $\frac{\langle \phi_k, f \rangle}{\langle \phi_k, \phi_k \rangle} \phi_k(\cdot)$ |
 
 ## Familles de polynômes orthogonaux : produits intérieurs
 
 - Il y a plusieurs produits intérieurs possibles pour les espace des fonctions,
 y compris
 \[
-  \int_a^b f(x) g(x) w(x) \, dx,
+  \langle f, g \rangle \equiv \int_a^b f(x) g(x) w(x) \, dx,
 \]
 pour plusieurs choix de $(a,b)$ et $w \colon [a,b] \to \mathbb{R}$.
 
@@ -341,10 +361,10 @@ Legendre et Tchebyshev sont des cas spécial de $w(x) = (1-x)^\alpha (1+x)^\beta
 ## Importance de l'orthogonalité
 
 - Un problème de moindres carré : choisir un polynôme d'ordre $n$ pour minimiser
-la distance (selon le produit intérieur spécifié par $(a,b)$ et $w(\cdot)$) entre
+la distance carrée (selon le produit intérieur spécifié par $(a,b)$ et $w(\cdot)$) entre
 le polynôme et une fonction $f \colon (a,b) \to \mathbb{R}$ donnée :
 \[
-  \min_{p \in {\cal P}_n} \int_a^b (f(x) - p(x))^2 w(x)\; dx.
+  \min_{p \in {\cal P}_n} \langle f-p, f-p \rangle = \min_{p \in {\cal P}_n} \int_a^b (f(x) - p(x))^2 w(x)\; dx.
 \]
 - Si on a une famille $\{\varphi_k(x)\}_{k=0}^\infty$ de polynômes orthogonaux
 (toujours par rapport à $(a,b)$ et $w(\cdot)$) la solution du problème de moindres carrés
