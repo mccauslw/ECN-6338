@@ -9,16 +9,17 @@ urlcolor: blue
 
 ## Survol du cours 7
 
-- Exemple, enchères en équilibre
+- Exemple économique, enchères en équilibre
 - Formules (ou règles) Newton-Cotes pour l'intégration univariée
     - Règle du point médian
     - Règle de trapèze
     - Règle de Simpson
 - Formules (ou règles) de Gauss pour l'intégration univariée
+    - Règle de Gauss-Legendre et les enchères
     - Règle de Gauss-Laguerre et l'utilité actualisée
     - Règle de Gauss-Hermite et les espérances gaussiennes
-- Intégration multivariée
-- Dérivation
+- Intégration multivariée par intégration univariée répétée (et ses limites)
+- Dérivation numérique
 
 ## Exemple 1, enchères en équilibre
 
@@ -32,7 +33,7 @@ urlcolor: blue
 
 ## Une fonction de répartition $F$ pour les valeurs privées
 
-- Supposez que $F(x) = 1-(1-x)^{5/2}$ sur $[0,1]$.
+- Supposez que $F(x) = 1-(1-x)^{5/2}$ sur $[v_{\min},v_{\max}] = [0,1]$.
 - La fonction de répartition et le fonction de densité :
 
 ```{r Fenchere}
@@ -53,10 +54,29 @@ plot(x, fv(x), type='l')
 lines(x, Fv(x), col='blue')
 ```
 
+## Formules pour l'intégration univarié
+
+1. Règle du point médian
+\[
+  \int_a^b f(x) \, dx \approx (b-a) f\left(\frac{a+b}{2}\right)
+\]
+1. Règle de trapèze
+\[
+  \int_a^b f(x) \, dx \approx (b-a)\frac{f(a) + f(b)}{2}
+\]
+1. Règle de Simpson
+\[
+  \int_a^b f(x) \, dx \approx (b-a)
+  \left[
+    \tfrac{1}{3} \frac{f(a) + f(b)}{2} + \tfrac{2}{3} f\left(\frac{a+b}{2}\right)
+  \right]
+\]
+
+
 ## La règle du point médian et l'analyse de son erreur
 
 - Supposons que $f \in C^2[a,b]$.
-- Par la formule de [Taylor-Lagrange](https://fr.wikipedia.org/wiki/Théorème_de_Taylor), pour chaque $x \in [a,b]$ il y a un $\xi \in [\tfrac{a+b}{2},x]$ tel que
+- Par la formule de [Taylor-Lagrange](https://fr.wikipedia.org/wiki/Théorème_de_Taylor), pour chaque $x \in (a,b]$ il y a un $\xi \in (\tfrac{a+b}{2},x)$ tel que
 \[
   f(x) = f\left(\tfrac{a+b}{2}\right)
        + f'\left(\tfrac{a+b}{2}\right) \left(x - \tfrac{a+b}{2}\right)
@@ -69,7 +89,7 @@ lines(x, Fv(x), col='blue')
   &= (b-a) f\left(\tfrac{a+b}{2}\right)
   + \tfrac{1}{6} f''(\xi) \left[ \left( x - \tfrac{a+b}{2} \right)^3 \right]_a^b \\
   &= (b-a) f\left(\tfrac{a+b}{2}\right)
-  + \tfrac{1}{6} f''(\xi) \left[ \tfrac{(b-a)^3}{8} - -\tfrac{(b-a)^3}{8}\right] \\
+  + \tfrac{1}{6} f''(\xi) \left[ \tfrac{(b-a)^3}{8} - \tfrac{(a-b)^3}{8}\right] \\
   &= (b-a) f\left(\tfrac{a+b}{2}\right) + \frac{(b-a)^3}{24} f''(\xi).
   \end{aligned}
 \]
@@ -133,6 +153,23 @@ points(c(0, 0.5, 1), c(3, 4.25, 5), pty=18)
   \end{aligned}
 \]
 où $f_i \equiv f(x_i)$.
+
+## Notes pour comprendre le code pour $b(v)$
+
+| symbole | type | signification |
+|---|---|--------------|
+| `n`  | entier | nombre d'intervalles |
+| `nb` | entier | nombre de joueurs    |
+| `F`  | fonction | fonction de répartition des valeurs $v_i$ |
+| `v1` | vecteur | millieux des intervalles $(\tfrac{1}{2n}, \tfrac{3}{2n}, \ldots, \tfrac{2n-1}{2n})$ |
+| `v2` | vecteur | bornes des intervalles $(0, \tfrac{1}{n}, \tfrac{2}{n}, \ldots, 1)$ |
+| `f1`, `f2` | vecteur | valeurs de $F(v)^{n-1}$ sur les grilles `v1` et `v2` |
+| `v_me` | vecteur | grille de valeurs de $v$ pour évaluer $b(v)$, méthode de médiane |
+| `I_me` | vecteur | l'intégrale $\int_{v_{\min}}^v F(x)^{n-1}\,dx$ sur la grille `v_me` |
+| `b_me` | vecteur | valeurs de $b(v)$ sur le grille `v_me` |
+| `I_tr`, \&c | vecteur | Comme `I_me`, méthode de trapezoïde |
+| `I_S`, \&c | vecteur | Comme `I_S`, méthode de Simpson |
+
 
 ## Trouver la fonction d'enchère $b(v)$
 
@@ -407,11 +444,17 @@ optimise(Eu_x_minus, interval=c(0,2),
          gamma, mu, sigma, R, W, regle)
 ```
 
+## L'intégration sur $[0,1]^2$ : noeuds et poids
+
+```{r bivar}
+nw <- createNIGrid(dim=2, type = 'GLe', level=6)
+plot(nw$nodes[,1], nw$nodes[,2], cex=36*nw$weights, asp=1)
+```
+
 ## Commentaires sur l'intégration multivariée
 
-- On peut toujours construire des règles de produit à partir des règles univariées,
-mais la computation coûte cher : par exemple, avec les points $(w_i,x_i)$,
-$i=1,\ldots,m$ d'une règle exacte pour les polynômes d'ordre $2m-1$, on a l'approximation
+- On peut toujours construire des règles de produit mais la computation coûte.
+- Avec les pairs $(w_i,x_i)$, $i=1,\ldots,m$, d'une règle exacte pour les polynômes d'ordre $2m-1$, on a l'approximation
 \[
   \int_{[-1,1]^d} f(x)\, dx \approx \sum_{i_1=1}^m \cdots \sum_{i_n=1}^m
   \omega_{i_1} \omega_{i_2} \cdots \omega_{i_d} f(x_{i_1},x_{i_2},\ldots,x_{i_n})
@@ -424,11 +467,11 @@ exacte pour les polynômes multivariés jusqu'à l'ordre $2m-1$, dimension par d
 ## Dérivation numérique
 
 La formule de [Taylor-Lagrange](https://fr.wikipedia.org/wiki/Théorème_de_Taylor)
-pour une expansion autour de $x$ donne
+pour une expansion autour de $x$ donne (pour un $\xi \in (x,x+h)$)
 \[
   f'(x) = \frac{f(x+h)-f(x)}{h} - \frac{h}{2} f''(\xi),
 \]
-Cependant, avec la formule bilatérale et l'expansion autour de $x$, on obtient
+Cependant, avec la formule bilatérale et l'expansion autour de $x$, on obtient (pour un $\xi \in (x,x+h)$)
 \[
   f'(x) = \frac{f(x+h)-f(x-h)}{2h} - \frac{h^2}{6}f'''(\xi).
 \]

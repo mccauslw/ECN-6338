@@ -36,7 +36,7 @@ urlcolor: blue
 au point $x_0$.
 - Peu importe l'ordre $n$, l'approximation est locale : il existe une fonction $h_n(x)$ telle que
 \[
-  f(x) - \hat{f}(x) = h_n(x-x_0) \cdot (x-x_0)^n\,\mbox{et}\,\lim_{x\to 0} h_n(x) = 0.
+  f(x) - \hat{f}(x) = h_n(x-x_0) \cdot (x-x_0)^n\,\mbox{et}\,\lim_{x\to x_0} h_n(x) = 0.
 \]
 
 
@@ -126,7 +126,7 @@ source('Taylor_Pade_log_error.R')
   \hat{f}(x) = \sum_{i=1}^n f(x_i) \phi_i(x).
 \]
 - Deux propriétés possibles :
-    - partition d'unité : $\sum_{i=1} \phi_i(x) = 1$ pour $x \in [x_i,x_n)$
+    - partition d'unité : $\sum_{i=1} \phi_i(x) = 1$ pour $x \in [x_1,x_n)$
     - interpolation : $\hat{f}(x_i) = f(x_i)$ pour $i=1,\ldots,n$.
 
 ## Approx. constante par morceaux et linéaire par morceaux
@@ -164,7 +164,7 @@ en général.
 ## Autres notes sur l'approximation de Bernstein
 
 - La convergence est lente, mais les dérivées existantes convergent également.
-- $b_{i,n}(x)$ est la densité $\mathrm{Beta}(i+1, n-i+1)$ sur $[0,1]$.
+- $(n+1) b_{i,n}(x)$ est la densité $\mathrm{Beta}(i+1, n-i+1)$ sur $[0,1]$.
 - Pour $\pi_i \geq 0$, $i=0,1,\ldots,n$, $\sum_{i=0}^n \pi_i = 1$, la fonction
 suivante est une densité, un mélange de densités Beta :
 \[
