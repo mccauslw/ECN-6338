@@ -54,7 +54,7 @@ plot(x, fv(x), type='l')
 lines(x, Fv(x), col='blue')
 ```
 
-## Formules pour l'intégration univarié
+## Formules de Newton-Cotes pour l'intégration univarié
 
 1. Règle du point médian
 \[
@@ -96,7 +96,7 @@ lines(x, Fv(x), col='blue')
 - Le premier terme est l'approximation de l'intégrale par la méthode du point médian.
 - Le deuxième terme est l'erreur.
 
-## La version composée de règle du point médian
+## La version composite de règle du point médian
 
 - Décomposer l'intervalle $[a,b]$ en $n$ sous-intervalles de longueur $h = \tfrac{b-a}{n}$.
 - Les points médians des sous-intervalles sont
@@ -114,7 +114,7 @@ lines(x, Fv(x), col='blue')
 \[
   \int_a^b f(x)\,dx = \tfrac{b-a}{2} [f(a) + f(b)] - \tfrac{(b-a)^3}{12} f''(\xi).
 \]
-- Pour la version composée,
+- Pour la version composite,
     - toutes les points d'évaluation, sauf deux, sont des points extrèmes de deux intervalles.
     - décomposer l'intervalle $[a,b]$ en $n$ sous-intervalles de longueur $h = \tfrac{b-a}{n}$.
     - les points extrêmes sont $x_i = a + ih$, $i=0,\ldots,n$.
@@ -123,7 +123,7 @@ lines(x, Fv(x), col='blue')
   \int_a^b f(x)\,dx = \tfrac{h}{2} [f(a) + f(b) + 2\sum_{i=1}^{n-1} f(x_i)] - \tfrac{h^2(b-a)}{12} f''(\xi).
 \]
 
-## La règle de Simpson I
+## La règle de Simpson
 
 - Avec le point médian et les points extrêmes, on peut utiliser la règle de Simpson : il y a un $\xi \in [a,b]$ tel que
 \[
@@ -134,17 +134,18 @@ lines(x, Fv(x), col='blue')
 ```{r simpson, echo=FALSE}
 x = seq(0, 1, by=0.01)
 plot(x, 3+3*x-x^2, type='l', ylim=c(0,5))
-abline(a=3, b=2, lty='dashed', col='grey')
+abline(a=3, b=2, lty='dashed', col='darkgrey')
+abline(a=3.25, b=2, lty='dashed', col='darkgrey')
 abline(h=4, lty='dashed', col='grey')
 abline(h=4.25, lty='dashed', col='grey')
 abline(v=0.5, lty='dashed', col='grey')
 points(c(0, 0.5, 1), c(3, 4.25, 5), pty=18)
 ```
 
-## La règle de Simpson II
+## La règle de Simpson (suite)
 
 - La règle de Simpson simple donne l'intégral exacte d'une approximation quadratique
-- La version composée donne, avec les mêmes $n$ évaluations que la version composée de le règle de trapèze
+- La version composite donne, avec les mêmes $n$ évaluations que la version composite de le règle de trapèze
 (mais $n/2$ intervalles de longueur $2h$ et $n$ doit être pair),
 \[
   \begin{aligned}
@@ -196,15 +197,15 @@ NCbf <- function(n, nb, F) {
 
 ## Graphiques, fonctions d'enchères
 
-```{r Newton_Cotes}
+```{r Newton_Cotes, fig.height=6, message=FALSE, warning=FALSE}
 NC6 <- NCbf(6, 4, Fv); NC32 <- NCbf(32, 4, Fv)
-plot(NC6$v_me, NC6$b_me, type='l')
+plot(NC6$v_me, NC6$b_me, type='l', xlab='v', ylab='b')
 lines(NC6$v_tr, NC6$b_tr, col='red')
 lines(NC6$v_S, NC6$b_S, col='green')
 lines(NC32$v_S, NC32$b_S, col='blue')
 ```
 
-## Règles gaussiennes I
+## Règles gaussiennes
 
 - Comme les règles de Newton-Cotes, les règles gaussienne donnent des approximations
 de la forme
@@ -214,14 +215,14 @@ de la forme
 pour une collection de paires $(\omega_i,x_i)$.
 - Résultat théorique  (Judd, théorème 7.2.1) : avec $N$ poids et $N$ noeuds les règles standards donnent la valeur exacte de l'intégral pour les polynômes d'ordre
 $2N-1$ et des formules pour le termes résiduels.
-- Différences :
+- Différences, par rapport aux règles de Newton-Cotes :
     - les règles gaussiennes donnent les intégrales pondérées
     (avec $w(x)$) des polynômes globaux
     - les règles sont calculées à partir des suites de polynômes orthogonaux
     - les règles spécifient et les poids et les noeuds, pour un ordre $N$ donné
 
 
-## Règles gaussiennes II
+## Règles gaussiennes (suite)
 
 - Judd donne des formules pour les intégrales suivants
 \[
@@ -365,7 +366,7 @@ I10
   e^{-x^2}
   f(\mu + \sqrt{2}\sigma x)\, dx,
 \]
-un intégral de la forme $\int_0^\infty e^{-x^2} g(x)\, dx$ (c.-à-d. $(a,b) = (-\infty,\infty)$ et $w(x) = e^{-x^2}$), et donc disposé à approximation avec la règle Gauss-Hermite.
+un intégral de la forme $\int_{-\infty}^\infty e^{-x^2} g(x)\, dx$ (c.-à-d. $(a,b) = (-\infty,\infty)$ et $w(x) = e^{-x^2}$), et donc disposé à approximation avec la règle Gauss-Hermite.
 
 ## Exemple, Section 7.6 de Judd
 
@@ -444,7 +445,22 @@ optimise(Eu_x_minus, interval=c(0,2),
          gamma, mu, sigma, R, W, regle)
 ```
 
-## L'intégration sur $[0,1]^2$ : noeuds et poids
+## Règles de produit pour l'intégration multivariée
+
+- L'intégration multivariée est difficile.
+- Les règles de produit sont des solutions de force brute qui marche quand
+    - la région d'intégration est un espace produit, et
+    - la dimension est basse (2-5)
+- Illustration de l'intégration sur $[-1,1]^d$ :
+    - prendre une règle univarié pour l'intégration sur $[-1,1]$, avec pairs
+    $(w_i,x_i)$, $i=1,\ldots,m$,
+    - former l'approximation
+\[
+  \int_{[-1,1]^d} f(x)\, dx \approx \sum_{i_1=1}^m \cdots \sum_{i_d=1}^m
+  \omega_{i_1} \omega_{i_2} \cdots \omega_{i_d} f(x_{i_1},x_{i_2},\ldots,x_{i_d})
+\]
+
+## Intégration sur $[0,1]^2$ : noeuds, poids d'un règle de produit
 
 ```{r bivar}
 nw <- createNIGrid(dim=2, type = 'GLe', level=6)
@@ -456,8 +472,8 @@ plot(nw$nodes[,1], nw$nodes[,2], cex=36*nw$weights, asp=1)
 - On peut toujours construire des règles de produit mais la computation coûte.
 - Avec les pairs $(w_i,x_i)$, $i=1,\ldots,m$, d'une règle exacte pour les polynômes d'ordre $2m-1$, on a l'approximation
 \[
-  \int_{[-1,1]^d} f(x)\, dx \approx \sum_{i_1=1}^m \cdots \sum_{i_n=1}^m
-  \omega_{i_1} \omega_{i_2} \cdots \omega_{i_d} f(x_{i_1},x_{i_2},\ldots,x_{i_n})
+  \int_{[-1,1]^d} f(x)\, dx \approx \sum_{i_1=1}^m \cdots \sum_{i_d=1}^m
+  \omega_{i_1} \omega_{i_2} \cdots \omega_{i_d} f(x_{i_1},x_{i_2},\ldots,x_{i_d})
 \]
 exacte pour les polynômes multivariés jusqu'à l'ordre $2m-1$, dimension par dimension.
 - $m^d$ points pour $d$ dimensions!
