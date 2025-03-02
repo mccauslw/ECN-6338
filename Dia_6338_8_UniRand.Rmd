@@ -10,50 +10,128 @@ urlcolor: blue
 ## Survol du cours 8
 
 1. Suites quasi-aléatoires
+    a. suites univariées
+    a. suites multivariées
 1. Suites pseudo-aléatoires uniformes
-1. Variables (pseudo)-aléatoires non-uniformes
-    a. Par inversion de la fonction de répartition
-    a. Par la méthode de rejet
-    a. Par la méthode de Ziggurat
-1. Variables (pseudo)-aléatoires multivariée "faisables"
+1. Variables (pseudo-) aléatoires non-uniformes
+    a. par inversion de la fonction de répartition
+    a. par la méthode de rejet
+    a. par la méthode de Ziggurat
+1. Variables (pseudo-) aléatoires multivariée "faisables"
     a. de la loi gaussienne multivariée (généralisation de la loi gaussienne)
     a. de la loi Dirichlet (généralisation de la loi beta)
     a. de la loi Wishart (généralisation de la loi gamma)
 
-## Suites quasi-aléatoires
+## Échantillonage
 
-1. Suites univariées
-1. Suites multivariées
-
-## Suites univariées quasi-aléatoires
-
-- Une suite quasi-aléatoire sur l'intervalle $[a,b]$ est une suite $\{x_i\}_{i=1}^\infty \subseteq [a,b]$, qui est equidistribuée : pour chaque fonction $f \colon \mathbb{R} \to \mathbb{R}$, intégrable dans le sens de Riemann,
+- L'échantillage est la génération de points $x_1,x_2,\ldots,$, $x_i \in D \subseteq \mathbb{R}^d$
+afin d'approximer un intégral du type
 \[
-  \lim_{n\to \infty} \frac{b-a}{n} \sum_{i=1}^n f(x_i) = \int_a^b f(x)\, dx.
+  \int_D f(x)\, dx
 \]
-
-## Une suite sur $[0,1]$ qui n'est pas équidistribuée, deux autres qui le sont
-
-La suite $\{w_i\}_{i=1}^\infty$ :
+par la moyenne
 \[
-  w_n = 0, 1, \tfrac{1}{2}, \tfrac{1}{4}, \tfrac{3}{4}, \tfrac{1}{8}, \tfrac{3}{8},
+  \mu(D) \cdot \frac{1}{n} \sum_{i=1}^n f(x_i),
+\]
+où $\mu$ est la mesure de Lebesgue (volume) de $D$.
+
+## Deux types de suites
+
+- Une suite *quasi-aléatoire* est justifiée par ses propriétés en théorie des nombres.
+- Une suite *pseudo-aléatoire* est justifiée par la théorie de probabilité et la démonstration que elle se comporte comme une suite de variables aléatoires uniformes et indépéndentes.
+- Les deux types de suite sont déterministes.
+
+## 400 points pseudo-aléatoire, 400 points quasi-aléatoire
+
+```{r pseudo-quasi, echo=FALSE, message=FALSE, warning=FALSE}
+library(randtoolbox)
+set.seed(123456789);
+N = 400
+x_ps <- runif(N); y_ps <- runif(N)
+op = par(mfrow=c(1, 2), mar = c(4, 4, 0.5, 0.5), xaxs='i', yaxs='i')
+plot(x_ps, y_ps, asp=1, pch=20, xlab='', ylab='')
+abline(h=seq(0.0, 1.0, by=0.1), col='grey'); abline(v=seq(0.0, 1.0, by=0.1), col='grey')
+plot(halton(N,2), asp=1, pch=20, xlab='', ylab='')
+abline(h=seq(0.0, 1.0, by=0.1), col='grey'); abline(v=seq(0.0, 1.0, by=0.1), col='grey')
+```
+
+## Propriétés souhaitables des suites quasi-aléatoires
+
+- Une suite quasi-aléatoire $\{x_i\}_{i=1}^\infty \subset D \subset \mathrm{R}^d$ est *equidistribuée* sur $D$ si pour chaque fonction $f \colon D \to \mathbb{R}$, intégrable dans le sens de Riemann,
+\[
+  \lim_{n\to \infty} \mu(D) \frac{1}{n} \sum_{i=1}^n f(x_i) = \int_D f(x)\, dx.
+\]
+- Cas univarié : $\{x_i\}_{i=1}^\infty \subseteq [a,b]$ est equidistribuée si pour chaque fonction $f \colon \mathbb{R} \to \mathbb{R}$, intégrable dans le sens de Riemann,
+\[
+  \lim_{n\to \infty} (b-a) \frac{1}{n} \sum_{i=1}^n f(x_i) = \int_a^b f(x)\, dx.
+\]
+- En pratique, on cherche un taux de convergence rapid.
+
+## Une suite sur $D = [0,1]$ qui n'est pas équidistribuée
+
+- Il y a des suites équidistribuées, mais leur construction n'est pas évidente.
+- La suite $\{x_i\}_{i=1}^\infty$ suivante n'est pas équidistribuée :
+\[
+  \tfrac{1}{2}, \tfrac{1}{4}, \tfrac{3}{4}, \tfrac{1}{8}, \tfrac{3}{8},
   \tfrac{5}{8}, \tfrac{7}{8}, \tfrac{1}{16}, \tfrac{3}{16},\ldots.
 \]
-Elle n'est pas équidistribuée, Pour la fonction $f(x) = 1$, la somme suivante ne converge pas :
+Pour la fonction $f(x) = x$ sur $[0,1]$,
 \[
-  \frac{1}{n} \sum_{i=1}^n f(w_i) = \frac{1}{n} \sum_{i=1}^n w_i.
+  \frac{1}{n} \sum_{i=1}^n f(x_i) = \frac{1}{n} \sum_{i=1}^n x_i \not\to \int_0^1 f(x)\, dx = \int_0^1 x\,dx = \tfrac{1}{2}.
 \]
-Par contre, la suite $\{x_i\}_{i=1}^\infty$ de Halton (pour le nombre premier 2) est semblable, mais équidistribuée :
+
+## Suites équidistribuées sur $D = [0,1]$
+
+La suite $\{x_i\}_{i=1}^\infty$ de Halton (pour le nombre premier 2) est semblable, mais équidistribuée :
 \[
-  x_n = \tfrac{1}{2}, \tfrac{1}{4}, \tfrac{3}{4}, \tfrac{1}{8}, \tfrac{5}{8}, \tfrac{3}{8}, \tfrac{7}{8}, \tfrac{1}{16}, \tfrac{9}{16},\ldots.
+  \tfrac{1}{2}, \tfrac{1}{4}, \tfrac{3}{4}, \tfrac{1}{8}, \tfrac{5}{8}, \tfrac{3}{8}, \tfrac{7}{8}, \tfrac{1}{16}, \tfrac{9}{16},\ldots.
 \]
-Pour $\theta$ irrationnel (réel et non une fraction d'entiers), la suite $\{i\theta\}$, $i=1,\ldots$ est équidistribuée ($\{x\}$ ici est la partie fractionnaire de $x$)
+
+Pour $\theta$ irrationnel (réel et non une fraction d'entiers), la suite $\{i\theta - \lfloor i\theta \rfloor \}_{i=1}^\infty$ est équidistribuée ($\lfloor x \rfloor$ ici est la partie entière de $x$)
+
+## Suites Halton pour les trois premier nombres premiers
+
+| $i$ | $x_i^{2}$ | (base 2)  | $x_i^{3}$   | (base 3) | $x_i^{5}$ | (base 5) |
+|-----|------|--------|------|--------|------|--------|
+| 1   | $\tfrac{1}{2}$  | $0.1_2$    | $\tfrac{1}{3}$  | $0.1_3$   | $0.2$  | $0.1_5$  \vspace{0.15cm} |
+| 2   | $\tfrac{1}{4}$  | $0.01_2$   | $\tfrac{2}{3}$  | $0.2_3$   | $0.4$  | $0.2_5$  \vspace{0.15cm} |
+| 3   | $\tfrac{3}{4}$  | $0.11_2$   | $\tfrac{1}{9}$  | $0.01_3$  | $0.6$  | $0.3_5$  \vspace{0.15cm} |
+| 4   | $\tfrac{1}{8}$  | $0.001_2$  | $\tfrac{4}{9}$  | $0.11_3$  | $0.8$  | $0.5_5$  \vspace{0.15cm} |
+| 5   | $\tfrac{5}{8}$  | $0.101_2$  | $\tfrac{7}{9}$  | $0.21_3$  | $0.24$ | $0.11_5$ \vspace{0.15cm} |
+| 6   | $\tfrac{3}{8}$  | $0.011_2$  | $\tfrac{2}{9}$  | $0.02_3$  | $0.44$ | $0.21_5$ \vspace{0.15cm} |
+| 7   | $\tfrac{7}{8}$  | $0.111_2$  | $\tfrac{5}{9}$  | $0.12_3$  | $0.64$ | $0.31_5$ \vspace{0.15cm} |
+| 8   | $\tfrac{1}{16}$ | $0.0001_2$ | $\tfrac{8}{9}$  | $0.22_3$  | $0.84$ | $0.41_5$ \vspace{0.15cm} |
+| 9   | $\tfrac{9}{16}$ | $0.1001_2$ | $\tfrac{1}{27}$ | $0.001_3$ | $0.28$ | $0.12_5$ \vspace{0.15cm} |
+
+## Suites multivariés quasi-aléatoires
+
+- Très souvent, $D = [a_1,b_1] \times [a_2,b_2] \times \ldots \times [a_d,b_d]$,
+auquel cas on peut transformer à $D = [0,1]^d$.
+- On utilise un vecteur de suites comme la suite $\{x_i\}_{i=1}^\infty \subset D$.
+- Chaque suite univariée doit être équidistribuée sur $[0,1]$.
+- Mais cela ne suffit pas pour construire une suite multivariée équidistribuée.
+- La suite de [Halton](https://en.wikipedia.org/wiki/Halton_sequence) est populaire et utilise les $d$ premiers nombres premiers pour la construction.
+- Suite de Weyl (\texttt{torus}, dans le paquet R \texttt{quasiRNG}) :
+\[
+  \{(i\sqrt{p_1} - \lfloor i\sqrt{p_1} \rfloor, i\sqrt{p_2} - \lfloor i\sqrt{p_2} \rfloor,
+  \ldots, i\sqrt{p_d} - \lfloor i\sqrt{p_d} \rfloor)\},
+\]
+où $p_j$ est le $j$-ième nombre premier.
+- Les suites de Haber, Niederreiter et Baker sont semblable mais utilisent d'autres nombres irrationnelles.
+- La suite de [Sobol](https://fr.wikipedia.org/wiki/Suite_de_Sobol) est populaire mais difficile à décrire.
 
 ## Suites univariées pseudo-aléatoires
 
 - Une suite pseudo-aléatoire est une suite $\{u_i\}_{i=1}^\infty$ en $\mathbb{R}$ pour laquelle le modèle $u_i \sim \mathrm{iid}\, U([0,1])$ est "bonne".
-- Souvent on utilise $\{u_i\}_{i=1}^\infty$ pour construire une suite $\{X_i\}_{i=1}^\infty$, $X_i \in \mathbb{R}^d$, et on démontre que si $u_i \sim \mathrm{iid}\, U([0,1])$ alors $X_i$ est iid avec densité cible $q(x)$.
-- Le modèle implique que pour chaque $f\colon \mathbb{R}^d \to \mathbb{R}$ telle que $E[f(X)]$ et $\mathrm{Var}[f(X)]$ existent,
+- R et d'autres langages ont des fonctions pour tirer des variables aléatoires de loi gamma (`rgamma`), beta (`rbeta`), gaussienne (`rnorm`) et plusieurs autres.
+- Tous les tirages sont construit à partir de suites pseudo-aléatoires uniformes.
+- Une telle construction est toujours appuyée par un résultat qui dit que si $u_i \sim \mathrm{iid}\, U([0,1])$, les éléments (par exemple) du vecteur `rnorm(100)` sont iid $N(0,1)$.
+
+## D'autres implications de l'hypothèse $U_i \sim \mathrm{iid}\,U([0,1])$
+
+- Admettons qu'on peut prouver que si $U_i \sim \mathrm{iid}\,U([0,1])$, la suite construite $\{X_i\}_{i=1}^\infty$ est iid avec densité cible $q(x)$.
+
+- Une autre implication de l'hypothèse est que pour chaque $f\colon \mathbb{R}^d \to \mathbb{R}$ telle que $E[f(X)]$ et $\mathrm{Var}[f(X)]$ existent,
 \[
   \hat{I} \equiv \frac{1}{n} \sum_{i=1}^\infty f(X_i) \overset{p.s.}{\to} I \equiv E[f(X)] = \int_{-\infty}^\infty  f(x) q(x)\, dx,
 \]
@@ -65,65 +143,38 @@ Pour $\theta$ irrationnel (réel et non une fraction d'entiers), la suite $\{i\t
   \frac{1}{n} \sum_{i=1}^n f(a+u_i(b-a)) \overset{p.s.}{\to} \frac{1}{b-a} \int_a^b f(x) \, dx.
 \]
 
-## Suites multivariés quasi-aléatoires
+## Suites multivariées pseudo-aléatoires
 
-- Une suite quasi-aléatoire sur $D \subseteq \mathrm{R}^d$ est une suite $\{x_i\}_{i=1}^\infty \subseteq D$ qui est equidistribuée sur $D$ : pour chaque fonction $f \colon \mathbb{R}^d \to \mathbb{R}$, intégrable dans le sens de Riemann,
+Si $U_1, U_2, U_3, \ldots$ est une suite iid de variables aléatoire $U([0,1])$, la suite
 \[
-  \lim_{n\to \infty} \frac{\mu(D)}{n} \sum_{i=1}^n f(x_i) = \int_D f(x)\, dx.
+  (U_1,U_2), (U_3,U_4), (U_5,U_6), \ldots
 \]
-- Très souvent, $D = [a_1,b_1] \times [a_2,b_2] \times \ldots \times [a_d,b_d]$,
-auquel cas on peut transformer à $D = [0,1]^d$.
-- Intuition : on veut des suites univariées "indépendantes"
-- Suite de Weyl (\texttt{torus}, dans le paquet R \texttt{quasiRNG}) :
+est iid $U([0,1]^2)$.
+
+En général, si $\{U_i\}_{i=1}^\infty \sim \mathrm{iid}\, U([0,1])$,
 \[
-  (\{i\sqrt{p_1}\}, \{i\sqrt{p_2}\}, \ldots, \{i\sqrt{p_d}\}),
-\]
-où $p_j$ est le $j$-ième nombre premier.
-- La suite de [Sobol](https://fr.wikipedia.org/wiki/Suite_de_Sobol) est populaire mais difficile à décrire.
-- La suite de [Halton](https://en.wikipedia.org/wiki/Halton_sequence) est populaire et relativement simple à décrire (diapo suivante)
-
-## Illustration de la suite Halton, $d=2$
-
-| $i$ | $x_1^{i}$       | (binaire)  | $x_2^{i}$       | (base 3)       |
-|--------------|--------|--------|--------|--------|
-| 1   | $\tfrac{1}{2}$  | $0.1_2$    | $\tfrac{1}{3}$  | $0.1_3$   \vspace{0.15cm} |
-| 2   | $\tfrac{1}{4}$  | $0.01_2$   | $\tfrac{2}{3}$  | $0.2_3$   \vspace{0.15cm} |
-| 3   | $\tfrac{3}{4}$  | $0.11_2$   | $\tfrac{1}{9}$  | $0.01_3$  \vspace{0.15cm} |
-| 4   | $\tfrac{1}{8}$  | $0.001_2$  | $\tfrac{4}{9}$  | $0.11_3$  \vspace{0.15cm} |
-| 5   | $\tfrac{5}{8}$  | $0.101_2$  | $\tfrac{7}{9}$  | $0.21_3$  \vspace{0.15cm} |
-| 6   | $\tfrac{3}{8}$  | $0.011_2$  | $\tfrac{2}{9}$  | $0.02_3$  \vspace{0.15cm} |
-| 7   | $\tfrac{7}{8}$  | $0.111_2$  | $\tfrac{5}{9}$  | $0.12_3$  \vspace{0.15cm} |
-| 8   | $\tfrac{1}{16}$ | $0.0001_2$ | $\tfrac{8}{9}$  | $0.22_3$  \vspace{0.15cm} |
-| 9   | $\tfrac{9}{16}$ | $0.1001_2$ | $\tfrac{1}{27}$ | $0.001_3$ \vspace{0.15cm} |
-
-## Suites multivariés pseudo-aléatoires
-
-Si $U_i \sim \mathrm{iid}\, U([0,1])$, $i=1,\ldots$,
-\[
-  V_j = (U_{(j-1)d+1}, U_{(j-1)d+2}, \ldots, U_{jd}) \sim \mathrm{iid}\, U([0,1]^d)
+  \{V_j\}_{i=1}^\infty = \{(U_{(j-1)d+1}, U_{(j-1)d+2}, \ldots, U_{jd})\}_{i=1}^\infty \sim \mathrm{iid}\, U([0,1]^d).
 \]
 
 ## 256 points pseudo-aléatoire dans $[0,1]^2$
 
-```{r pseudo}
-set.seed(1234567890); x = runif(256); y = runif(256)
-plot(x, y, asp=1, pch=20, xlim=c(0,1))
-abline(h=seq(0.0, 1.0, by=0.1), col='grey')
-abline(v=seq(0.0, 1.0, by=0.1), col='grey')
+```{r pseudo, message=FALSE, warning=FALSE}
+set.seed(1234567890); x <- runif(256); y <- runif(256)
+plot(x, y, asp=1, pch=20, xlim=c(0,1), ylim=c(0,1), xaxs='i', yaxs='i', xlab='', ylab='', bty='n')
+abline(h=seq(0.0, 1.0, by=0.1), col='grey'); abline(v=seq(0.0, 1.0, by=0.1), col='grey')
 ```
 
 ## Distribution binomial $\mathrm{Bi}(256,0.01)$ des comptes
 
 ```{r binom}
-x = seq(0, 10)
-y = dbinom(x, 256, 0.01)
-plot(x, y)
+x = seq(0, 10); y = dbinom(x, 256, 0.01)
+plot(x, y, pch=19, xlab='compte', ylab='probabilité',
+     xaxs='i', yaxs='i', ylim=c(0,0.3))
 ```
 
 ## Suite de Sobol'
 
 ```{r sobol, message=FALSE, warning=FALSE}
-library(randtoolbox)
 plot(sobol(256, 2), asp=1, pch=20, xlim=c(0,1), width=10, height=10)
 abline(h=seq(0.0, 1.0, by=0.1), col='grey')
 abline(v=seq(0.0, 1.0, by=0.1), col='grey')
@@ -169,7 +220,7 @@ la fonction de répartition de la variable aléatoire $X \equiv F^{-1}(U)$ est $
 1. Si la variable aléatoire $X$ a $F$ comme fonction de répartition, la loi de $F(X)$ est la loi 
 uniforme sur $[0,1]$.
 
-La deuxième résultat est utilisé souvent en économétrie : transformation intégrale de probabilité, valeurs $p$.
+Le deuxième résultat est utilisé souvent en économétrie : transformation intégrale de probabilité, valeurs $p$.
 
 ## Inversion de la fonction de répartition II
 
