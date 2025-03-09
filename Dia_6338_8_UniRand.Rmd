@@ -13,11 +13,11 @@ urlcolor: blue
     a. suites univariées
     a. suites multivariées
 1. Suites pseudo-aléatoires uniformes
-1. Variables (pseudo-) aléatoires non-uniformes
+1. Variables pseudo-aléatoires non-uniformes
     a. par inversion de la fonction de répartition
     a. par la méthode de rejet
     a. par la méthode de Ziggurat
-1. Variables (pseudo-) aléatoires multivariée "faisables"
+1. Variables pseudo-aléatoires multivariée "faisables"
     a. de la loi gaussienne multivariée (généralisation de la loi gaussienne)
     a. de la loi Dirichlet (généralisation de la loi beta)
     a. de la loi Wishart (généralisation de la loi gamma)
@@ -37,9 +37,9 @@ où $\mu$ est la mesure de Lebesgue (volume) de $D$.
 
 ## Deux types de suites
 
-- Une suite *quasi-aléatoire* est justifiée par ses propriétés en théorie des nombres.
-- Une suite *pseudo-aléatoire* est justifiée par la théorie de probabilité et la démonstration que elle se comporte comme une suite de variables aléatoires uniformes et indépéndentes.
-- Les deux types de suite sont déterministes.
+- Une suite *quasi-aléatoire* est justifiée par ses propriétés de convergence en théorie des nombres.
+- Une suite *pseudo-aléatoire* est justifiée par la théorie de probabilité et la démonstration qu'elle se comporte comme une suite de variables aléatoires uniformes et indépéndentes.
+- En réalité, les deux types de suites sont déterministes.
 
 ## 400 points pseudo-aléatoire, 400 points quasi-aléatoire
 
@@ -61,11 +61,11 @@ abline(h=seq(0.0, 1.0, by=0.1), col='grey'); abline(v=seq(0.0, 1.0, by=0.1), col
 \[
   \lim_{n\to \infty} \mu(D) \frac{1}{n} \sum_{i=1}^n f(x_i) = \int_D f(x)\, dx.
 \]
-- Cas univarié : $\{x_i\}_{i=1}^\infty \subseteq [a,b]$ est equidistribuée si pour chaque fonction $f \colon \mathbb{R} \to \mathbb{R}$, intégrable dans le sens de Riemann,
+- Cas univarié : $\{x_i\}_{i=1}^\infty \subset [a,b]$ est equidistribuée si pour chaque fonction $f \colon \mathbb{R} \to \mathbb{R}$, intégrable dans le sens de Riemann,
 \[
   \lim_{n\to \infty} (b-a) \frac{1}{n} \sum_{i=1}^n f(x_i) = \int_a^b f(x)\, dx.
 \]
-- En pratique, on cherche un taux de convergence rapid.
+- En pratique, on cherche un taux de convergence rapide.
 
 ## Une suite sur $D = [0,1]$ qui n'est pas équidistribuée
 
@@ -89,14 +89,14 @@ La suite $\{x_i\}_{i=1}^\infty$ de Halton (pour le nombre premier 2) est semblab
 
 Pour $\theta$ irrationnel (réel et non une fraction d'entiers), la suite $\{i\theta - \lfloor i\theta \rfloor \}_{i=1}^\infty$ est équidistribuée ($\lfloor x \rfloor$ ici est la partie entière de $x$)
 
-## Suites Halton pour les trois premier nombres premiers
+## Suites de Halton pour les trois premiers nombres premiers
 
 | $i$ | $x_i^{2}$ | (base 2)  | $x_i^{3}$   | (base 3) | $x_i^{5}$ | (base 5) |
 |-----|------|--------|------|--------|------|--------|
 | 1   | $\tfrac{1}{2}$  | $0.1_2$    | $\tfrac{1}{3}$  | $0.1_3$   | $0.2$  | $0.1_5$  \vspace{0.15cm} |
 | 2   | $\tfrac{1}{4}$  | $0.01_2$   | $\tfrac{2}{3}$  | $0.2_3$   | $0.4$  | $0.2_5$  \vspace{0.15cm} |
 | 3   | $\tfrac{3}{4}$  | $0.11_2$   | $\tfrac{1}{9}$  | $0.01_3$  | $0.6$  | $0.3_5$  \vspace{0.15cm} |
-| 4   | $\tfrac{1}{8}$  | $0.001_2$  | $\tfrac{4}{9}$  | $0.11_3$  | $0.8$  | $0.5_5$  \vspace{0.15cm} |
+| 4   | $\tfrac{1}{8}$  | $0.001_2$  | $\tfrac{4}{9}$  | $0.11_3$  | $0.8$  | $0.4_5$  \vspace{0.15cm} |
 | 5   | $\tfrac{5}{8}$  | $0.101_2$  | $\tfrac{7}{9}$  | $0.21_3$  | $0.24$ | $0.11_5$ \vspace{0.15cm} |
 | 6   | $\tfrac{3}{8}$  | $0.011_2$  | $\tfrac{2}{9}$  | $0.02_3$  | $0.44$ | $0.21_5$ \vspace{0.15cm} |
 | 7   | $\tfrac{7}{8}$  | $0.111_2$  | $\tfrac{5}{9}$  | $0.12_3$  | $0.64$ | $0.31_5$ \vspace{0.15cm} |
@@ -107,14 +107,13 @@ Pour $\theta$ irrationnel (réel et non une fraction d'entiers), la suite $\{i\t
 
 - Très souvent, $D = [a_1,b_1] \times [a_2,b_2] \times \ldots \times [a_d,b_d]$,
 auquel cas on peut transformer à $D = [0,1]^d$.
-- On utilise un vecteur de suites comme la suite $\{x_i\}_{i=1}^\infty \subset D$.
-- Chaque suite univariée doit être équidistribuée sur $[0,1]$.
+- On utilise un vecteur de suites univariées, toutes équidistribuées sur $[0,1]$.
 - Mais cela ne suffit pas pour construire une suite multivariée équidistribuée.
-- La suite de [Halton](https://en.wikipedia.org/wiki/Halton_sequence) est populaire et utilise les $d$ premiers nombres premiers pour la construction.
+- La suite multivariée de [Halton](https://en.wikipedia.org/wiki/Halton_sequence) est populaire et utilise les $d$ premiers nombres premiers pour la construction.
 - Suite de Weyl (\texttt{torus}, dans le paquet R \texttt{quasiRNG}) :
 \[
-  \{(i\sqrt{p_1} - \lfloor i\sqrt{p_1} \rfloor, i\sqrt{p_2} - \lfloor i\sqrt{p_2} \rfloor,
-  \ldots, i\sqrt{p_d} - \lfloor i\sqrt{p_d} \rfloor)\},
+  \{(i\sqrt{p_1} - \lfloor i\sqrt{p_1} \rfloor,
+  \ldots, i\sqrt{p_d} - \lfloor i\sqrt{p_d} \rfloor)\}_{i=1}^\infty,
 \]
 où $p_j$ est le $j$-ième nombre premier.
 - Les suites de Haber, Niederreiter et Baker sont semblable mais utilisent d'autres nombres irrationnelles.
@@ -126,19 +125,20 @@ où $p_j$ est le $j$-ième nombre premier.
 - R et d'autres langages ont des fonctions pour tirer des variables aléatoires de loi gamma (`rgamma`), beta (`rbeta`), gaussienne (`rnorm`) et plusieurs autres.
 - Tous les tirages sont construit à partir de suites pseudo-aléatoires uniformes.
 - Une telle construction est toujours appuyée par un résultat qui dit que si $u_i \sim \mathrm{iid}\, U([0,1])$, les éléments (par exemple) du vecteur `rnorm(100)` sont iid $N(0,1)$.
+- L'hypothèse selon laquelle $X_i \sim \mathrm{iid}\,N(0,1)$, $i=1,2,\ldots$ a de nombreuses implications testables.
 
-## D'autres implications de l'hypothèse $U_i \sim \mathrm{iid}\,U([0,1])$
+## Quelques implications de l'hypothèse $U_i \sim \mathrm{iid}\,U([0,1])$
 
-- Admettons qu'on peut prouver que si $U_i \sim \mathrm{iid}\,U([0,1])$, la suite construite $\{X_i\}_{i=1}^\infty$ est iid avec densité cible $q(x)$.
+- Admettons qu'on peut prouver que si $U_i \sim \mathrm{iid}\,U([0,1])$, la suite construite $\{X_i\}_{i=1}^\infty$ est iid avec la même loi que la variable aléatoire $X$.
 
-- Une autre implication de l'hypothèse est que pour chaque $f\colon \mathbb{R}^d \to \mathbb{R}$ telle que $E[f(X)]$ et $\mathrm{Var}[f(X)]$ existent,
+- D'autres implications de l'hypothèse : pour chaque $f\colon \mathbb{R}^d \to \mathbb{R}$ telle que $E[f(X)]$ et $\mathrm{Var}[f(X)]$ existent,
 \[
-  \hat{I} \equiv \frac{1}{n} \sum_{i=1}^\infty f(X_i) \overset{p.s.}{\to} I \equiv E[f(X)] = \int_{-\infty}^\infty  f(x) q(x)\, dx,
+  \hat{I} \equiv \frac{1}{n} \sum_{i=1}^n f(X_i) \overset{p.s.}{\to} I \equiv E[f(X)],
 \]
 \[
-  \mathrm{Var}[\hat{I}] = \frac{\mathrm{Var}[f(X_i)]}{n}.
+  \sqrt{n} (\hat{I} - I) \overset{d}{\to} N(0,\mathrm{Var}[f(X_i)]).
 \]
-- Notez le cas spécial
+- Cas spécial, $X_i = a + u_i(b-a) \sim U([a,b])$ :
 \[
   \frac{1}{n} \sum_{i=1}^n f(a+u_i(b-a)) \overset{p.s.}{\to} \frac{1}{b-a} \int_a^b f(x) \, dx.
 \]
@@ -191,9 +191,9 @@ abline(v=seq(0.0, 1.0, by=0.1), col='grey')
 ## Méthodes pour les suites pseudo-aléatoires
 
 - Il y a plusieurs [suites pseudo-alétoires](https://en.wikipedia.org/wiki/List_of_random_number_generators) proposées.
+- Souvent, il y a un état $x_i$, interne et invisible, qui suit une règle déterministe $x_i = f(x_{i-1},x_{i-2},\ldots)$ et une suite de nombres $u_i$ (la suite sortante) qui suit une régle déterministe $u_i = g(x_i)$, où $g$ est une fonction à sens unique qui rend infaisable le calcul de l'état à partir des observations des $u_i$.
 - Une méthode répandue est le [Mersenne Twister](https://en.wikipedia.org/wiki/Mersenne_Twister).
 - Les [Tests Diehard](https://en.wikipedia.org/wiki/Diehard_tests) est une suite de tests de plusieurs implications de l'hypothèse que $U_i \sim \mathrm{iid}\, U(0,1)$.
-- Souvent, il y a un état $x_i$ qui suit une règle déterministe $x_i = f(x_{i-1},x_{i-2},\ldots)$ et une suite de nombres $y_i$ (la suite sortante) qui suit une régle déterministe $y_i = g(x_i)$, où $g$ est une fonction à sens unique qui rend infaisable le calcul de l'état à partir des observations des $y_i$.
 - L'utilisateur peut initialiser l'état avec le choix d'une graine (seed),
 pour la reproductibilité.
 ```{r seed}
@@ -272,6 +272,10 @@ Preuve de 2 :
 \[
   E_g\left[\frac{f(X)}{Mg(X)}\right] = \int \frac{f(x)}{Mg(x)} g(x) \, dx = \frac{1}{M} \int f(x) \, dx = \frac{1}{M}.
 \]
+- La probabilité conjointe que $X \in [x, x+dx]$ et on accepte est proportionnelle à $f(x)$ :
+\[
+  g(x) \, dx \cdot \frac{f(x)}{Mg(x)} = \frac{1}{M} f(x)\, dx.
+\]
 
 ## Exemple, loi gaussienne tronqué à $(-\infty, c]$, $c > 0$.
 
@@ -294,7 +298,7 @@ où $c > 0$.
 
 ## Exemple, loi gaussienne tronqué à $(c, \infty)$, $c > 0$.
 
-- On peut utiliser la $g(x)$, mais ici la probabilité d'acceptation inconditionnelle serait $1-\Phi(c)$, qui peut être très petite.
+- Si on utilise la même $g(x)$, la probabilité d'acceptation inconditionnelle sera $1-\Phi(c)$, qui peut être très petite.
 - Première idée alternative : choisir une loi exponentielle avec taux $\lambda$ et déplacement par $c$ :
 \[
   g(x) = \lambda e^{-\lambda (x-c)} 1_{(c,\infty)}(x).
@@ -348,7 +352,7 @@ lines(x, g*M, col='blue', lty='dashed')
   \cdot \frac{1}{\lambda e^{-\lambda(\lambda-c)}}
   = \frac{e^{\lambda^2/2 - \lambda c}}{\sqrt{2\pi}(1-\Phi(c))\lambda}
 \]
-- Une condition de première ordre nécessaire pour un minimum :
+- Une condition de premier ordre nécessaire pour un minimum :
 \[
   \lambda - c - \tfrac{1}{\lambda} = 0.
 \]
@@ -396,13 +400,13 @@ si $U \leq 1-\frac{(x-\lambda)^2}{2}$, sans évaluer la fonction exponentielle.
 
 - $n=256$ niveaux est typique (8 bits aléatoire, car $256=2^8$).
 - L'aire de la couche $i$, $(y_{i+1}-y_i)x_i = A$ est constante.
-- L'aire constante donne $y_{i+1} = (A/x_i) + y_i$.
-- L'inversion de $y_i = f(x_i)$ donne $x_i = f^{-1}(y_i)$ (la monotonicité est importante). 
+- L'aire constante donne $y_{i+1} = (A/x_i) + y_i$ en termes de $x_i$, $y_i$.
+- L'inversion de $y_{i+1} = f(x_{i+1})$ donne $x_{i+1} = f^{-1}(y_{i+1})$ (la monotonicité est importante). 
 - Si le support de la loi cible est $[0,\infty)$, la couche zéro est la région en dessous de $\min(y_1,f(x))$, qui doit avoir l'aire $A$.
-- Le coût élevé de la construction de la Ziggurat est justifié s'il faut le faire seulement une fois pour tout.
+- Le coût élevé de la construction de la Ziggurat est justifié si nous ne devons le faire qu’une seule fois.
 - Convenable pour les lois $N(0,1)$, $\mathrm{Exp}(1)$, parce que
     - $N(\mu,\sigma)$ et $\mathrm{Exp}(\lambda)$ sont des transformations simples de $N(0,1)$ et $\mathrm{Exp}(1)$.
-    - La densité $\phi(x)$ de la loi $N(0,1)$ est symmétrique autour de zéro, montone pour $x>0$
+    - La densité $\phi(x)$ de la loi $N(0,1)$ est symmétrique autour de zéro, montone pour $x>0$.
     - La densité de la loi $\mathrm{Exp}(1)$ est monotone sur son support $[0,\infty)$.
 
 ## Commentaires sur le tirage des variables aléatoires
@@ -412,18 +416,18 @@ si $U \leq 1-\frac{(x-\lambda)^2}{2}$, sans évaluer la fonction exponentielle.
     - tirer l'index de la couche, de la loi uniforme sur $\{0,1,\ldots,n-1\}$.
     - tirer $U_x$ de la loi uniforme sur $[0,x_i]$.
     - Si $U_x \leq x_{i+1}$, accepter $U_x$ comme le tirage de la loi cible.
-    - Sinon, tirer $U_y$ de la loi uniforme sur $[y_i, y_{i+1}]$, accepter si $f(U_x) \leq U_y$.
+    - Sinon, tirer $U_y$ de la loi uniforme sur $[y_i, y_{i+1}]$, accepter $U_x$ comme le tirage si $f(U_x) \leq U_y$.
 - Si le support de la loi cible est $[0,\infty)$, le tirage de la couche zéro doit utiliser une autre méthode.
 - L'aire constante des régions est importante pour un coût de tirage qui ne dépend pas de $n$.
 - Pour $n$ grand, on accepte avec haute probabilité sans tirer $U_y$ ni évaluer $f(U_x)$.
 
 ## Une Ziggurat (édifice religieux mésopotamien)
 
-![Ziggurat](./Figures/Ziggurat.jpg)
+![Ziggurat](./Figures/Ziggurat.jpg){width=80%}
 
 ## Ziggurat de neige
 
-![Ziggurat de neige](./Figures/Snow_Ziggurat.pdf)
+![Ziggurat de neige](./Figures/Snow_Ziggurat.pdf){width=80%}
 
 ## Variables (pseudo)-aléatoires multivariée "faisables"
 
