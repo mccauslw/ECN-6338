@@ -164,6 +164,14 @@ plot(x, y, asp=1, pch=20, xlim=c(0,1), ylim=c(0,1), xaxs='i', yaxs='i', xlab='',
 abline(h=seq(0.0, 1.0, by=0.1), col='grey'); abline(v=seq(0.0, 1.0, by=0.1), col='grey')
 ```
 
+## Implications testables de l'hypothèse $U_i \sim \mathrm{iid}\,U([0,1])$
+
+Si $U_i \sim \mathrm{iid}\,U([0,1]^2)$, le nombre de fois $U_i \in [0.2, 0.3] \times [0.3, 0.4]$ (par exemple) dans les premiers 256 tirages est $\mathrm{Bi}(256,0.01)$ :
+
+- distribution binomiale,
+- paramètre de nombre d'essais égal à 256,
+- paramètre de probabilité égal à 0.01.
+
 ## Distribution binomial $\mathrm{Bi}(256,0.01)$ des comptes
 
 ```{r binom}
