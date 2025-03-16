@@ -15,7 +15,7 @@ urlcolor: blue
 1. Marche aléatoire pour le modèle à deux paramètres
 1. Échantillonage de Gibbs
 1. Exemple probit, participation des femmes dans la population active
-1. Augmentation des données
+1. Augmentation des données (data augmentation)
 
 ## L'exercice Monte Carlo
 
@@ -213,7 +213,7 @@ y <- rnorm(n, vrai_mu, vrai_sigma)
 y_bar <- mean(y)
 y2_bar <- mean(y^2)
 
-# Hyperparamètres
+# Hyper-paramètres
 nu_bar <- 4
 s2_bar <- 0.01
 mu_bar <- 10
@@ -254,7 +254,7 @@ lnp_post <- function() {
 	lnp <- outer(mu, h, FUN=lnp_mu_h__y)
 	contour(mu, h, lnp, xlab='mu', ylab='h',
 		levels=seq(-56, -46))
-	points(vrai_mu, vrai_h, col='red')
+	points(vrai_mu, vrai_h, col='red', pch=18)
 }
 ```
 
@@ -437,10 +437,10 @@ sd(sim_G$h)
 ## Exemple économétrique (Exemple 17.1 de Wooldridge)
 
 - Un modèle de la participation des femmes dans la population active (jeu de données MROZ)
-- On observe un échantillon de $n=753$ femmes.
+- On observe un échantillon de $n=753$ femmes mariées.
 - La variable endogène est la décision d'être dans la population active ou non :
 \[
-  y_i = \begin{cases} 1 & \text{la femme $i$ est dans la population active} \\ 0 & \text{sinon} \end{cases}
+  y_i = \begin{cases} 1 & \text{la femme $i$ est dans la population active} \\ 0 & \text{sinon}. \end{cases}
 \]
 - Variables exogènes : \textit{nwifeinc}, \textit{educ}, \textit{exper}, $\textit{exper}^2$, \textit{age}, \textit{kidslt6}, \textit{kidsge6}, \textit{constant}, avec les données de la femme $i$ organisées dans un vecteur $x_i$.
 - Modèle probit : $\Pr[y_i = 1] = \Phi(x_i^\top \beta)$, où $\beta$ est un vecteur de paramètres, $\Phi(\cdot)$ est la fonction de répartition de la loi $N(0,1)$.
@@ -563,7 +563,7 @@ où $b = (X^\top X)^{-1} X^\top y^*$.
     - la décision de la femme 502 est relativement inattendue
     - la décision de la femme 715 est relativement attendue
 
-```{r pop_active}
+```{r pop_active, warning=FALSE}
 source('pop_active.R')
 X_tbl[c(26, 119, 502, 715),]
 ```
