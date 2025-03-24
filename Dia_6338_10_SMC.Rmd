@@ -9,8 +9,8 @@ urlcolor: blue
 
 ## Survol du cours 10
 
-1. Échantillonage préférentiel
-1. Rééchantillonage
+1. Échantillonnage préférentiel
+1. Ré-échantillonnage
 1. SMC (Monte Carlo séquentiel)
     a. Séquence de densités
     a. L'algorithme SMC
@@ -19,7 +19,7 @@ urlcolor: blue
 
 ## Pourquoi SMC
 
-1. Approche unifiée pour l'optimisation et la simulation des variables aléatoire.
+1. Approche unifiée pour l'optimisation et la simulation des variables aléatoires.
 1. Souvent meilleur que MCMC pour les problèmes où 
     a. la densité cible est multimodale, ou
     a. la matrice hessienne de la log densité cible varie beaucoup.
@@ -29,7 +29,7 @@ urlcolor: blue
 
 La fonction de Himmelblau :
 \[
-  \phi(x) = (x_1^2 + x_2 - 11)^2 + (x_1 + x_2^2 - 7)^2
+  \phi(x) = (x_1^2 + x_2 - 11)^2 + (x_1 + x_2^2 - 7)^2.
 \]
 
 - Difficile à minimiser, un cas type pour les tests de performance.
@@ -74,14 +74,12 @@ wireframe(h_1 ~ x*y, data = df, shade=T)
 wireframe(h_2 ~ x*y, data = df, shade=T)
 ```
 
-## Échantillonage préférentiel
+## Échantillonnage préférentiel (importance sampling)
 
-- Le problème : intégrer des fonctions $g(x)$ par rapport à la densité $f(x)$,
-lorsqu'on peut seulement évaluer un noyau $h(x) = f(x)/c$, où $c$ est une constante
-inconnue.
+- Le problème : intégrer des fonctions $g(x)$ par rapport à la densité $f(x)$, même si on peut seulement évaluer un noyau $h(x) = f(x)/c$, où $c$ est une constante inconnue.
 
 - Une densité alternative (ou biaisée) est une $p(x)$ telle que
-    - $p(x) > 0 \Leftrightarrow h(x) > 0$,
+    - $h(x) > 0 \Rightarrow p(x) > 0$,
     - $\sup_x h(x)/p(x) < \infty$.
     
 - Pour être utile, il faut pouvoir évaluer la densité alternative et simuler des
@@ -101,7 +99,7 @@ variables aléatoires de la loi alternative.
   = \frac{E_f[g(x)]}{c}.
 \]
 
-## Échantillonage préférentiel, cont.
+## Échantillonnage préférentiel (suite)
 
 - Maintenant, supposons qu'on peut tirer $x^{(m)}$, $m=1,\ldots,M$ de la loi alternative (ayant
 la densité $p(x)$).
@@ -121,18 +119,18 @@ où $w^{(m)} \equiv h(x^{(m)})/p(x^{(m)})$.
   \frac{\sum_{m=1}^M w^{(m)} g(x^{(m)})}{\sum_{m=1}^M w^{(m)}} \overset{p}{\to} E_f[g(x)].
 \]
 
-## Autres notes sur l'échantillonage préférentiel
+## Autres notes sur l'échantillonnage préférentiel
 
 - Les $w^{(m)}$ sont pareilles pour chaque choix de $g(\cdot)$ : une seule simulation, même pour plusieurs $g(\cdot)$.
 - Dans un sens, l'échantillon pondéré $(w^{(m)}, x^{(m)})$ représente la loi cible.
 - On peut faire les simulations de $p(x)$ par
-    - Tirages iid
-    - Méthodes de réduction de variance
-    - Nombres quasi-aléatoires aléatorisés
-    - Méthodes MCMC
-- L'interprétation de l'intégration par l'échantillonage préférentiel comme un changement de variables (Judd, pages 294-5) est très intéressante.
+    - tirages iid,
+    - méthodes de réduction de variance,
+    - nombres quasi-aléatoires aléatorisés,
+    - méthodes MCMC.
+- L'interprétation de l'intégration par l'échantillonnage préférentiel comme un changement de variables (Judd, pages 294-5) est très intéressante.
 
-## L'erreur numérique de l'échantillonage préférentiel
+## L'erreur numérique de l'échantillonnage préférentiel
 
 - Selon la méthode Monte Carlo utilisée pour tirer de $p(x)$, on obtient la variance numérique $\Sigma$ du vecteur $(n,d)$, où $n$ est le numérateur et $d$ est le dénominateur :
 \[
@@ -149,7 +147,7 @@ est $(r = n/d)$
   \quad \text{où}\; \sigma^2 = \mathrm{Var}_f[g(x)].
 \]
 
-## Poids préférentiels : code
+## Exemple $h(x) = e^{-k\phi(x)}$ où $\phi(x)$ est la fct Himmelblau
 
 ```{r Himmelblau, include=FALSE}
 ph <- function(x, y) {
@@ -186,6 +184,7 @@ f_ESS <- function(w) {
 
 f_ESS(w1)
 f_ESS(w2)
+M
 ```
 
 ## Poids préférentiels : $k = 0.1$
@@ -202,14 +201,14 @@ contour(x_1, x_2, Himmelblau, xlab='x', ylab='y')
 points(x_rnd, cex=2*sqrt(w2))
 ```
 
-## Rééchantillonage (Resampling)
+## Rééchantillonnage (Resampling)
 
 - À noter : un changement de notation pour être cohérent avec Geweke et Durham (2019), $\theta^{(m)}$ devient $\theta_n$.
 - Problème : on a un échantillon $(w_n, \theta_n)$, $n=1,\ldots,N$, pour le noyau de densité $k(\theta)$, et on veut un échantillon $\theta_n^*$, $n=1,\ldots,N$, avec poids égaux pour $k(\theta)$.
-- Solution : échantillonnez $\theta_n^*$, $n=1,\ldots,N$, avec remise, de l'échantillon $\theta_n$, $n=1,\ldots,N$, avec les poids de probabilité $w_n$.
+- Solution : échantillonner $\theta_n^*$, $n=1,\ldots,N$, avec remise, de l'échantillon $\theta_n$, $n=1,\ldots,N$, avec les poids de probabilité $w_n$.
 - Le nombre de fois $\theta_n$ se trouve dans l'échantillon $\theta_n^*$, $n=1,\ldots,N$, est binomial : $\mathrm{Bi}(N, w_n/\sum_{n=1}^N w_n)$.
 - $\theta_n^*$, $n=1,\ldots,N$, est un échantillon pour $k(\theta)$.
-- Attention : le rééchantillonage ajoute du bruit. On le fait seulement si on a besoin d'un échantillon non-pondéré.
+- Attention : le rééchantillonnage ajoute du bruit. On le fait seulement si on a besoin d'un échantillon non-pondéré.
 
 ## L'exercice de simulation Monte Carlo séquentielle
 
@@ -224,7 +223,7 @@ $k^{(0)}(\theta) = f^{(0)}(\theta)$ est normalisée.
 * Les lois intermédiaires peuvent être ou ne pas être de l'intérêt, mais
 elles sont utiles pour diviser le problème en parties gérables.
 
-* Une exemple courant :
+* Un exemple courant :
     - $k^{(0)}(\theta) = 1_{[0,1]}(\theta)$
     - $k^{(L)}(\theta) = \tfrac{3}{5} f_{\mathrm{Be}}(70, 50) + \tfrac{2}{5} f_{\mathrm{Be}}(40, 160)$
     - $k^{(l)}(\theta) = [k^{(L)}(\theta)]^{l/L}$, $l=1,\ldots,L-1$.
@@ -283,13 +282,13 @@ Tirer $\theta_n^{(0)} \sim f^{(0)}(\theta)$, $n=1,\ldots,N$, pour avoir un écha
 
 ### Itération pour $l=1,\ldots,L$
 
-1. Phase C (Correction, avec échantillonage préférentiel)
+1. Phase C (Correction, avec échantillonnage préférentiel)
     - L'intrant, un échantillon $(N^{-1}, \theta_n^{(l-1)})$, représente $k^{(l-1)}(\theta)$.
     - On calcule $w_n^{(l)} = k^{(l)}(\theta_n^{(l-1)})/k^{(l-1)}(\theta_n)$.
     - Le résultat est un échantilon $(w_n^{(l)}, \theta_n^{(l-1)})$ qui représente $k^{(l)}(\theta)$.
 
-1. Phase S (Sélection, avec rééchantillonage)
-    - On rééchantillone l'échantillon pondéré $(w_n^{(l)}, \theta_n^{(l-1)})$, qui représente $k^{(l)}(\theta)$.
+1. Phase S (Sélection, avec ré-échantillonnage)
+    - On ré-échantillonne l'échantillon pondéré $(w_n^{(l)}, \theta_n^{(l-1)})$, qui représente $k^{(l)}(\theta)$.
     - Le résultat est un échantillon $(N^{-1}, \theta_n^{(l,0)})$ qui représente $k^{(l)}(\theta)$.
 
 1. Phase M (Mutation, avec transtions MCMC)

@@ -448,9 +448,9 @@ sd(sim_G$h)
 
 ## L'idée de l'augmentation des données
 
-- Un exemple de "reculer pour mieux sauter".
+- Un exemple de « reculer pour mieux sauter ».
 - Supposez qu'il soit difficile de simuler $\theta|y$.
-- Cependant, il y a une variable aléatoire $z$ telle que on peut simuler facilement
+- Toutefois, il y a une variable aléatoire $z$ telle que on peut simuler facilement
     - $\theta|z,y$,
     - $z|\theta,y$.
 - On utilise l'échantillonage de Gibbs pour tirer un échantillon de $\theta,z|y$.
@@ -490,8 +490,8 @@ sd(sim_G$h)
   \end{aligned}
 \]
 - Maintenant on va dériver les lois conditionnelles *a posteriori*
-    - $f(y_i^*|y_{-i}^*,\beta,y) \propto f(\beta,y^*|y)$, $i=1,\ldots,n$.
-    - $f(\beta|y^*,y) \propto f(\beta,y^*|y)$
+    - $f(y_i^*|y_{-i}^*,\beta,y) \propto f(\beta,y^*|y)$, $i=1,\ldots,n$ ;
+    - $f(\beta|y^*,y) \propto f(\beta,y^*|y)$.
 
 ## Densité conditionnelle *a posteriori* de $y_i^*$
 
