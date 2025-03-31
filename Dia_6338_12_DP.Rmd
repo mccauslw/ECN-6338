@@ -36,8 +36,8 @@ où
     - cas très spécial de $\pi(x_t, u_t, t)$ : $\beta^t \pi(x_t, u_t)$.
     
 - Quant aux contraintes :
-    - $F(x_t, u_t)$ au lieu de $F(x_t, u_t, t)$ (pas vraiment une restriction)
-    - $u_t \in D(x_t)$ au lieu de $D(x_t, t)$
+    - $F(x_t, u_t)$ au lieu de $F(x_t, u_t, t)$ (pas vraiment une restriction),
+    - $u_t \in D(x_t)$ au lieu de $D(x_t, t)$,
     - $x_0$ donnée au lieu de $x_1$.
 
 ## Un exemple : accumulation de la richesse
@@ -52,7 +52,7 @@ où
     - L'état est le stock du capital : $x_t = k_t$
     - La commande est la consommation : $u_t = c_t$
     - $F$ est une fonction de production d'un bien homogène (pas de distinction entre le capital et le seul bien de consommation).
-    - On peut inclure l'amortissement du capital dans $F$ : $F(k) = f(k) - \delta k$, où $f(k)$ est la fonction de production brute.
+    - Cas spécial important : $F(k) = (1-\delta) k + f(k)$, avec amortissement du capital.
     - Une interprétation du problème : celui du planificateur central dans un modèle simple de
     croissance néoclassique : il y a un équilibre concurrentiel qui donne la même
     résultat.
@@ -62,7 +62,7 @@ où
 - Problème dynamique d'un monopôle (Judd, page 404) :
     - la commande est la quantité de travail $l$ et le dividende $c$
     - l'état est la quantité de capital $k$ dans la firme
-    - l'état prochain est le profit (comme fonction de $l$ et $k$) moins le dividende
+    - l'état prochain est $k$ plus le profit (comme fonction de $l$ et $k$) moins le dividende
     - le flux de valeur est le dividende versé dans une période
 
 - Problème d'inventaire agricole (Judd, page 428)
@@ -117,12 +117,13 @@ Notes :
 ## Trouver la fonction de valeur $V(x, 1)$
 
 - Une condition terminal : $V(x,T+1) = W(x)$, une fonction connue.
-- Les autres $V(\cdot,t)$ par raisonnement rétrograde : application de l'opérateur
+- Les autres $V(\cdot,t)$ par raisonnement à rebours : l'application de l'opérateur
 définie par
 \[
   V(x,t) = \sup_{u \in D(x,t)} \pi(x,u,t) + V(F(x, u, t), t+1).
 \]
 - Attention : l'opérateur prend une fonction de $x$ et donne une fonction de $x$.
+La valeur de $t$ est fixe.
 
 ## Le problème déterministe à horizon infinie
 
@@ -145,13 +146,13 @@ si $0 < \beta < 1$, $\pi(x,u)$ est borné et $X$ est compacte,
     - $T$ est une contraction de module $\beta$
     ($\|Ty_1 - Ty_2\| \leq \beta \|y_1 - y_2\|$)
     - $V = TV$ a une solution ($T$ a un point fixe) unique.
-- L'itération de la fonction de valeur donne une suite de fonctions de valeur $V^l$ qui converge vers $V$: $V^{l+1} = TV^l$, ou
+- L'itération de la fonction de valeur donne une suite de fonctions de valeur $V^l$ qui converge vers $V$ : $V^{l+1} = TV^l$, ou
 \[
-  V^{l+1}(x) = \sup_{u \in D(x)} \pi(x,u) + \beta V^l(F(x, u)),
+  V^{l+1}(x) = \sup_{u \in D(x)} \pi(x,u) + \beta V^l(F(x, u)).
 \]
 - Un sous-produit est une suite de fonctions de politique $C^l$ correspondantes:
 \[
-  U^{l+1}(x) \in \arg\max_{u \in D(x)} \pi(x,u) + \beta V^l(F(x, u)).
+  C^{l+1}(x) \in \arg\max_{u \in D(x)} \pi(x,u) + \beta V^l(F(x, u)).
 \]
 
 
@@ -176,7 +177,7 @@ comme la variable de commande.
 \[
   V(k) = \max_{k^+ \in K} u(F(k) - k^+) + \beta V(k^+).
 \]
-- Elle est un système d'équations non-linéaire; la solution est un vecteur.
+- Elle est un système d'équations non-linéaire ; la solution est un vecteur.
 
 ## Exemple (page 425)
 
