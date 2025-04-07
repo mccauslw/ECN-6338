@@ -16,7 +16,7 @@ urlcolor: blue
 où
     - $t$ est l'index du temps,
     - $x_t$ est l'état en période $t$, $t=1,\ldots,T+1$,
-    - $u_t$ est la commande (une variable de choix, control en anglais),
+    - $u_t$ est la décision (une variable de choix, control en anglais),
     - $\pi(\cdot)$ est le flux de valeur (souvent profit où utilité),
     - $W(\cdot)$ est la valeur terminale.
 
@@ -50,7 +50,7 @@ où
 
 - Notes :
     - L'état est le stock du capital : $x_t = k_t$
-    - La commande est la consommation : $u_t = c_t$
+    - La décision est la consommation : $u_t = c_t$
     - $F$ est une fonction de production d'un bien homogène (pas de distinction entre le capital et le seul bien de consommation).
     - Cas spécial important : $F(k) = (1-\delta) k + f(k)$, avec amortissement du capital.
     - Une interprétation du problème : celui du planificateur central dans un modèle simple de
@@ -60,19 +60,19 @@ où
 ## Autres exemples
 
 - Problème dynamique d'un monopôle (Judd, page 404) :
-    - la commande est la quantité de travail $l$ et le dividende $c$
+    - la décision est la quantité de travail $l$ et le dividende $c$
     - l'état est la quantité de capital $k$ dans la firme
     - l'état prochain est $k$ plus le profit (comme fonction de $l$ et $k$) moins le dividende
     - le flux de valeur est le dividende versé dans une période
 
 - Problème d'inventaire agricole (Judd, page 428)
-    - la commande est le choix d'intrants de production agricole
+    - la décision est le choix d'intrants de production agricole
     - l'état est l'inventaire agricole
     - l'état prochain est la production moins la consommation
     - le flux de valeur est l'utilité de la consommation d'une période
     
 - Problème de gestion d'un forêt
-    - la commande est la quantité récoltée de chaque type (age) d'arbre,
+    - la décision est la quantité récoltée de chaque type (age) d'arbre,
     - l'état est la quantité de chaque type d'arbre,
     - l'état prochain est déterminé par la croissance des arbres et les quantités récoltées,
     - le flux de valeur est le profit apporté par la récolte d'une période
@@ -100,7 +100,7 @@ sous les contraintes
 
 ## Le principe d'optimalilté de Bellman
 
-> Une commande optimale $u_t,\ldots,u_T$ a la propriété que quelque soit l'état initial $x_t$ et la décision initiale $u_t$, les décisions restantes ($u_{t+1},\ldots,u_T$) doivent être une commande optimale pour l'état $x_{t+1} = F(x_t, u_t, t)$ résultant de la décision $u_t$.
+> Une commande (décision) optimale $u_t,\ldots,u_T$ a la propriété que quelque soit l'état initial $x_t$ et la décision initiale $u_t$, les décisions restantes ($u_{t+1},\ldots,u_T$) doivent être une commande optimale pour l'état $x_{t+1} = F(x_t, u_t, t)$ résultant de la décision $u_t$.
 
 Notes :
 
@@ -108,7 +108,7 @@ Notes :
 \[
   V(x,t) = \sup_{u \in D(x,t)} \pi(x,u,t) + V(F(x, u, t), t+1).
 \]
-- Si $u \in D(x,t)$ atteint le sup, la fonction de politique est
+- Si $u \in D(x,t)$ atteint le sup, la fonction de décision est
 \[
   U(x,t) = \arg\max_{u \in D(x,t)} \pi(x,u,t) + V(F(x, u, t), t+1).
 \]
@@ -133,7 +133,7 @@ La valeur de $t$ est fixe.
 \]
 ou $V = TV$; $V$ est une fonction de $x \in X$, $T$ est un opérateur.
 - L'équation est une équation *fonctionnelle*, sa solution est $V$, la *fonction* de valeur.
-- Une fonction de politique est maintenant une fonction $U(x)$ qui vérifie
+- Une fonction de décision est maintenant une fonction $U(x)$ qui vérifie
 \[
   U(x) \in \arg\max_{u \in D(x)} \pi(x,u) + \beta V(F(x, u)).
 \]
@@ -150,9 +150,9 @@ si $0 < \beta < 1$, $\pi(x,u)$ est borné et $X$ est compacte,
 \[
   V^{l+1}(x) = \sup_{u \in D(x)} \pi(x,u) + \beta V^l(F(x, u)).
 \]
-- Un sous-produit est une suite de fonctions de politique $C^l$ correspondantes:
+- Un sous-produit est une suite de fonctions de décision $U^l$ correspondantes:
 \[
-  C^{l+1}(x) \in \arg\max_{u \in D(x)} \pi(x,u) + \beta V^l(F(x, u)).
+  U^{l+1}(x) \in \arg\max_{u \in D(x)} \pi(x,u) + \beta V^l(F(x, u)).
 \]
 
 
@@ -168,7 +168,7 @@ si $0 < \beta < 1$, $\pi(x,u)$ est borné et $X$ est compacte,
 - Une méthode : permettre seulement les valeurs de $k$ sur une grille
 $K = \{k^m,\ldots,k^M\}$.
 - En pratique il faut prendre $k^+ \equiv F(k) - c$, le capital à la prochaine période,
-comme la variable de commande.
+comme la variable de décision.
 - L'équation Bellman avec le changement de variables :
 \[
   V(k) = \max_{0 \leq k^+ \leq F(k)} u(F(k) - k^+) + \beta V(k^+).
@@ -193,21 +193,23 @@ Prenons :
 
 Notes :
 
-- $k^{ss}$ est un état stationnaire si $k^{ss} + f(k^{ss}) - C(k^{ss}) = k^{ss}$,
-où $C(\cdot)$ est la fonction de commande optimale.
+- $k^{ss}$ est un état stationnaire si $k^{ss} + f(k^{ss}) - U(k^{ss}) = k^{ss}$,
+où $U(\cdot)$ est la fonction de décision optimale.
 - $\beta$ dans la fonction de production est étrange, le coefficient $(1-\beta)/(\alpha\beta)$ fait en sorte que $k^{ss} = 1$.
 
 ## Choisir une fonction de valeur initiale
 
-- La commande $C(k) = f(k)$ donne $k^+ = k$
+- Distinguez $U_c(k)$, la fonction de décision qui donne la consommation actuelle, et $U_k(k)$, celle qui donne le capital prochain.
+- Notez que $U_c(k) = f(k)$ donne $k^+ = k$ ou $U_k(k) = k$.
 - Elle est faisable mais pas optimale pour $k \neq k^{ss} = 1$.
-- Autour de $k=k^{ss}$, $C(k)$ devrait être près de la commande optimale.
-- La fonction de valeur (non-optimale) $V^c(k)$ associée à la commande $C(k) = f(k)$ (non-optimale) vérifie
+- Autour de $k=k^{ss}$, $U_c(k)$ et $U_k(k)$ devraient être près de les fonctions de décision optimales.
+- La fonction de valeur (non-optimale) $V^c(k)$ associée à $U_c(k) = f(k)$ (non-optimale) vérifie
 \[
   V^c(k) = u(f(k)) + \beta V^c(k), \; \text{ou} \; V^c(k) = u(f(k))/(1-\beta).
 \]
-- Notez que $V^c(k) \leq V(k)$, où $V(k)$ est la fonction de valeur de la politique optimale.
+- Notez que $V^c(k) \leq V(k)$, où $V(k)$ est la fonction de valeur associée à la fonction de décision optimale.
 - Considérez aussi $V_z(k) = 0$ comme fonction de valeur initiale.
+- Dans le code suivant, $U$ signifie $U_k$.
 
 ## Code initial : préférences et technologies
 
@@ -251,13 +253,13 @@ V_z <- rep(0, N)
 
 ## Code, itération de la fonction de valeur 
 
-```{r VF_iteration}
+```{r VF_iteration, message=FALSE, warning=FALSE}
 # Iteration de la fonction de valeur
 VU_suiv <- function(V) {
   V_suiv <- rep(0, N);
   U_suiv <- rep(0, N); U_suiv_i <- vector('integer', N)
   for (i in 1:N) {
-    # k[i_plus] est la commande optimale à l'état k[i]
+    # k[i_plus] est la décision optimale à l'état k[i]
     i_plus = which.max(u_tab[i,] + beta*V)
     U_suiv[i] = k[i_plus]; U_suiv_i[i] = i_plus
     # V_suiv[i] est la fonction V suivante à l'état k[i]
@@ -277,7 +279,7 @@ plot(k, V_c, type='l')
 lines(k, VUs_c$V, col='green'); lines(k, VUss_c$V, col='blue')
 ```
 
-## La fonction de politique après deux itération de $V_c(k)$
+## La fonction de décision après deux itération de $V_c(k)$
 
 ```{r graphique_pol_c}
 plot(k, VUs_c$U, type='l', col='green'); lines(k, VUss_c$U, col='blue')
@@ -293,15 +295,24 @@ for (i in 1:3)
 lines(k, VUss_c$V, col='blue')
 ```
 
-## Itération de la fonction de politique : approximation de $V^U$ pour $U$ donnée
+## Deux types d'itération
 
-- Pour une fonction de politique $k^+ = U(k)$, pas forcément optimale,
+Les deux types d'itération :
+
+1. Itération de la fonction de valeur : ce qu'on a déjà vu
+1. Itération de la fonction de décision : la matière prochaine
+
+Pour faire l'itération de la fonction de décision, il faut pouvoir calculer une approximation de la valeur de cette fonction de décision comme fonction de l'état : pour une fonction de décision $U \colon K \to \mathbb{R}$ donnée, il faut approximer sa valeur $V^U \colon K \to \mathbb{R}$.
+
+## Approximation de $V^U$ pour $U_k$ donnée
+
+- Pour une fonction de décision $k^+ = U_k(k)$, pas forcément optimale,
 on peut calculer, pour chaque $k_0 \in K$, la suite d'état
 \[
-  k_0, U(k_0), U^{(2)}(k_0), U^{(3)}(k_0), \ldots,
+  k_0, U_k(k_0), U_k^{(2)}(k_0), U_k^{(3)}(k_0), \ldots,
 \]
-où $U^{(0)}(k_0) = k_0$, $U^{(i+1)}(k_0) = U(U^{(i)}(k_0))$.
-- On peut approximer la fonction de valeur de cette politique, le vecteur $V^U(k_0)$, $k_0 \in K$ par $\hat{V}^U(k_0)$ défini comme
+où $U_k^{(0)}(k_0) = k_0$, $U_k^{(i+1)}(k_0) = U_k(U_k^{(i)}(k_0))$.
+- On peut approximer la fonction de valeur correspondante, le vecteur $V^U(k_0)$, $k_0 \in K$ par $\hat{V}^U(k_0)$ défini comme
 \[
   \sum_{t=0}^T \beta^t u(U^{(t)}(k_0) + f(U^{(t)}(k_0)) - U^{(t+1)}(k_0)) + \beta^{T+1}\tilde{V}(U^{(T+1)}(k_0)),
 \]
@@ -312,17 +323,20 @@ où $\tilde{V}$ est une approximation de la fonction de valeur optimale.
 
 Cette version rétrograde évite des calculs redondants et se généralise aux problèmes stochastiques, équation (12.4.2) de Judd :
 
-- $W^0 = V$ (vecteur!)
+- $W^0 = V$ (un vecteur, une approximation initiale de $V^U$)
 - Pour $j=0,\ldots,T$ :
     - Pour $k \in K$,
     \[ W^{j+1}(k) = u(k + f(k) - U(k)) + \beta W^{j}(U(k)). \]
-- $V^U \approx \hat{V}^U \equiv W^{k+1}$ (vecteur!)
+- $V^U \approx \hat{V}^U \equiv W^{T+1}$ (un vecteur, l'approximation final de $V^U$)
 
-## Code, itération de la fonction de politique
+## Code, approximation de $V^U$, version rétrograd
 
 ```{r PF_iteration}
-# Iteration de la fonction de politique
+# Approximation de V^U, version rétrograde
 VdeU <- function(VU, n_iter) {
+  # VU$V est W0
+  # VU$U est la fonction de décision qui donne k+
+  # VU$Ui donne l'index de k+
   V <- VU$V; V_suiv = rep(0, N);
   for (i in 1:n_iter) {
     for (i in 1:N) {
@@ -472,7 +486,7 @@ plot(w, q, type='p')
 \[
   (TV)(w) = \max\left\{ \frac{w}{1-\beta},\, c + \beta \sum_{v\in W} V(v) q(v) \right\}.
 \]
-```{r Tdef}
+```{r Tdef, message=FALSE, warning=FALSE}
 library(geometry)
 V0 <- w/(1-beta)
 T <- function(V) {pmax(w/(1-beta), c+beta*dot(V, q))}
