@@ -349,17 +349,17 @@ VdeU <- function(VU, n_iter) {
 }
 ```
 
-## Itération de la fonction de politique
+## Itération de la fonction de décision
 
 Itérez les étapes suivantes jusqu'à ce que $\|V^{l+1} - V^l\| < \epsilon$ :
 
-1. Utilisez $V^l$ pour calculer $U^{l+1}$, la fonction de politique sous-produite par l'itération de la fonction de valeur.
+1. Utilisez $V^l$ pour calculer $U^{l+1}$, la fonction de décision sous-produite par l'itération de la fonction de valeur.
 1. Utilisez $U^{l+1}$ et $V^l$ (pour la valeur résiduelle à $t=T+1$) pour calculer $V^{l+1}$ comme
 \[
   V^{l+1} \equiv \hat{V}^{U^{l+1}}
 \]
 
-## L'iteration de la fonction de politique
+## Iteration de la fonction de décision (graphique)
 
 ```{r graphique_policy_c}
 plot(k, V_z, type='l', ylim = c(-180, 0)); V <- V_z
@@ -478,7 +478,7 @@ plot(w, q, type='p')
 ## L'itération de la fonction de valeur
 
 - Dans un premier temps, on ne profite pas de la structure du problème.
-- On commence par la fonction de valeur qui correspond à la politique $\sigma_0(w) = 1$, selon laquelle on accepte chaque offre :
+- On commence par la fonction de valeur qui correspond à la fonction de décision $\sigma_0(w) = 1$, selon laquelle on accepte chaque offre :
 \[
   V^{\sigma_0}(w) = \frac{w}{1-\beta}.
 \]
@@ -492,7 +492,7 @@ V0 <- w/(1-beta)
 T <- function(V) {pmax(w/(1-beta), c+beta*dot(V, q))}
 ```
 
-## Iteration de la fonction de valeur en graphiques
+## L'iteration de la fonction de valeur (graphique)
 
 ```{r Titer}
 V = V0; plot(w, V, type='l')
