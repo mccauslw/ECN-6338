@@ -17,7 +17,7 @@ où
     - $t$ est l'index du temps,
     - $x_t$ est l'état en période $t$, $t=1,\ldots,T+1$,
     - $u_t$ est la décision (une variable de choix, control en anglais),
-    - $\pi(\cdot)$ est le flux de valeur (souvent profit où utilité),
+    - $\pi(\cdot)$ est le flux de valeur (souvent profit ou utilité),
     - $W(\cdot)$ est la valeur terminale.
 
 - Contraintes :
@@ -44,7 +44,7 @@ où
 
 - Le modèle :
 \[
-  \max_{c_t} \sum_{t=0}^\infty \beta^t u(c_t) \quad \text{t.q.} \quad k_{t+1} = F(k_t) - c_t,
+  \max_{c_t} \sum_{t=0}^\infty \beta^t u(c_t) \quad \text{s.c.} \quad k_{t+1} = F(k_t) - c_t,
   \; k_0 \; \text{donné},
 \]
 
@@ -54,7 +54,7 @@ où
     - $F$ est une fonction de production d'un bien homogène (pas de distinction entre le capital et le seul bien de consommation).
     - Cas spécial important : $F(k) = (1-\delta) k + f(k)$, avec amortissement du capital.
     - Une interprétation du problème : celui du planificateur central dans un modèle simple de
-    croissance néoclassique : il y a un équilibre concurrentiel qui donne la même
+    croissance néoclassique : il y a un équilibre concurrentiel qui donne le même
     résultat.
 
 ## Autres exemples
@@ -63,7 +63,7 @@ où
     - la décision est la quantité de travail $l$ et le dividende $c$
     - l'état est la quantité de capital $k$ dans la firme
     - l'état prochain est $k$ plus le profit (comme fonction de $l$ et $k$) moins le dividende
-    - le flux de valeur est le dividende versé dans une période
+    - le flux de valeur est le dividende versé durant une période
 
 - Problème d'inventaire agricole (Judd, page 428)
     - la décision est le choix d'intrants de production agricole
@@ -72,7 +72,7 @@ où
     - le flux de valeur est l'utilité de la consommation d'une période
     
 - Problème de gestion d'un forêt
-    - la décision est la quantité récoltée de chaque type (age) d'arbre,
+    - la décision est la quantité récoltée de chaque type (âge) d'arbre,
     - l'état est la quantité de chaque type d'arbre,
     - l'état prochain est déterminé par la croissance des arbres et les quantités récoltées,
     - le flux de valeur est le profit apporté par la récolte d'une période
@@ -85,7 +85,7 @@ La fonction de valeur est comme une fonction d'utilité indirecte :
 - La contrainte budgétaire est $p_x x + p_y y = m$.
 - La fonction d'utilité indirecte est
 \[
-  v(p_x, p_y, m) = \max_{x,y} u(x,y) \quad \text{t.q.} \quad p_x x + p_y y = m.
+  v(p_x, p_y, m) = \max_{x,y} u(x,y) \quad \text{s.c.} \quad p_x x + p_y y = m.
 \]
 
 La fonction de valeur pour le problème à horizon fini est
@@ -118,7 +118,7 @@ Notes :
 
 - Une condition terminal : $V(x,T+1) = W(x)$, une fonction connue.
 - Les autres $V(\cdot,t)$ par raisonnement à rebours : l'application de l'opérateur
-définie par
+défini par
 \[
   V(x,t) = \sup_{u \in D(x,t)} \pi(x,u,t) + V(F(x, u, t), t+1).
 \]
@@ -157,7 +157,7 @@ si $0 < \beta < 1$, $\pi(x,u)$ est borné et $X$ est compacte,
 
 
 
-## Comment appliquer l'operateur en pratique
+## Comment appliquer l'opérateur en pratique
 
 - Prenons l'exemple de l'accumulation de richesse.
 - La fonction de valeur est un point fixe de l'opérateur $T$, où
@@ -201,7 +201,7 @@ où $U(\cdot)$ est la fonction de décision optimale.
 
 - Distinguez $U_c(k)$, la fonction de décision qui donne la consommation actuelle, et $U_k(k)$, celle qui donne le capital prochain.
 - Notez que $U_c(k) = f(k)$ donne $k^+ = k$ ou $U_k(k) = k$.
-- Elle est faisable mais pas optimale pour $k \neq k^{ss} = 1$.
+- Cette stratégie est faisable mais généralement sous-optimale lorsque $k \neq k^{ss} = 1$.
 - Autour de $k=k^{ss}$, $U_c(k)$ et $U_k(k)$ devraient être près de les fonctions de décision optimales.
 - La fonction de valeur (non-optimale) $V^c(k)$ associée à $U_c(k) = f(k)$ (non-optimale) vérifie
 \[
@@ -317,7 +317,7 @@ où $U_k^{(0)}(k_0) = k_0$, $U_k^{(i+1)}(k_0) = U_k(U_k^{(i)}(k_0))$.
   \sum_{t=0}^T \beta^t u(U^{(t)}(k_0) + f(U^{(t)}(k_0)) - U^{(t+1)}(k_0)) + \beta^{T+1}\tilde{V}(U^{(T+1)}(k_0)),
 \]
 où $\tilde{V}$ est une approximation de la fonction de valeur optimale.
-- Si on fait ce calcul directe pour chaque $k_0$ il peut y avoir des calculs redondants; pire, le calcul directe ne marche pas pour les problèmes analogues stochastiques.
+- Si on fait ce calcul direct pour chaque $k_0$ il peut y avoir des calculs redondants; pire, le calcul direct ne fonctionne pas pour les problèmes analogues stochastiques.
 
 ## La version rétrograde de l'approximation de $V^U$
 
@@ -327,9 +327,9 @@ Cette version rétrograde évite des calculs redondants et se généralise aux p
 - Pour $j=0,\ldots,T$ :
     - Pour $k \in K$,
     \[ W^{j+1}(k) = u(k + f(k) - U(k)) + \beta W^{j}(U(k)). \]
-- $V^U \approx \hat{V}^U \equiv W^{T+1}$ (un vecteur, l'approximation final de $V^U$)
+- $V^U \approx \hat{V}^U \equiv W^{T+1}$ (un vecteur, l'approximation finale de $V^U$)
 
-## Code, approximation de $V^U$, version rétrograd
+## Code, approximation de $V^U$, version rétrograde
 
 ```{r PF_iteration}
 # Approximation de V^U, version rétrograde
@@ -353,7 +353,7 @@ VdeU <- function(VU, n_iter) {
 
 Itérez les étapes suivantes jusqu'à ce que $\|V^{l+1} - V^l\| < \epsilon$ :
 
-1. Utilisez $V^l$ pour calculer $U^{l+1}$, la fonction de décision sous-produite par l'itération de la fonction de valeur.
+1. Utilisez $V^l$ pour calculer $U^{l+1}$, la fonction de décision obtenue comme sous-produit de l'itération de la fonction de valeur.
 1. Utilisez $U^{l+1}$ et $V^l$ (pour la valeur résiduelle à $t=T+1$) pour calculer $V^{l+1}$ comme
 \[
   V^{l+1} \equiv \hat{V}^{U^{l+1}}
@@ -482,7 +482,7 @@ plot(w, q, type='p')
 \[
   V^{\sigma_0}(w) = \frac{w}{1-\beta}.
 \]
-- On applique l'operateur $T$ de façon répétitive jusqu'à la convergence, où
+- On applique l'opérateur $T$ de façon répétitive jusqu'à la convergence, où
 \[
   (TV)(w) = \max\left\{ \frac{w}{1-\beta},\, c + \beta \sum_{v\in W} V(v) q(v) \right\}.
 \]
@@ -508,13 +508,13 @@ for (i in 1:5) {V = T(V); lines(w, V, col='blue')}
 \]
 - Si on substitue $V(w)$ dans la définition de $h$, on obtient
 \[
-  h = c + \beta E\left[ \max \left\{ \frac{w'}{1-\beta},\, h \right\} \right]
+  h = c + \beta E\left[ \max \left\{ \frac{w'}{1-\beta},\, h \right\} \right].
 \]
 - On peut résoudre cette équation non-linéaire avec l'itération
 \[
-  h' = c + \beta \sum_{v \in W} \max \left\{ \frac{v}{1-\beta},\, h \right\} q(v)
+  h' = c + \beta \sum_{v \in W} \max \left\{ \frac{v}{1-\beta},\, h \right\} q(v).
 \]
-- C'est une équation scalaire, mais il faut toujours calculer un produit intérieur par itération.
+- C'est une équation scalaire, donc plus facile à résoudre numériquement, bien qu'elle nécessite le calcul d'un produit intérieur par itération.
 
 ## L'itération du salaire de réserve
 
@@ -531,7 +531,7 @@ wbar <- function(beta_c, tol) {
 }
 ```
 
-## Code préliminaire pour les graphiques
+## Code pour une graphique de $\bar{w}$ comme fonction de $\beta,c$.
 
 ```{r code_gr, cache=TRUE}
 # Grilles de points pour beta et c
@@ -591,7 +591,7 @@ Les deux équations tiennent de façon simultanée :
 \[
   h(w) = \max\left\{v(w),\, u(c) + \beta \sum_{w' \in W} h(w') q(w') \right\}.
 \]
-Encore une fois, une simplification est utile :
+Encore une fois, une reformulation simplifie l'analyse :
 \[
   d \equiv E[h(w')] = \sum_{w' \in W} h(w') q(w').
 \]
@@ -608,7 +608,7 @@ On peut écrire maintenant (pas besoin de distinguer $w$ et $w_e$)
 
 ## Notes sur le problème
 
-- L'équation pour $h(w)$ étant éliminée, on peut itérer :
+- L'équation pour $h(w)$ étant éliminée, on peut itérer les étapes suivantes jusqu'à ce que tienne une condition de tolérance :
 \[
   d_{n+1} = \sum_{w' \in W} \max\{v_n(w'), u(c) + \beta d_n\} q(w'),
 \]
@@ -663,7 +663,7 @@ T <- function(vd) {
 }
 ```
 
-## Trouver les fonctions de valeur
+## Trouver la fonction de valeur $v(w)$ et $d \equiv E[h(w')]$
 
 ```{r VF_iter_2}
 solve_model <- function(tol=1e-5, max_iter=2000) {
@@ -682,11 +682,11 @@ solve_model <- function(tol=1e-5, max_iter=2000) {
 vd <- solve_model()
 ```
 
-## Graphique de la fonction de valeur
+## Graphique de la fonction de valeur $v(w)$ et de $u(c) + \beta d$
 
 ```{r graphique2}
 plot(w, vd$v, type='l', xlab='w', ylab='v, u(c) + beta d')
-abline(h = uc + beta*vd$d, col='red') # Attn : h pour horizontal!
+abline(h = uc + beta*vd$d, col='red') # h pour horizontal!
 ```
 
 ## Interprétation de la graphique
@@ -698,5 +698,6 @@ abline(h = uc + beta*vd$d, col='red') # Attn : h pour horizontal!
 \[
   h(w) = \max(v(w), u(c) + \beta d).
 \]
-- Un agent qui a optimisé dans le passé ne devrait jamais être dans l'état $(1,w)$, si $w < \bar{w}$.
+- Notez que $u(c) + \beta d$ est une constante et (dans l'équation) une fonction constante.
+- Un agent rationnel qui a optimisé dans le passé ne devrait pas se trouver dans l'état $(1,w)$, si $w < \bar{w}$.
 - Attention : l'argument \texttt{h} dans la commande \texttt{abline} est pour spécifier la position d'une droite horizontale.
