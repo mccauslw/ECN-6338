@@ -423,7 +423,7 @@ Sargent et Stachurski, section
 - L'état est la réalisation $w_t$ d'une offre de salaire aléatoire.
 - La densité $q(w_t|w_{t-1},u_{t-1}) = q(w_t)$ ne dépend pas de $w_{t-1}$, $u_{t-1}$.
 Soit $W$ l'ensemble de valeurs possibles des $w_t$.
-- L'action $u_t$ est d'accepter l'offre $w_t$ et gagner $w_t$ chaque période à tout jamais ($u_t = 1$) ou de rejeter l'offre, gagner $c$ à $t$ et attendre une autre offre ($u_t = 0$).
+- L'action $u_t$ est d'accepter ($u_t = 1$) l'offre $w_t$ et gagner $w_t$ chaque période à tout jamais ou de rejeter ($u_t = 0$) l'offre, gagner $c$ à $t$ et attendre une autre offre.
 - L'agent maximise 
 \[
   E\left[\sum_{t=0}^\infty \beta^t y_t \right],
@@ -692,7 +692,7 @@ abline(h = uc + beta*vd$d, col='red') # h pour horizontal!
 ## Interprétation de la graphique
 
 - $v(w)$, la valeur d'avoir un emploi avec salaire $w$, est en noir.
-- $u(c) + \beta d$, l'utilité de réservation, est en rouge.
+- $u(c) + \beta d$, la valeur de réservation, est en rouge.
 - L'intersection $(\bar{w}, u(c) + \beta d)$ donne le salaire de réservation $\bar{w}$.
 - $h(w)$, la valeur d'avoir une offre de $w$ en état de chômage est le maximum des deux fonctions :
 \[
