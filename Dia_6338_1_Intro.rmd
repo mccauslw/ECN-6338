@@ -220,7 +220,7 @@ m$double.xmax
 \]
 où $h > 0$ est très petit.
 * Mettons que les erreurs relatives maximales de $e^h$ et $e^{-h}$ sont $\epsilon$.
-* Puisque $e^x = 1$ à $x=0$, les erreurs abolues sont pareilles.
+* Puisque $e^x = 1$ à $x=0$, les erreurs absolues sont pareilles.
 * Par une expansion de Taylor,
 \[
   d_h \approx \frac{2h \pm 2\epsilon}{2h} = 1 \pm \frac{\epsilon}{h}
