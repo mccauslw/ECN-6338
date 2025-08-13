@@ -47,6 +47,9 @@ Les éléments de l'évaluation sont
 1. Quatre exercices de computation (40\%)
 1. Un examen final (40\%)
 
+Chaque étudiant a l’option de faire un projet computationnel avec une pondération de 100%.
+Cette option est recommendée pour les étudiants de doctorat.
+
 # Matière organisée par cours
 
 ## Cours 1. Introduction
@@ -259,25 +262,7 @@ Sections "Intuition" et "Formal Derivation"
 
 
 
-## Cours 11. La résolution des équations différentielles
-
-### Matières
-
-1. Équations différentielles avec conditions au bord
-1. La résolution de systèmes d'équations différentielles linéaires
-1. Les méthodes du type Runge-Kutta pour les équations différentielles non-linéaires
-1. Applications :
-    a. Calcul de l'équilibre d'un modèle de signalisation de Spence
-    a. Problèmes de commande optimale (optimal control) dans un modèle "cycle de vie" avec consommation et offre de travail
-
-### Lectures
-
-1. Judd: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7
-
-
-
-
-## Cours 12 et 13. La programmation dynamique
+## Cours 11, 12 et 13. La programmation dynamique
 
 ### Matières
 
