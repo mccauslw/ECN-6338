@@ -6,7 +6,7 @@
 
 [Plan du cours détaillé](docs/Plan_detail_6338.pdf)
 
-[Exercices](Exercices.pdf?raw=1)
+[Exercices](docs/Exercices.pdf?raw=1)
 
 Examens finaux
 
