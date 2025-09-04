@@ -5,6 +5,7 @@ author: "William McCausland"
 date: "`r Sys.Date()`"
 output: beamer_presentation
 urlcolor: blue
+output_dir: ../docs
 ---
 
 ## Quelques observations
@@ -296,7 +297,7 @@ mais on pratique il faut tronquer et utiliser un nombre fini $N$ de termes :
     * mais $x^k$ diverge.
 
 ## Exemple, maximisation de $f(x)$
-![](./Figures/Hill_climb.png)
+![](../Figures/Hill_climb.png)
 
 ## Règles d'arrêt
 
