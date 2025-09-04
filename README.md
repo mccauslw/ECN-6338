@@ -1,12 +1,14 @@
 ## ECN-6338 Analyse numérique en économie
 
-[Plan du cours départemental](ECN6338A-H22-PC.pdf)
+[Plan du cours départemental](ECN6338A-A25-PC.pdf)
 
 [Plan du cours détaillé](Plan_detail_6338.pdf)
 
 [Exercices](Exercices.pdf)
 
-[Examen final 2022](EF_6338_22.pdf)
+[Examen final, hiver 2022](Examens/EF_6338_22.pdf)
+[Examen final, hiver 2023](Examens/EF_6338_23.pdf)
+[Examen final, hiver 2025](Examens/EF_6338_25.pdf)
 
 #### Cours 1, Introduction
 
