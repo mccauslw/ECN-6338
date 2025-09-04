@@ -37,7 +37,6 @@ Autres documents
 ### Autres documents et sites internet
 
 - Site web [QuantEcon](https://quantecon.org)
-- Site Github du cours [CompEcon2020](https://github.com/KennethJudd/CompEcon2020) de Judd
 
 # Évaluation
 

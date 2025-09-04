@@ -2,16 +2,17 @@
 
 ### Cours en général
 
-[Plan du cours départemental](ECN6338A-A25-PC.pdf?raw=1)
+[Plan du cours départemental](docs/ECN6338A-A25-PC.pdf)
 
-[Plan du cours détaillé](Plan_detail_6338.pdf?raw=1)
+[Plan du cours détaillé](docs/Plan_detail_6338.pdf)
 
 [Exercices](Exercices.pdf?raw=1)
 
 Examens finaux
-- [hiver 2022](Examens/EF_6338_22.pdf?raw=1)
-- [hiver 2023](Examens/EF_6338_23.pdf?raw=1)
-- [hiver 2025](Examens/EF_6338_25.pdf?raw=1)
+
+- [hiver 2022](docs/EF_6338_22.pdf)
+- [hiver 2023](docs/EF_6338_23.pdf)
+- [hiver 2025](docs/EF_6338_25.pdf)
 
 ### Cours 1, Introduction
 
