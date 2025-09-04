@@ -16,7 +16,7 @@ Manuel principal
 
 Livres gratuits (fournis par les auteurs) supplémentaires
 
-- [Devroye](http://www.eirene.de/Devroye.pdf) (1986), "Non-Uniform Random Number Generation"
+- [Devroye](https://luc.devroye.org/rnbookindex.html) (1986), "Non-Uniform Random Number Generation"
 - Train (2009), "Discrete Choice Methods with Simulation", 2e édition
 
 Papiers scientifiques
@@ -132,8 +132,9 @@ Notez que le cours suit la convention "numerator layout".
 ### Lectures
 
 1. Judd: 4.1, 4.2, 4.3, 4.4
-1. Page Wikipédia sur la méthode [Nelder-Mead](https://en.wikipedia.org/wiki/Nelder–Mead_method)
-1. Page Wikipédia sur la méthode [BFGS](https://en.wikipedia.org/wiki/Broyden–Fletcher–Goldfarb–Shanno_algorithm)
+1. Page Wikipédia sur la méthode
+[Nelder-Mead](https://en.wikipedia.org/wiki/Nelder-Mead_method)
+1. Page Wikipédia sur la méthode [BFGS](https://en.wikipedia.org/wiki/Broyden-Fletcher-Goldfarb-Shanno_algorithm)
 
 
 
@@ -212,7 +213,7 @@ Notez que le cours suit la convention "numerator layout".
 1. Judd: 8.1, 8.2, 8.3
 1. Page Wikipédia sur le [Mersenne Twister](https://en.wikipedia.org/wiki/Mersenne_Twister)
 1. Page Wikipédia sur l'algorithme [Ziggurat](https://en.wikipedia.org/wiki/Ziggurat_algorithm)
-1. [Devroye](http://www.eirene.de/Devroye.pdf) II.2 and II.3 (méthode de l'inverse de la fonction de répartition, méthode de rejet)
+1. [Devroye](https://luc.devroye.org/rnbookindex.html) II.2 and II.3 (méthode de l'inverse de la fonction de répartition, méthode de rejet)
 1. Page Wikipédia sur la [méthode de rejet](https://en.wikipedia.org/wiki/Rejection_sampling),
 Sections "Description", "Theory" et "Algorithm"
 
@@ -232,7 +233,7 @@ Sections "Description", "Theory" et "Algorithm"
 ### Lectures
 
 1. Judd: 8.1, 8.2, 8.3, 8.4, 8.5
-1. Page Wikipédia sur l'algorithme [Metropolis-Hastings](https://en.wikipedia.org/wiki/Metropolis–Hastings_algorithm),
+1. Page Wikipédia sur l'algorithme [Metropolis-Hastings](https://en.wikipedia.org/wiki/Metropolis-Hastings_algorithm),
 Sections "Intuition" et "Formal Derivation"
 1. Page Wikipédia sur l'[échantillonage de Gibbs](https://en.wikipedia.org/wiki/Gibbs_sampling), Section "Implementation"
 
