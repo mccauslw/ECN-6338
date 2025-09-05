@@ -28,8 +28,8 @@ output_dir: ../docs
     a. choix d'action dans les jeux (enchères, négociation, signalisation)
 
 2. Maximisation du profit (choix des quantités de production)
-    a. choix de panier d'intrants dans les modèles statiques
-    a. choice d'investissement, de niveau de R&D, dans les modèles dynamiques en macro
+    a. choix de panier d'intrants (statique)
+    a. choice d'investissement, de niveau de R&D (dynamiques)
     a. choix d'action dans les jeux
         i. jeux d'oligopole : cournot, bertrand, stackelberg
         i. jeux en organisation industrielle : d'entrée
@@ -69,7 +69,7 @@ D'autres opérations numériques jouent souvent un rôle de soutien
 * Résolution d'équations différentielles
 * Simulation de variables aléatoires
     - pour l'intégration (méthodes Monte Carlo)
-    - pour l'optimisation (recuit simulé, simulated annealing)
+    - pour l'optimisation (recuit simulé = simulated annealing)
 
 ## Ce cours, relatif au livre classique de Judd
 
