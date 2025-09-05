@@ -17,7 +17,7 @@ output_dir: ../docs
 * L'apport de l'analyse numérique en microéonomie, macroéconomie et économétrie.
 * Le site web [QuantEcon](https://quantecon.org) donne une bonne idée de la diversité d'applications.
 
-## L'optimisation
+## L'optimisation 1
 
 ### Par les agents des modèles économiques
 
