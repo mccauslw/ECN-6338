@@ -220,10 +220,10 @@ On appele
 
 ```{r epsilon, echo=TRUE}
 m = .Machine
+m$double.xmax
+m$double.xmin
 m$double.eps
 m$double.neg.eps
-m$double.xmin
-m$double.xmax
 ```
 
 ## Propogation de l'erreur
@@ -257,7 +257,7 @@ L'expansion de Mercator :
   = x - \frac{x^2}{2} + \frac{x^3}{3} - \ldots
 \]
 
-* Si on veux évaluer $\log (1+x)$ pour $x$ petit, ne calcule pas $1+x$ comme résultat intermédiaire.
+* Si on veux évaluer $\log (1+x)$ pour $|x|$ petit, ne calcule pas $1+x$ comme résultat intermédiaire.
 
 * La fonction \texttt{log1p} en R (et autres langages) évalue la fonction $f(x) = \log(1+x)$ directement avec l'expansion de Mercator.
 
