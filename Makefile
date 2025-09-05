@@ -10,7 +10,7 @@ $(OUT_DIR)/%.html: $(RMD_DIR)/%.Rmd | $(OUT_DIR)
 	Rscript -e "rmarkdown::render('$<', output_format='html_document', output_dir='$(OUT_DIR)')"
 
 $(OUT_DIR)/%.pdf: $(RMD_DIR)/%.Rmd | $(OUT_DIR)
-	Rscript -e "rmarkdown::render('$<', output_format='beamer_presentation', output_dir='$(OUT_DIR)')"
+	Rscript -e "rmarkdown::render('$<', output_dir='$(OUT_DIR)')"
 
 $(OUT_DIR):
 	mkdir -p $(OUT_DIR)
