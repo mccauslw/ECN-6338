@@ -12,26 +12,27 @@ output_dir: ../docs
 
 * L'économie et la recherche des implications des modèles.
 * La difficulté d'exprimer ces implications en forme analytique.
-* L'importance de l'optimisation et des espérances dans les problèmes d'agents économiques.
-* L'importance de l'optimisation et des espérances dans les problèmes économétriques.
+* L'importance de l'optimisation et des espérances mathématiques
+    - dans les problèmes d'agents économiques,
+    - dans les problèmes économétriques.
 * L'apport de l'analyse numérique en microéonomie, macroéconomie et économétrie.
 * Le site web [QuantEcon](https://quantecon.org) donne une bonne idée de la diversité d'applications.
 
-## L'optimisation 1
+## L'optimisation
 
 ### Par les agents des modèles économiques
 
-1. maximisation de l'utilité (avec ou sans contraintes)
-    a. choix de panier dans les modèles statiques
-    a. choix de travail, de loisir, de consommation, de placements dans les modèles dynamiques en macro et finance
-    a. choix d'action dans les jeux (enchères, jeux de négociation, jeux de signalisation)
+1. Maximisation de l'utilité (avec ou sans contraintes)
+    a. choix de panier (statique)
+    a. choix travail/loisir/consommation/placements (dynamiques)
+    a. choix d'action dans les jeux (enchères, négociation, signalisation)
 
-2. maximisation du profit (choix des quantités de production)
+2. Maximisation du profit (choix des quantités de production)
     a. choix de panier d'intrants dans les modèles statiques
     a. choice d'investissement, de niveau de R&D, dans les modèles dynamiques en macro
     a. choix d'action dans les jeux
         i. jeux d'oligopole : cournot, bertrand, stackelberg
-        i. jeux en organisation industrielle : d'entré
+        i. jeux en organisation industrielle : d'entrée
 
 ## L'optimisation (suite)
 
@@ -39,8 +40,8 @@ output_dir: ../docs
 
 1. [Estimation par Extremum](https://en.wikipedia.org/wiki/Extremum_estimator)
     a. maximum de vraisemblance
-    a. moindres carrés non-linéaire
-    a. méthode des moments généraliséé
+    a. moindres carrés non linéaires
+    a. méthode des moments généralisés
     a. régression quantile
 
 ## L'intégration
@@ -88,19 +89,19 @@ Le but ici est de présenter les cas les plus simples pour vous préparer pour l
 
 ## Évaluation
 
-|Type                     |Date                  |Pondération |
-|-------------------------|----------------------|------------|
-|~10 interrogations de 10 minutes    |Au début des classes                     |20\%|
+|Type                    |Date                 |Pondération |
+|---------------------|--------------------|-----|
+|~10 interrogations (10 min)    |début de cours    |20\%|
 |||
-|Quatres exercices computationnelles |26 septembre, 17 octobre, 14 novembre, 5 décembre |40\%|
+|4 exercices computationnels |26 septembre, 17 octobre, 14 novembre, 5 décembre |40\%|
 |||
 |Examen final                        |20 avril                                 |40\%|
 
 ## Documents et Communication
 
-### Site Github du cours
+### Site GitHub du cours
 
-1. Diapos (code source en [R Markdown](https://rmarkdown.rstudio.com), pdf)
+1. Diapositives (code source en [R Markdown](https://rmarkdown.rstudio.com), pdf)
 1. Démonstrations (en [R](https://www.r-project.org))
 1. Lectures, exercices
 1. Devoirs avec computation
