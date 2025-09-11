@@ -42,7 +42,7 @@ Le vecteur $p^*$ d'équilibre (où $q_d = q_p$) vérifie
 
 - Notation :
     - $L$, une matrice triangulaire inférieure $n \times n$ ; (Left, Lower)
-    - $R$ ou $U$, une matrice triangularie supérieure $n \times n$. (Right, Upper)
+    - $R$ ou $U$, une matrice triangulaire supérieure $n \times n$. (Right, Upper)
 - Une matrice triangulaire est inversible ssi aucun élément diagonal n'est nul.
 - Pour le $n$-vecteur colonne $b$, la résolution de
     - $Lx = b$ est facile par substitution avant,
@@ -312,11 +312,17 @@ Pour calculer $(x-\mu)^\top \Sigma^{-1} (x-\mu)$ :
     &= \|L^{-1}(x-\mu)\|^2
   \end{aligned},
 \]
-et $L^{-1}(x-\mu)$ est la solution du sytème triangulaire $Lu = (x-\mu)$.
+et $L^{-1}(x-\mu)$ est la solution du système triangulaire $Lu = (x-\mu)$.
 
 Pour calculer $|\Sigma|$ : $|\Sigma| = |L||L^\top|$ où $|L| = |L^\top| = \prod_{i=1}^n L_{ii}$, parce que $L$ est triangulaire. 
 
-## Matrice creuse (sparse matrix), format triple
+## Une matrice creuse (sparse matrix)
+
+Exemple d'une matrice creuse de la page Wikipédia [Sparse matrix](https://en.wikipedia.org/wiki/Sparse_matrix)
+
+![](../Figures/Finite_element_sparse_matrix.png){width=70%}
+
+## Matrice creuse, format triple
 
 Matrice creuse $A$, $m \times n$, avec $N$ éléments ($m=5, n=6, N=5$) :
 
@@ -362,7 +368,7 @@ Où est $A_{43}$? Le 2e tableau dit que la colonne 3 de $A$
 contient les éléments non-zéro 3 et 4.
 On cherche $i-1 = 3$ entre les éléments 3 et 4 du 1er tableau.
 
-## Mise en oeuvre en R, format colonne compressé par défaut
+## Mise en oeuvre en R, format colonne compressée par défaut
 
 ```{r assign_sparse}
 library(Matrix)
@@ -398,14 +404,14 @@ str(m)
 
 ### Opérations lentes ou difficiles
 
-- Les décompositions LU, QR, Cholesky sont possibles (et disponsibles en R) mais les résultats sont souvent des matrices denses.
+- Les décompositions LU, QR, Cholesky sont possibles (et disponibles en R) mais les résultats sont souvent des matrices denses.
 
 ## Multiplication, pour une matrice en format triple
 
 - $A$ est une matrice creuse $m \times n$ avec $N$ éléments non-nuls.
-- $x$ est un vecteur dense, $n \times 1$.
-- On veut calculer le vecteur dense $y = Ax$.
-- Soit $a_i$ le $i$-ème ligne de $A$.
+- $x$ est un $n$-vecteur dense.
+- On veut calculer le $m$-vecteur dense $y = Ax$.
+- Soit $a_i$ la $i$-ème ligne de $A$.
 - On peut écrire le vecteur $y$ comme
 \[
   y = Ax = \begin{bmatrix} a_1 \\ a_2 \\ \vdots \\ a_n \end{bmatrix}x.
@@ -433,7 +439,7 @@ et le scalaire $y_i$ comme
 
 ## Méthodes itératives linéaires
 
-- Problème : trouver $x^*$, la solution du système $Ax = b$, quand les décompositions sont couteuses.
+- Problème : trouver $x^*$, la solution du système $Ax = b$, quand les décompositions sont coûteuses.
 
 - Il y a des méthodes itératives de la forme
 \[
@@ -495,7 +501,7 @@ Le système $2 \times 2$ s'écrit
 \[
   x_2^{k+1} = (b_2 - a_{21} x_1^k) / a_{22}.
 \]
-- Ensemble, dans le forme $x^{k+1} = \Omega x^k + c$ :
+- Ensemble, dans la forme $x^{k+1} = \Omega x^k + c$ :
 \[
   \begin{bmatrix} x_1^{k+1} \\ x_2^{k+1} \end{bmatrix}
   =
@@ -515,7 +521,7 @@ Le système $2 \times 2$ s'écrit
 \[
   x_2^{k+1} = (b_2 - a_{21} x_1^{k+1}) / a_{22}.
 \]
-- Ensemble, dans le forme $x^{k+1} = \Omega x^k + c$ :
+- Ensemble, dans la forme $x^{k+1} = \Omega x^k + c$ :
 \[
   \begin{bmatrix} x_1^{k+1} \\ x_2^{k+1} \end{bmatrix}
   =
@@ -526,6 +532,9 @@ Le système $2 \times 2$ s'écrit
 \]
 
 ## Splitting
+
+Il s'agit d'une méthode générale pour trouver $\Omega$ et $c$ dans l'itération
+$x^{k+1} = \Omega x^k + c$.
 
 Décomposer $A = N - P$, et utiliser $\Omega = N^{-1}P$ et $c = N^{-1}b$ pour l'itération $x^{k+1} = \Omega x^k + c$ :
 \[
@@ -548,7 +557,7 @@ Notes :
 \[
   N = \begin{bmatrix} a_{11} & 0 \\ 0 & a_{22} \end{bmatrix},\;
   P = -\begin{bmatrix} 0 & a_{12} \\ a_{21} & 0 \end{bmatrix},\;
-  N^{-1}P = -\begin{bmatrix} 0 & a_{12}/a_{11} \\ a_{21}/a_{22} & 0 \end{bmatrix}.
+  \Omega = -\begin{bmatrix} 0 & a_{12}/a_{11} \\ a_{21}/a_{22} & 0 \end{bmatrix}.
 \]
 - Les valeurs propres de $\Omega = N^{-1}P$ sont $\pm \sqrt{a_{12}a_{21}/a_{11}a_{22}}$
 
@@ -556,6 +565,6 @@ Notes :
 \[
   N = \begin{bmatrix} a_{11} & 0 \\ a_{21} & a_{22} \end{bmatrix},\;
   P = -\begin{bmatrix} 0 & a_{12} \\ 0 & 0 \end{bmatrix},\;
-  N^{-1}P = -\begin{bmatrix} 0 & a_{12}/a_{11} \\ 0 & a_{12}a_{21}/(a_{11}a_{22}) \end{bmatrix}.
+  \Omega = -\begin{bmatrix} 0 & a_{12}/a_{11} \\ 0 & a_{12}a_{21}/(a_{11}a_{22}) \end{bmatrix}.
 \]
-- Les valeurs propres de $N^{-1}P$ sont $-a_{12}a_{21}/a_{11}a_{22}$ et 0.
+- Les valeurs propres de $\Omega$ sont $-a_{12}a_{21}/a_{11}a_{22}$ et 0.
