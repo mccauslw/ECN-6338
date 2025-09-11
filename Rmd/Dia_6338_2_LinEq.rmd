@@ -11,15 +11,22 @@ urlcolor: blue
 
 (Chapitres de « A First Course in Quantitative Economics with Python », QuantEcon)
 
-1. (Ch 8) Trouver les prix d'équilibre dans une économie à $n$ biens, où les quantités demandées $q^d = (q_1^d,\ldots,d_n^d)$ et offertes $q^o = (q_1^o,\ldots,d_n^o)$ sont linéaires en prix $p = (p_1,\ldots,p_n)$ : $q_d = Dp + h$ et $q_o = Cp + e$. Le vecteur $p^*$ d'équilibre vérifie
+1. Opérations locales linéaires (provenant des linéarisations) pour résoudre des systèmes d'équations non linéaires. (Cours 4 et 5)
+1. (Ch 8) Trouver les prix d'équilibre dans une économie à $n$ biens, où les quantités demandées $q^d = (q_1^d,\ldots,d_n^d)$ et offertes $q^o = (q_1^o,\ldots,d_n^o)$ sont linéaires en prix $p = (p_1,\ldots,p_n)$ :
+\[
+  q_d = Dp + h, \qquad q_o = Cp + e.
+\]
+Le vecteur $p^*$ d'équilibre (où $q_d = q_p$) vérifie
 \[
   (D-C)p^* = h-e.
 \]
-1. (Ch 11) Trouver une suite de prix d'un actif dans un modèle de valeurs actuelles.
-1. (Ch 12) Trouver une suite de détention d'actifs dans un modèle de lissage de la consommation.
+
+## Applications de la résolution de systèmes linéaires (suite)
+
+3. (Ch 11) Trouver une suite de prix d'un actif dans un modèle de valeurs actuelles.
+1. (Ch 12) Trouver la suite optimale de détention d'actifs dans un modèle de lissage de la consommation.
 1. (Ch 14) Trouver une suite d'inflation dans un modèle monétariste des niveaux de prix.
 1. (Ch 15) Même chose, avec anticipations adaptatives.
-1. Résolution de systèmes locaux linéaire dans les modèles non-linéaires, autres applications indirectes.
 1. Autres exemples plus tard aujourd'hui.
 
 ## Survol du Cours 2
@@ -36,7 +43,7 @@ urlcolor: blue
 - Notation :
     - $L$, une matrice triangulaire inférieure $n \times n$ ; (Left, Lower)
     - $R$ ou $U$, une matrice triangularie supérieure $n \times n$. (Right, Upper)
-- Il est facile de voir si la matrice est inversible : ssi aucun élément diagonal n'est nul.
+- Une matrice triangulaire est inversible ssi aucun élément diagonal n'est nul.
 - Pour le $n$-vecteur colonne $b$, la résolution de
     - $Lx = b$ est facile par substitution avant,
     - $Rx = b$ est facile par substitution arrière.
@@ -105,22 +112,25 @@ Notes :
   
 ## Décompositions
 
-Trois décompositions facilite la résolution d'un système plus générale en reduisant le problème en la résolution des systèmes triangulaires ou orthogonaux :
+Trois décompositions facilitent la résolution d'un système plus générale en reduisant le problème en la résolution des systèmes triangulaires ou orthogonaux :
 
 - Décomposition LU : $A = LU$ pour $A$ général $n\times n$
 - Décomposition Cholesky : $A = LL^\top = R^\top R$, pour $A$ symmétrique et définie positive $n \times n$.
 - Décomposition QR : $A = QR$ pour $A$ général $m \times n$
 
-En général, ne calculez pas l'inverse d'une matrice.
-Il est toujours préférable de faire une décomposition et ensuite de résoudre un (ou des) système triangulaire ou orthogonal.
+Pensez deux fois avant de calculer l'inverse d'une matrice.
+
+Essayez plutôt de faire une décomposition et ensuite de résoudre un (ou des) système triangulaire ou orthogonal.
+
+En R, préfère `solve(A, b)` à `solve(A) %*% b` pour résoudre le système $Ax = b$.
 
 ## La résolution de systèmes avec la décomposition LU
 
-- En théorie, la décomposition est $A = LU$, où
+- La décomposition est $A = LU$, où
    - $L$ est triangulaire inférieure $n \times n$.
    - $U$ est triangulaire supérieure $n \times n$.
-- En pratique, pour garder contre la division par un nombre près de zéro, la décomposition est $A = PLU$, où
-    - $P$ est une matrice de permutation.
+- En pratique, pour garder contre la division par un nombre près de zéro, il y a une décomposition $A = PLU$, où
+    - $P$ est une matrice de permutation (qui est orthogonale).
 - Pour résoudre le système $Ax = b$,
     - Calculer la décomposition $A = PLU$. ($(PLU)^{-1} = U^{-1}L^{-1}P^\top$)
     - Le systéme s'écrit $PLUx = b$
@@ -128,7 +138,7 @@ Il est toujours préférable de faire une décomposition et ensuite de résoudre
     - Le système s'écrit $LUx = \tilde{b}$.
     - Résoudre le système $Lz = \tilde{b}$ pour trouver $z \equiv Ux$.
     - Résoudre le système $Ux = z$ pour trouver $x$.
-- Pour les systèmes $n \times n$, toutes les décompositions sont $O(n^3)$, la substitution (avant et arrière) est $O(n^2)$ et la multiplication matrice-vecteur est $O(n^2)$.
+- Pour les systèmes $n \times n$, les décompositions sont $O(n^3)$, les substitutions avant et arrière sont $O(n^2)$ et la multiplication matrice-vecteur est $O(n^2)$.
 
 ## Exemple, oligopole (Judd, chapitre 3, exo 7)
 
@@ -184,7 +194,7 @@ où $Q$ est $n \times n$ orthogonal, $R$ est $n \times n$ triangulaire supérieu
 - Pour $A$ inversible, la décomposition normalisée est unique.
 - Il y a des décompositions analogues QL, RQ, LQ.
 
-Pour une matrice $X$, $n \times k$, $n > k$ (souvent $n \gg k$), on peut faire la décomposition
+Pour une matrice $X$, $n \times k$, $n > k$ (souvent $n \gg k$), on peut faire la décomposition suivante (sans calculer $Q_2$)
 \[
   X = QR =
   \begin{bmatrix} Q_1 & Q_2 \end{bmatrix}
@@ -195,11 +205,11 @@ où $Q$ est $n \times n$, $R$ est $n \times k$, $Q_1$ est $n \times k$ et $R_1$ 
 
 ## Une variante de la décomposition QR
 
-![](Figures/QR_tall_thin.png)
+![](../Figures/QR_tall_thin.png)
 
 ## La résolution de systèmes avec la décomposition QR
 
-Pour $A$ carré est inversible, tout est simple :
+Pour $A$ carré et inversible, tout est simple :
 \[
   A = QR,\quad A^{-1} = R^{-1}Q^\top.
 \]
@@ -332,15 +342,7 @@ Triples en ordre colonne par colonne (column major order) :
 
 ## Matrice creuse, format colonne compressée
 
-\[
-  A = \begin{bmatrix}
-    0 & 0      & A_{13} & 0    & 0      & 0 \\
-    0 & 0      & 0      & 0    & 0      & 0 \\
-    0 & A_{32} & 0      & 0    & A_{35} & 0 \\
-    0 & 0      & A_{43} & 0    & 0      & 0 \\
-    0 & A_{52} & 0      & 0    & 0      & 0 \\
-  \end{bmatrix}
-\]
+Éléments de $A$ dans la même ordre, avec index de ligne $i-1$ :
 
 | $i-1$ | $x$    |
 |-----|--------|
@@ -350,11 +352,17 @@ Triples en ordre colonne par colonne (column major order) :
 |  3  |$A_{43}$|
 |  2  |$A_{35}$|
 
+Le nombre cumulatif d'éléments de toutes les colonnes $j$ :
+
 | j | 0 | 1 | 2 | 3 | 4 | 5 | 6 |
 |---|---|---|---|---|---|---|---|
 | p | 0 | 0 | 2 | 4 | 4 | 5 | 5 |
 
-## Mise en oeuvre en R, format collonne compressé par défaut
+Où est $A_{43}$? Le 2e tableau dit que la colonne 3 de $A$
+contient les éléments non-zéro 3 et 4.
+On cherche $i-1 = 3$ entre les éléments 3 et 4 du 1er tableau.
+
+## Mise en oeuvre en R, format colonne compressé par défaut
 
 ```{r assign_sparse}
 library(Matrix)
@@ -394,9 +402,22 @@ str(m)
 
 ## Multiplication, pour une matrice en format triple
 
-- Soit \texttt{A} une matrice creuse en format triple, $m \times n$ avec $N$ éléments non-nuls.
-- Soit \texttt{x} un vecteur dense, $n \times 1$.
-- On veut calculer le vecteur dense \texttt{y = A \%*\% x}.
+- $A$ est une matrice creuse $m \times n$ avec $N$ éléments non-nuls.
+- $x$ est un vecteur dense, $n \times 1$.
+- On veut calculer le vecteur dense $y = Ax$.
+- Soit $a_i$ le $i$-ème ligne de $A$.
+- On peut écrire le vecteur $y$ comme
+\[
+  y = Ax = \begin{bmatrix} a_1 \\ a_2 \\ \vdots \\ a_n \end{bmatrix}x.
+\]
+et le scalaire $y_i$ comme
+\[
+  y_i = a_i x = \sum_{j=1}^n A_{ij} x_j.
+\]
+- Pour chaque $A_{ij} \neq 0$, il faut additionner le terme $A_{ij}x_j$ à $y_i$.
+
+## Multiplication, pour une matrice en format triple (suite)
+
 - Algorithme : $y \leftarrow 0$ puis pour $k = 1,\ldots,N$,
 \[
   y_{i_k} \leftarrow y_{i_k} + A_{i_k,j_k} x_{j_k}.
@@ -425,27 +446,36 @@ str(m)
 
 - Dans ce cas la convergence est linéaire à taux $\beta = \rho(\Omega)$.
 
+## Deux exemples de Judd à voir (pages 80-83)
+
+### Offre et demande (hog cycle)
+
+- Systéme : demande $p + 3q = 21$ et offre $p - 2q = 6$, où $p$ est 
+le prix et $q$ est la quantité dans un marché.
+
+- En matrices, après une normalisation qui donne $a_{11} = a_{22} = 1$ :
+\[
+  \begin{bmatrix} 1 & -\tfrac{1}{2} \\ 3 & 1 \end{bmatrix}
+  \begin{bmatrix} q \\ p \end{bmatrix}
+  = \begin{bmatrix} -3 \\ 21 \end{bmatrix}
+\]
+
+### Duopole en équilibre Bertrand
+
+- Système : meilleures réponses $p_1 = 1 + 0.75p_2$,
+$p_2 = 2 + 0.80p_1$, où $p_i$ est le prix choisi par la firme $i$, $i=1,2$.
+
+- En matrices :
+\[
+  \begin{bmatrix} 1 & -0.75 \\ -0.8 & 1 \end{bmatrix}
+  \begin{bmatrix} p_1 \\ p_2 \end{bmatrix}
+  = \begin{bmatrix} 1 \\ 2 \end{bmatrix}
+\]
+
 ## Deux exemples que illustrent les enjeux
 
-![](Figures/Hog_Oligo.png)
+![](../Figures/Hog_Oligo.png)
 
-
-## Splitting
-
-L'idée est de décomposer $A = N - P$, et utiliser $\Omega = N^{-1}P$ et $c = N^{-1}b$ :
-\[
-  x^{k+1} = N^{-1}(b + Px^k).
-\]
-
-Notes :
-
-- Par construction, $x^*$ est un point fixe : $x^* = N^{-1}(b+Px^*)$.
-\[
-  Nx^* = b + Px^*, \quad (N-P)x^* = b, \quad Ax^* = b.
-\]
-- On veut choisir $N$ telle que
-    - $\rho(N^{-1}P) < 1$
-    - le système $Nx^{k+1} = b + Px^k$ est plus facile à résoudre que le système $Ax = b$.
 
 ## Gauss-Jacobi pour un système $2 \times 2$
 
@@ -465,14 +495,15 @@ Le système $2 \times 2$ s'écrit
 \[
   x_2^{k+1} = (b_2 - a_{21} x_1^k) / a_{22}.
 \]
-- La méthode Gauss-Jacobi est une méthode splitting où
+- Ensemble, dans le forme $x^{k+1} = \Omega x^k + c$ :
 \[
-  N = \begin{bmatrix} a_{11} & 0 \\ 0 & a_{22} \end{bmatrix},\;
-  P = -\begin{bmatrix} 0 & a_{12} \\ a_{21} & 0 \end{bmatrix},\;
-  N^{-1}P = -\begin{bmatrix} 0 & a_{12}/a_{11} \\ a_{21}/a_{22} & 0 \end{bmatrix}.
+  \begin{bmatrix} x_1^{k+1} \\ x_2^{k+1} \end{bmatrix}
+  =
+  \begin{bmatrix} b_1/a_{11} \\ b_2/a_{22} \end{bmatrix}
+  +
+  \begin{bmatrix} 0 & -a_{12}/a_{11} \\ -a_{21}/a_{22} & 0 \end{bmatrix}
+  \begin{bmatrix} x_1^k \\ x_2^k \end{bmatrix}.
 \]
-- Les valeurs propres de $\Omega = N^{-1}P$ sont $\pm \sqrt{a_{12}a_{21}/a_{11}a_{22}}$
-
 
 ## Gauss-Seidel pour un système $2 \times 2$
 
@@ -484,6 +515,43 @@ Le système $2 \times 2$ s'écrit
 \[
   x_2^{k+1} = (b_2 - a_{21} x_1^{k+1}) / a_{22}.
 \]
+- Ensemble, dans le forme $x^{k+1} = \Omega x^k + c$ :
+\[
+  \begin{bmatrix} x_1^{k+1} \\ x_2^{k+1} \end{bmatrix}
+  =
+  \begin{bmatrix} b_1/a_{11} \\ b_2/a_{22} - \frac{a_{21} b_1}{a_{11}a_{22}} \end{bmatrix}
+  +
+  \begin{bmatrix} 0 & -a_{12}/a_{11} \\ 0 & -a_{12}a_{21}/(a_{11}a_{22}) \end{bmatrix}
+  \begin{bmatrix} x_1^k \\ x_2^k \end{bmatrix}.
+\]
+
+## Splitting
+
+Décomposer $A = N - P$, et utiliser $\Omega = N^{-1}P$ et $c = N^{-1}b$ pour l'itération $x^{k+1} = \Omega x^k + c$ :
+\[
+  x^{k+1} = N^{-1}(b + Px^k).
+\]
+
+Notes :
+
+- Par construction, $x^*$ est un point fixe : $x^* = N^{-1}(b+Px^*)$.
+\[
+  Nx^* = b + Px^*, \quad (N-P)x^* = b, \quad Ax^* = b.
+\]
+- On veut choisir $N$ telle que
+    - $\rho(N^{-1}P) < 1$
+    - le système $Nx^{k+1} = b + Px^k$ est plus facile à résoudre que le système $Ax = b$.
+
+## Splitting (suite)
+
+- La méthode Gauss-Jacobi est une méthode splitting où
+\[
+  N = \begin{bmatrix} a_{11} & 0 \\ 0 & a_{22} \end{bmatrix},\;
+  P = -\begin{bmatrix} 0 & a_{12} \\ a_{21} & 0 \end{bmatrix},\;
+  N^{-1}P = -\begin{bmatrix} 0 & a_{12}/a_{11} \\ a_{21}/a_{22} & 0 \end{bmatrix}.
+\]
+- Les valeurs propres de $\Omega = N^{-1}P$ sont $\pm \sqrt{a_{12}a_{21}/a_{11}a_{22}}$
+
 - La méthode Gauss-Jacobi est une méthode splitting où
 \[
   N = \begin{bmatrix} a_{11} & 0 \\ a_{21} & a_{22} \end{bmatrix},\;
@@ -491,33 +559,3 @@ Le système $2 \times 2$ s'écrit
   N^{-1}P = -\begin{bmatrix} 0 & a_{12}/a_{11} \\ 0 & a_{12}a_{21}/(a_{11}a_{22}) \end{bmatrix}.
 \]
 - Les valeurs propres de $N^{-1}P$ sont $-a_{12}a_{21}/a_{11}a_{22}$ et 0.
-
-## Deux exemples de Judd à voir (pages 80-83)
-
-### Offre et demande (hog cycle)
-
-- Systéme : demande $p + 3q = 21$ et offre $p - 2q = 6$, où $p$ est 
-le prix et $q$ est la quantité dans un marché.
-
-- En matrices, après une normalisation qui donne $a_{11} = a_{22} = 1$ :
-\[
-  \begin{bmatrix} 1 & -\tfrac{1}{2} \\ 3 & 1 \end{bmatrix}
-  \begin{bmatrix} q \\ p \end{bmatrix}
-  = \begin{bmatrix} -3 \\ 21 \end{bmatrix}
-\]
-
-- G-J et G-S sont instables, mais on peut les stabiliser.
-
-### Duopole en équilibre Bertrand
-
-- Système : meilleures réponses $p_1 = 1 + 0.75p_2$,
-$p_2 = 2 + 0.80p_1$, où $p_i$ est le prix choisi par la firme $i$, $i=1,2$.
-
-- En matrices :
-\[
-  \begin{bmatrix} 1 & -0.75 \\ -0.8 & 1 \end{bmatrix}
-  \begin{bmatrix} p_1 \\ p_2 \end{bmatrix}
-  = \begin{bmatrix} 1 \\ 2 \end{bmatrix}
-\]
-
-- G-J et G-S sont stables, mais on peut accelerer la convergence.
