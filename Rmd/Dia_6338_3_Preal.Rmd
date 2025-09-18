@@ -314,7 +314,7 @@ et avec écarts complémentaires,
 ## Trois solutions, selon la valeur de $\beta$ ('chomage.R')
 
 ```{r chomage_g, echo=FALSE}
-source('chomage.R')
+source('../chomage.R')
 ```
 
 ## Éléments de l'analyse maximum de vraisemblance
