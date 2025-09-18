@@ -1,6 +1,6 @@
 ---
 title: "ECN 6338 Cours 3, annexe"
-subtitle: "Version avec le modèle poissonien"
+subtitle: "Version avec le modèle poissonnien"
 author: "William McCausland"
 date: "`r Sys.Date()`"
 output: beamer_presentation
@@ -19,7 +19,7 @@ urlcolor: blue
     * ${\cal L}(\theta;y) = f(y|\theta)$, la vraisemblance,
     * ${\cal L}(\theta;y^\circ) = f(y^\circ|\theta)$, la vraisemblance réalisée.
 
-## Le modèle poissonien
+## Le modèle poissonnien
 
 * Supposez que les $y_i$ sont iid Poisson avec moyenne $\theta > 0$.
 * La fonction de masse de probabilité de $y_i$ est
@@ -52,7 +52,7 @@ urlcolor: blue
 * ${\cal L}(\theta; y)$ donne, pour $y$ fixe (notamment $y=y^\circ$) une note (ou évaluation) à chaque valeur $\theta$ pour la qualité de sa prévision des données observées.
 * Soit $L(\theta; y) = \log {\cal L}(\theta; y)$, la log-vraisemblance.
 
-## Vraisemblance poissonienne pour $n = 60$, $\sum_{i=1}^n y_i = 230$
+## Vraisemblance poissonnienne pour $n = 60$, $\sum_{i=1}^n y_i = 230$
 
 ```{r vrai}
 n = 60; somme_y = 230; theta = seq(0, 10, by=0.001)
@@ -60,14 +60,14 @@ cal_L = exp(-n*theta) * theta^somme_y
 plot(theta, cal_L, type='l')
 ```
 
-## Log vraisemblance poissonienne, $n = 60$, $\sum_{i=1}^n y_i = 230$
+## Log vraisemblance poissonnienne, $n = 60$, $\sum_{i=1}^n y_i = 230$
 
 ```{r lvrai}
 L = -n*theta + somme_y*log(theta)
 plot(theta, L, type='l', ylim=c(-200, max(L)))
 ```
 
-## Maximum de la vraisemblance poissonienne
+## Maximum de la vraisemblance poissonnienne
 
 * Vraisemblance : ${\cal L}(\theta;y) = c e^{-n\theta} \theta^{\sum_{i=1}^n y_i}$.
 * Log vraisemblance : $L(\theta;y) = \log c - n\theta + \left(\sum_{i=1}^n y_i\right) \log \theta$.
@@ -86,37 +86,7 @@ plot(theta, L, type='l', ylim=c(-200, max(L)))
 \]
 * Pour $n = 60$ et $\sum_{i=1}^n y_i = 230$, $\hat\theta = \frac{23}{6} \approx 3.833$.
 
-## Maximum de vraisemblance : conditions de régularité
-
-* Définitions :
-    * $\theta$ est le vecteur des paramètres ; $\Theta$, l'ensemble de toutes les valeurs possibles de $\theta$.
-    * $y$ est le vecteur (aléatoire) des données.
-
-* Conditions informelles de regularité :
-    1. Le modèle est correct pour une valeur $\theta = \theta_0 \in \Theta$.
-    1. La vraie valeur $\theta_0$ est dans l'intérieur de $\Theta$.
-    1. Identification :
-    $$ \theta \neq \theta_0 \Rightarrow f(\cdot|\theta) \neq f(\cdot|\theta_0). $$
-    1. $L(\theta;y) \equiv \log f(y|\theta)$ a toujours un maximum global unique.
-    1. Le gradient de $L(\theta;y)$ (par rapport à $\theta$) est toujours borné.
-    1. La matrice ${\cal I}(\theta)$ suivante (matrice d'information de Fisher) est définie positive:
-    $$ {\cal I}(\theta) \equiv E_{y|\theta}\left[ \frac{\partial L(\theta;y)}{\partial \theta^\top} \frac{\partial L(\theta;y)}{\partial \theta} \right]. $$
-
-## Maximum de vraisemblance : résultats
-
-Résultats : (Soit $\hat{\theta} \equiv \arg \max_{\theta} L(\theta;y)$, qui existe et est unique.)
-
-1. $\hat{\theta} \to_p \theta_0$ (loi de grands nombres)
-1. $\sqrt{n}(\hat{\theta}-\theta_0) \to_d N(0,n{\cal I}(\theta_0)^{-1})$ (théorème central limite)
-1. ${\cal I}(\theta)  = E_{y|\theta}\left[ -\frac{\partial^2 L(\theta;y)}{\partial \theta \partial \theta^\top} \right].$
-
-Problèmes restants :
-
-1. Il faut trouver $\hat{\theta}$.
-1. La variance asymptotique ${\cal I}(\theta_0)^{-1}$ de $\hat\theta$ dépend de $\theta_0$, qui est inconnu.
-1. L'espérance dans les deux expressions pour ${\cal I}(\theta)$ sont difficiles à évaluer analytiquement.
-
-## Exemple poissonien
+## Information de Fisher et variance de la vraisemblance poissonnienne
 
 * Un cas rare où les calculs analytiques sont faisables.
 * La matrice d'information de Fisher : ($E[y_i] = \theta$, $\mathrm{Var}[y_i] = \theta$)
@@ -134,35 +104,8 @@ Problèmes restants :
 \]
 * La variance dépend de $\theta$ inconnu, mais elle est souvent peu sensible à $\theta$ : pour $n = 60$, $\mathrm{Var}[\hat{\theta}]$ est de $(0.2528)^2$ pour $\theta = 23/6 \approx 3.833$, $(0.2236)^2$ pour $\theta = 3$ et $(0.2739)^2$ pour $\theta = 4.5$.
 
-## Éléments de l'analyse bayésienne
 
-* Quantités pertinentes :
-    * $\theta$, un vecteur de paramètres inconnus *aléatoire*
-    * $y=(y_1,\ldots,y_T)$, un vecteur aléatoire des variables observables,
-    * $y^\circ$, le vecteur observé.
-    
-* Fonctions pertinentes :
-    * $f(y|\theta)$, la densité conditionnelle des données (modèle),
-    * ${\cal L}(\theta;y^\circ) = f(y^\circ|\theta)$, la vraisemblance réalisé,
-    * $f(\theta)$, la densité *a priori*,
-    * $f(\theta,y)$, la densité conjointe,
-    * $f(\theta|y)$, la densité *a posteriori*,
-    * $f(y)$, la densité marginale des données,
-    * $f(y^\circ)$, la vraisemblance marginale (un nombre).
-
-## Inférence bayésienne
-
-* Par la règle de Bayes,
-$$ f(\theta|y^\circ) = \frac{f(\theta,y^\circ)}{f(y^\circ)} = \frac{f(\theta)f(y^\circ|\theta)}{f(y^\circ)}
-\propto f(\theta)f(y^\circ|\theta). $$
-
-* $f(\theta)$ représente notre incertitude sur $\theta$ avant l'observation de $y$.
-
-* $f(\theta|y^\circ)$ resprésente notre incertitude sur $\theta$ après qu'observe $y=y^\circ$.
-
-* Un point important à retenir : $f(\theta|y^\circ) \propto f(\theta,y^\circ)$.
-
-## Reprise et extension de l'exemple poissonien
+## La loi *a posteriori* pour l'exemple poissonnien
 
 * Si $y_i \sim \mathrm{iid}\,\mathrm{Po}(\theta)$,
 $f(y|\theta) = c e^{-n\theta} \theta^{\sum_{i=1}^n y_i}$.
@@ -178,67 +121,11 @@ $$ f(\theta,y) = f(\theta)f(y|\theta) = c \frac{\beta^\alpha}{\Gamma(\alpha)} \c
 $$ f(y) = c \frac{\beta^\alpha}{(\beta + n)^{\alpha + \sum_{i=1}^n y_i}}
 \cdot \frac{\Gamma(\alpha + \sum_{i=1}^n y_i)}{\Gamma(\alpha)}. $$
 
-## Graphique pour l'exemple poissonien
+## Densités *a prior* (rouge) et *a posterior* (noir), exemple poissonnien
 
-```{r bbpriorpost, echo=TRUE}
+```{r bbpriorpost, echo=TRUE, fig.height=5}
 n = 60; somme_y = 230; alpha=2; beta=0.4
 x = seq(0, 10, by=0.02)
 plot(x, dgamma(x, alpha+somme_y, beta+n), type='l')
 lines(x, dgamma(x, alpha, beta), col='red')
 ```
-
-## Exemple gaussien
-
-* Considérez les modèle $y_t \sim \mathrm{iid}\, N(\mu, h^{-1})$.
-* Le vecteur de paramètres est $\theta = (\mu,h)$.
-* Le vecteur d'observables est $y = (y_1,\ldots,y_T)$.
-* La densité des données est
-$$ \begin{aligned} f(y|\theta) &= \prod_{t=1}^T \sqrt{\frac{h}{2\pi}} \exp\left[-\frac{h}{2}(y_t-\mu)^2\right] \\
-&= \left(\frac{h}{2\pi}\right)^{T/2} \exp \left[-\frac{h}{2} \sum_{t=1}^T (y_t-\mu)^2 \right]. \end{aligned} $$
-
-## Exemple gaussien (suite)
-
-* Mettons qu'on choisit une loi *a priori* où $h$ et $\mu$ sont indépendents,
-avec
-$$ \mu \sim N(\bar{\mu},\bar{\omega}^{-1}), \quad \bar{s}^2h \sim \chi^2(\bar{\nu}), $$
-où $\bar{\mu}$, $\bar{\omega}$, $\bar{s}$ et $\bar{\nu}$ sont des hyperparamètres constants choisis par l'investigateur.
-* La densité *a priori* est
-$$ f(\theta) \propto \exp \left[-\frac{\bar{\omega}}{2}(\mu-\bar{\mu})^2\right]
-\cdot h^{(\bar{\nu}-2)/2} \exp\left[-\frac{1}{2}\bar{s}^2 h\right]. $$
-* La densité conjointe est
-$$ f(\theta,y) \propto h^{(\bar{\nu}+T-2)/2} \exp\left[-\frac{\bar{\omega}}{2} (\mu-\bar{\mu})^2 - \frac{h}{2} \left( \bar{s}^2 + \sum_{t=1}^T (y_t - \mu)^2 \right) \right]. $$
-
-## L'intégration et les objectifs de l'analyse bayésienne
-
-* Plusieurs problèmes d'inférence bayésienne ont, comme solution, une intégrale par rapport à la densité *a posteriori*.
-
-* Exemple 1, estimation ponctuelle de $\theta_k$ sous perte quadratique:
-$$ \hat{\theta}_k = E[\theta_k | y^\circ] = \int \theta_k f(\theta|y^\circ)\, d\theta. $$
-
-* Exemple 2, quantification de l'incertitude sur $\theta_k$ :
-$$ \mathrm{Var}[\theta|y^\circ] = E[(\theta_k - E[\theta_k|y^\circ])^2|y^\circ]. $$
-
-* Exemple 3, densité prédictive (valeurs de $y_{T+1}$ sur une grille) :
-$$ f(y_{T+1}|y^\circ) = E[f(y_{T+1}|\theta,y^\circ)|y^\circ]. $$
-
-## Preuve de l'exemple 3
-
-$$ \begin{aligned}
-E[f(y_{T+1}&|y_1,\ldots,y_T,\theta)|y_1,\ldots,y_T] \\
-&= \int f(y_{T+1}|y_1,\ldots,y_T,\theta) f(\theta|y_1,\ldots,y_T)\, d\theta \\
-&= \int f(y_{T+1},\theta|y_1,\ldots,y_T)\, d\theta \\
-&= f(y_{T+1}|y_1,\ldots,y_T)
-\end{aligned} $$
-
-## Méthodes pour trouver $E[g(\theta)|y^\circ]$
-
-* Calcul analytique : élégant, exacte, presque toujours insoluble.
-* Simulation Monte Carlo indépendante :
-    * Si on peut simuler $\theta^m \sim \mathrm{iid}\, \theta|y^\circ$,
-    $$ \frac{1}{M} \sum_{m=1}^M g(\theta^m) \rightarrow_p E[g(\theta)|y^\circ]. $$
-    * Cependant, cette simulation est rarement faisable.
-* Simulation Monte Carlo chaîne de markov (MCMC) :
-    * On choisit un processus markovien avec densité de transition $f(\theta^m|\theta^{m-1})$ telle que la loi *a posteriori* $\theta|y^\circ$ est la loi stationnaire du processus. C'est à dire :
-    $$ \theta^{m-1} \sim f(\theta|y^\circ) \Rightarrow \theta^m \sim f(\theta|y^\circ). $$
-    * Sous quelques conditions techniques, la loi de $\theta^m$ converge à la loi *a posteriori* et
-$$ \frac{1}{M} \sum_{m=1}^M g(\theta^m) \rightarrow_p E[g(\theta)|y^\circ]. $$

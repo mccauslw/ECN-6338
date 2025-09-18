@@ -71,9 +71,11 @@ il existe $\lambda^* \in \mathbb{R}$ tel que
 
 ## Remarques
 
-- La continuité des dérivées de $f$ et $g$ exclue les solutions de coude.
-- L'aspect illimité du domaine ($x \in \mathbb{R}$) exclue les solutions de coin.
-- En économie, la maximisation (de l'utilité, du profit) est plus habituelle que la minimisation (du coût) mais en analyse numérique, la convention est d'écrire un problème comme une minimisation. Il faut faire attention à
+- $f, g \in C^2$ exclue les solutions de coude.
+- L'absence de borne ($x \in \mathbb{R}$) exclue les solutions de coin.
+- Économie : **maximisation** (de l'utilité, du profit) plus habituelle
+- Analyse numérique : **minimisation**
+- Il faut faire attention à
     - la convention utilisée par les logiciels,
     - l'interprétation de la signe des multiplicateurs de Lagrange.
 - Trouver un candidat $x^*$ pour une solution consiste en resolvant un système d'équations, souvent non-linéaires.
@@ -120,8 +122,11 @@ Théorème :
 Si $x^*$ est une solution et le rang du jacobien $g_x(x^*)$ est $m$,
 il existe $\lambda^* \in \mathbb{R}^m$ tel que
 
-- $L_x(x^*,\lambda^*) \leq 0$, $x^*\geq 0$ avec écarts complémentaires,
-- $L_\lambda(x^*,\lambda^*) = 0$.
+- $L_\lambda(x^*,\lambda^*) = 0$,
+- $L_x(x^*,\lambda^*) \leq 0$, $x^*\geq 0$ avec conditions de complémentarité : pour $i=1,\ldots,n$,
+\[
+  \frac{\partial L(x^*,\lambda^*)}{\partial x_i} \cdot x^*_i = 0.
+\]
 
 ## Exemple, utilité quasi-linéaire (exemple 3.1 de Dixit)
 
@@ -135,10 +140,10 @@ La fonction de Lagrange :
 \]
 Les conditions nécessaires pour un maximum :
 \[
-  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0 ; \; \mbox{avec écarts complémentaires}
+  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0 ; \; \mbox{avec complémentarité}
 \]
 \[
-  L_y = 1 - \lambda q \leq 0,\; y \geq 0 ; \;\mbox{avec écarts complémentaires}
+  L_y = 1 - \lambda q \leq 0,\; y \geq 0 ; \;\mbox{avec complémentarité}
 \]
 \[
   I - px - qy = 0.
@@ -148,10 +153,10 @@ Les conditions nécessaires pour un maximum :
 
 Les conditions de première ordre encore :
 \[
-  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0 ; \; \mbox{avec écarts complémentaires}
+  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0 ; \; \mbox{avec complémentarité}
 \]
 \[
-  L_y = 1 - \lambda q \leq 0,\; y \geq 0 ; \;\mbox{avec écarts complémentaires}
+  L_y = 1 - \lambda q \leq 0,\; y \geq 0 ; \;\mbox{avec complémentarité}
 \]
 \[
   I - px - qy = 0.
@@ -167,10 +172,10 @@ alors $L_x \leq 0$ est impossible.
 
 Les conditions de première ordre encore :
 \[
-  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0 ; \; \mbox{avec écarts complémentaires}
+  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0 ; \; \mbox{avec complémentarité}
 \]
 \[
-  L_y = 1 - \lambda q \leq 0,\; y \geq 0 ; \;\mbox{avec écarts complémentaires}
+  L_y = 1 - \lambda q \leq 0,\; y \geq 0 ; \;\mbox{avec complémentarité}
 \]
 \[
   I - px - qy = 0.
@@ -188,10 +193,10 @@ Il faut vérifier $1 - aq/I \leq 0$, équivalent à $I \leq aq$.
 
 Les conditions de première ordre encore :
 \[
-  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0 ; \; \mbox{avec écarts complémentaires}
+  L_x = \frac{a}{x} - \lambda p \leq 0,\; x \geq 0 ; \; \mbox{avec complémentarité}
 \]
 \[
-  L_y = 1 - \lambda q \leq 0,\; y \geq 0 ; \;\mbox{avec écarts complémentaires}
+  L_y = 1 - \lambda q \leq 0,\; y \geq 0 ; \;\mbox{avec complémentarité}
 \]
 \[
   I - px - qy = 0.
@@ -228,7 +233,7 @@ y2 <- 5*log(10) - 5*log(x)   # Qui passe par (10, 0)
 ```{r ql2}
 plot(x, b1, type='l', xlab='x', ylab='y', bty='l');
 lines(x, b2); lines(x, b3)
-lines(x, y1, col='green'); lines(x, y2, col='green')
+lines(x, y1, col='red'); lines(x, y2, col='red')
 points(c(5, 10), c(5, 0), col='blue', pch=16)
 ```
 
@@ -252,7 +257,7 @@ Théorème (Karush-Kuhn-Tucker) : Si $x^*$ est une solution, le rang des jacobie
 
 - $L_x(x^*,\lambda^*,\mu^*) = 0_n$,
 - $L_\lambda(x^*,\lambda^*,\mu^*) = 0_m$,
-- $L_\mu(x^*,\lambda^*,\mu^*) \geq 0_l$, $\mu \geq 0_l$ avec écarts complémentaires.
+- $L_\mu(x^*,\lambda^*,\mu^*) \geq 0_l$, $\mu \geq 0_l$ avec complémentarité.
 
 ## Comparaison avec la page 122 dans Judd
 
@@ -278,7 +283,7 @@ Le problème :
 - Produire une unité de blé prend 2 unités de $L$, 1 unité de $T$.
 - Produire une unité de boeuf prend 1 unité de $L$, 2 unités de $T$.
 - On veut maximiser $W(x,y) = (1-\beta) \ln x + \beta \ln y$, où $x$ et $y$ sont les quantités de blé et de boeuf.
-- On écarte d'emblée la possibilité des valeurs $x < 0$, $y < 0$.
+- On écarte d'emblée la possibilité des solutions où $x^* < 0$ ou $y^* < 0$, alors pas besoin des contraintes $x,y \geq 0$.
 
 La fonction de Lagrange :
 \[
@@ -298,7 +303,7 @@ Les conditions de première ordre sont
   \quad
   \frac{\beta}{y} - \mu_L - 2\mu_T = 0,
 \]
-et avec écarts complémentaires,
+et avec complémentarité,
 \[
   300 - 2x - y \geq 0, \quad \mu_L \geq 0;
 \]
@@ -389,37 +394,23 @@ plot(theta, L, type='l', ylim=c(-400, max(L)))
 \]
 * Pour $n_0 = 200$ et $n_1 = 230$, $\hat\theta = \frac{23}{43} \approx 0.5349$.
 
-## Maximum de vraisemblance : conditions de régularité
+## Propriétés de l’estimateur maximum de vraisemblance (EMV)
 
-* Définitions :
-    * $\theta$ est le vecteur des paramètres ; $\Theta$, l'ensemble de toutes les valeurs possibles de $\theta$.
-    * $y$ est le vecteur (aléatoire) des données.
+Sous des **conditions de régularité** 
+(fonction de vraisemblance bien définie, paramètres identifiables, ...)
 
-* Conditions informelles de regularité :
-    1. Le modèle est correct pour une valeur $\theta = \theta_0 \in \Theta$.
-    1. La vraie valeur $\theta_0$ est dans l'intérieur de $\Theta$.
-    1. Identification :
-    $$ \theta \neq \theta_0 \Rightarrow f(\cdot|\theta) \neq f(\cdot|\theta_0). $$
-    1. $L(\theta;y) \equiv \log f(y|\theta)$ a toujours un maximum global unique.
-    1. Le gradient de $L(\theta;y)$ (par rapport à $\theta$) est toujours borné.
-    1. La matrice ${\cal I}(\theta)$ suivante (matrice d'information de Fisher) est définie positive:
-    $$ {\cal I}(\theta) = E_{y|\theta}\left[ \frac{\partial L(\theta;y)}{\partial \theta^\top} \frac{\partial L(\theta;y)}{\partial \theta} \right]. $$
+1. Convergence : $\hat\theta \overset{p}{\longrightarrow} \theta_0$ quand $n \to \infty$,
+où $\theta_0$ est la vraie valeur du vecteur $\theta$ des paramètres.
+1. Normalité asymptotique :
+    $\sqrt{n}(\hat\theta - \theta_0) \overset{d}{\longrightarrow} 
+     \mathcal{N}(0, I(\theta_0)^{-1})$,
+     où
+     \[
+       I(\theta_0) = E\left[-\frac{\partial^2 L(\theta,y)}{\partial \theta \partial \theta^\top}\right]
+     \] est l'information de Fisher.
+1. Efficacité asymptotique (variance minimale)
 
-## Maximum de vraisemblance : résultats
-
-Résultats : (Soit $\hat{\theta} \equiv \arg \max_{\theta} L(\theta;y)$, qui existe et est unique.)
-
-1. $\hat{\theta} \to_p \theta_0$ (loi de grands nombres)
-1. $\sqrt{n}(\hat{\theta}-\theta_0) \to_d N(0,n{\cal I}(\theta_0)^{-1})$ (théorème central limite)
-1. ${\cal I}(\theta)  = E_{y|\theta}\left[ -\frac{\partial^2 L(\theta;y)}{\partial \theta \partial \theta^\top} \right].$
-
-Problèmes restants :
-
-1. Il faut trouver $\hat{\theta}$.
-1. La variance asymptotique ${\cal I}(\theta_0)^{-1}$ de $\hat\theta$ dépend de $\theta_0$, qui est inconnu.
-1. L'espérance dans les deux expressions pour ${\cal I}(\theta)$ sont difficiles à évaluer analytiquement.
-
-## Exemple Bernoulli
+## Information de Fisher et la variance de $\theta$ pour le modèle Bernoulli
 
 * Un cas rare où les calculs analytiques sont faisables.
 * La matrice d'information de Fisher :
@@ -437,7 +428,7 @@ Problèmes restants :
   \mathrm{Var}[\hat{\theta}] = \mathrm{Var}\left[\frac{n_1}{n}\right]
   = \frac{1}{n^2} n \mathrm{Var}[y_i] = \frac{1}{n} (\theta-\theta^2) = \frac{\theta(1-\theta)}{n}.
 \]
-* Pour $n_0 = 200$ et $n_1 = 230$, $\mathrm{Var}[\hat{\theta}]$ est de $(0.02411)^2$ pour $\theta = 1/2$ et $(0.02405)^2$ pour $\theta = \hat\theta \approx 0.5349$
+* Pour $n_0 = 200$ et $n_1 = 230$, $\mathrm{Var}[\hat{\theta}]$ est de $(0.02405)^2$ pour $\theta = \hat\theta \approx 0.5349$
 
 ## Éléments de l'analyse bayésienne
 
@@ -467,7 +458,7 @@ $$ f(\theta|y^\circ) = \frac{f(\theta,y^\circ)}{f(y^\circ)} = \frac{f(\theta)f(y
 
 * Un point important à retenir : $f(\theta|y^\circ) \propto f(\theta,y^\circ)$.
 
-## Reprise et extension de l'exemple Bernoulli
+## Exemple Bernoulli : la loi *a posterior* de $\theta$
 
 * Si $y_i$ est Bernoulli avec probabilité $\theta$, $f(y|\theta) = \theta^{n_1} (1-\theta)^{n_0}$.
 
@@ -478,12 +469,9 @@ $$ f(\theta,y) = f(\theta)f(y|\theta) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\al
 
 * La loi *a posteriori* doit être $\theta \sim \mathrm{Beta}(\alpha + n_1, \beta + n_0)$.
 
-* La vraisemblance marginale est $f(\theta,y)/f(\theta|y)$ :
-$$ f(y) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \frac{\Gamma(\alpha+n_1)\Gamma(\beta+n_0)}{\Gamma(\alpha + \beta + n)}. $$
+## Densités *a priori* (rouge) et *a posteriori* (noir) pour l'exemple Bernoulli
 
-## Graphique pour l'exemple Bernoulli
-
-```{r bbpriorpost, echo=TRUE}
+```{r bbpriorpost, echo=TRUE, fig.height=5}
 n0 = 200; n1 = 230; alpha=2; beta=2
 x = seq(0, 1, by=0.002)
 plot(x, dbeta(x, alpha+n1, beta+n0), type='l')
@@ -502,6 +490,8 @@ $$ \mathrm{Var}[\theta|y^\circ] = E[(\theta_k - E[\theta_k|y^\circ])^2|y^\circ].
 
 * Exemple 3, densité prédictive (valeurs de $y_{T+1}$ sur une grille) :
 $$ f(y_{T+1}|y^\circ) = E[f(y_{T+1}|\theta,y^\circ)|y^\circ]. $$
+
+Attention : les espérances ici sont par rapport à $\theta|y$ et non $y|\theta$
 
 ## Preuve de l'exemple 3
 
@@ -524,3 +514,33 @@ E[f(y_{T+1}&|y_1,\ldots,y_T,\theta)|y_1,\ldots,y_T] \\
     $$ \theta^{m-1} \sim f(\theta|y^\circ) \Rightarrow \theta^m \sim f(\theta|y^\circ). $$
     * Sous quelques conditions techniques, la loi de $\theta^m$ converge à la loi *a posteriori* et
 $$ \frac{1}{M} \sum_{m=1}^M g(\theta^m) \rightarrow_p E[g(\theta)|y^\circ]. $$
+
+## Annexe EMV : conditions de régularité
+
+* Définitions :
+    * $\theta$ est le vecteur des paramètres ; $\Theta$, l'ensemble de toutes les valeurs possibles de $\theta$.
+    * $y$ est le vecteur (aléatoire) des données.
+
+* Conditions informelles de regularité :
+    1. Le modèle est correct pour une valeur $\theta = \theta_0 \in \Theta$.
+    1. La vraie valeur $\theta_0$ est dans l'intérieur de $\Theta$.
+    1. Identification :
+    $$ \theta \neq \theta_0 \Rightarrow f(\cdot|\theta) \neq f(\cdot|\theta_0). $$
+    1. $L(\theta;y) \equiv \log f(y|\theta)$ a toujours un maximum global unique.
+    1. Le gradient de $L(\theta;y)$ (par rapport à $\theta$) est toujours borné.
+    1. La matrice ${\cal I}(\theta)$ suivante (matrice d'information de Fisher) est définie positive:
+    $$ {\cal I}(\theta) = E_{y|\theta}\left[ \frac{\partial L(\theta;y)}{\partial \theta^\top} \frac{\partial L(\theta;y)}{\partial \theta} \right]. $$
+
+## Annexe EMV : résultats
+
+Résultats : (Soit $\hat{\theta} \equiv \arg \max_{\theta} L(\theta;y)$, qui existe et est unique.)
+
+1. $\hat{\theta} \to_p \theta_0$ (loi de grands nombres)
+1. $\sqrt{n}(\hat{\theta}-\theta_0) \to_d N(0,n{\cal I}(\theta_0)^{-1})$ (théorème central limite)
+1. ${\cal I}(\theta)  = E_{y|\theta}\left[ -\frac{\partial^2 L(\theta;y)}{\partial \theta \partial \theta^\top} \right].$
+
+Problèmes restants :
+
+1. Il faut trouver $\hat{\theta}$.
+1. La variance asymptotique ${\cal I}(\theta_0)^{-1}$ de $\hat\theta$ dépend de $\theta_0$, qui est inconnu.
+1. L'espérance dans les deux expressions pour ${\cal I}(\theta)$ sont difficiles à évaluer analytiquement.
