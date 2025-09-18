@@ -265,10 +265,9 @@ où $y$ et $\epsilon$ sont $n \times 1$, $X$ est $n \times k$, $\beta$ est $k \t
 - Soit $\Sigma$ une matrice symmétrique et positive définie $n\times n$.
 - La décomposition est $\Sigma = LL^\top = R^\top R$, où
     - $L = R^\top$ est triangulaire inférieure $n \times n$.
-- C'est une décomposition $LU$ sans permutation.
+- C'est une décomposition de la forme $LU$, mais avec un tiers du nombre de multiplications scalaires de la décomposition $LU$.
 - Le calcul est numériquement plus stable, sans recours au pivots.
 - $O(n^3)$ multiplications, comme les autres décompositions,
-- mais un tiers du nombre de multiplications scalaires de la LU.
 - Deux opérations intéressantes dans le contexte des variables aléatoires gaussiennes multivariées. (La variance $\Sigma = LL^\top$ est positive définie)
     - Multiplication directe $Lx$
     - Résolution du système $Lx = b$.
@@ -392,15 +391,15 @@ str(m)
 
 ### Opérations rapides et simples
 
-- Soit \texttt{A} une matrice creuse $m \times n$.
+- Soit \texttt{A} une matrice creuse $m \times n$, $x$ un $n$-vecteur.
 - Quand $N = O(n)$ et les éléments sont bien dispersés, la recherche, l'insertion et la suppression (lookup, insertion, deletion) sont des problèmes
     - $O(1)$ pour le format colonne compressée,
     - $O(\log N)$ pour le format triple.
 - Opérations rapides :
-    - Recherche : \texttt{x = A[i,j]}
-    - Insertion : \texttt{A[i,j] = x}
-    - Suppression : \texttt{A[i,j] = 0}
-    - Multiplication par un vecteur : \texttt{y = A \%*\% x} ou \texttt{y = x \%*\% A}
+    - Recherche : \texttt{a <- A[i,j]}
+    - Insertion : \texttt{A[i,j] <- a}
+    - Suppression : \texttt{A[i,j] <- 0}
+    - Multiplication : \texttt{y <- A \%*\% x} ou \texttt{y <- x \%*\% A}
 
 ### Opérations lentes ou difficiles
 
@@ -414,9 +413,9 @@ str(m)
 - Soit $a_i$ la $i$-ème ligne de $A$.
 - On peut écrire le vecteur $y$ comme
 \[
-  y = Ax = \begin{bmatrix} a_1 \\ a_2 \\ \vdots \\ a_n \end{bmatrix}x.
+  y = Ax = \begin{bmatrix} a_1 \\ a_2 \\ \vdots \\ a_m \end{bmatrix}x.
 \]
-et le scalaire $y_i$ comme
+et le scalaire $y_i$, $i=1,\ldots,m$, comme
 \[
   y_i = a_i x = \sum_{j=1}^n A_{ij} x_j.
 \]
@@ -505,10 +504,10 @@ Le système $2 \times 2$ s'écrit
 \[
   \begin{bmatrix} x_1^{k+1} \\ x_2^{k+1} \end{bmatrix}
   =
-  \begin{bmatrix} b_1/a_{11} \\ b_2/a_{22} \end{bmatrix}
-  +
   \begin{bmatrix} 0 & -a_{12}/a_{11} \\ -a_{21}/a_{22} & 0 \end{bmatrix}
-  \begin{bmatrix} x_1^k \\ x_2^k \end{bmatrix}.
+  \begin{bmatrix} x_1^k \\ x_2^k \end{bmatrix}
+  +
+  \begin{bmatrix} b_1/a_{11} \\ b_2/a_{22} \end{bmatrix}.
 \]
 
 ## Gauss-Seidel pour un système $2 \times 2$
@@ -525,10 +524,10 @@ Le système $2 \times 2$ s'écrit
 \[
   \begin{bmatrix} x_1^{k+1} \\ x_2^{k+1} \end{bmatrix}
   =
-  \begin{bmatrix} b_1/a_{11} \\ b_2/a_{22} - \frac{a_{21} b_1}{a_{11}a_{22}} \end{bmatrix}
-  +
   \begin{bmatrix} 0 & -a_{12}/a_{11} \\ 0 & -a_{12}a_{21}/(a_{11}a_{22}) \end{bmatrix}
-  \begin{bmatrix} x_1^k \\ x_2^k \end{bmatrix}.
+  \begin{bmatrix} x_1^k \\ x_2^k \end{bmatrix}
+  +
+  \begin{bmatrix} b_1/a_{11} \\ b_2/a_{22} - \frac{a_{21} b_1}{a_{11}a_{22}} \end{bmatrix}.
 \]
 
 ## Splitting
