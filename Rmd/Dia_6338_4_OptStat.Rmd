@@ -1,6 +1,6 @@
 ---
 title: "ECN 6338 Cours 4"
-subtitle: "Optimisation Statique sans contraintes"
+subtitle: "Optimisation statique sans contraintes"
 author: "William McCausland"
 date: "`r Sys.Date()`"
 output: beamer_presentation
@@ -33,11 +33,10 @@ urlcolor: blue
 
 ## Notes sur l'optimisation univariée
 
-- Utile directement
-- Utile pour les problèmes multivariés où la stratégie d'optimisation consiste
-en la répetition des étapes suivantes :
-    - choix d'une direction de recherche,
-    - optimisation univariée dans la direction de recherche (line search).
+- Directement utile
+- Utile aussi en multivarié via une stratégie en deux étapes, à répéter :
+    - choix d'une direction,
+    - optimisation univariée (line search).
 
 ## Méthode de dichotomie (bracketing) pour un minimum
 
@@ -45,8 +44,8 @@ Il faut commencer dans un état $(a,b,c)$, $a < b < c$ où $f(b) < \min(f(a), f(
 
 - Si la fonction est continue et cette condition tient, il doit y avoir un minimum local dans l'intervalle $[a,c]$.
 - À chaque iteration, on calcule un nouvel état qui remplit les mêmes conditions.
-- L'intervalle $[a,c]$ rapetisse à chaque itération.
-- On arrête quand $c-a < \epsilon$, où $\epsilon$ mesure la tolerance.
+- L'intervalle $[a,c]$ rétrécit à chaque itération.
+- On arrête quand $c-a < \epsilon$, où $\epsilon$ mesure la tolérance.
 
 ## Une itération de la méthode de dichotomie
 
@@ -60,7 +59,7 @@ Les étapes pour trouver un état $(a',b',c')$, $a' < b' < c'$ où $f(b') < \min
   \end{cases}
 \]
 1. Évaluer $f(d)$.
-1. Trouvez $(a',b',c')$ :
+1. Trouver $(a',b',c')$ :
 \[
   (a',b',c') = \begin{cases}
     (d,b,c) & d < b,\, f(d) > f(b), \\
@@ -78,9 +77,9 @@ Les étapes pour trouver un état $(a',b',c')$, $a' < b' < c'$ où $f(b') < \min
 
 ### Avantages
 
-- L'intervalle rapetisse toujours par au moins 1/4 par itération.
-- Une seule évaluation de $f(\cdot)$ par itération ; pas de dérivées à évaluer.
-- Robuste aux fonctions avec des coudes et des parties concaves.
+- L'intervalle rétrécit toujours par au moins 1/4 par itération.
+- Il y a une seule évaluation de $f(\cdot)$ par itération, et aucune dérivée à évaluer.
+- La méthode est robuste aux fonctions avec des coudes et des parties concaves.
 
 ### Désavantages
 
@@ -135,17 +134,17 @@ plot(x, log(cosh(x)), type='l')
 
 ### Avantages
 
-- Convergence très rapide près de la solution, où la deuxième dérivée ne change pas beaucoup.
+- La convergence est très rapide près de la solution, où la deuxième dérivée ne change pas beaucoup.
 
 ### Désavantages
 
 - La méthode ne marche pas quand la fonction n'est pas concave (max) ou convexe (min).
-- Même pour une fonction concave (max) ou convexe (min) $x^k$ peut diverger.
+- $x^k$ peut diverger même pour une fonction concave (max) ou convexe (min)
 - Il faut calculer deux dérivées de la fonction.
 
 ## Quasi-Newton en une dimension
 
-- Supposons que la deuxième dérivée est couteuse.
+- Supposons que la deuxième dérivée est coûteuse.
 - Au lieu de calculer
 \[
   x^{k+1} - x^k = -f'(x^k)/f''(x^k),
@@ -278,7 +277,7 @@ Matrice hessienne :
   \end{aligned}
 \]
 
-## Un formule plus générale
+## Une formule plus générale
 
 - Soit $f \colon \mathbb{R} \to \mathbb{R}$ et $g \colon \mathbb{R} \to \mathbb{R}^n$.
 
@@ -352,7 +351,7 @@ vgh1$hessien %*% h
 
 ## Nelder-Mead (méthode de simplex, méthode de polytope)
 
-(Conventions de la page Wikipedia et non du livre de Judd, illustration de la recherche d'un minimum)
+(Conventions de la page Wikipedia et non du livre de Judd, illustration d'une recherche de minimum)
 
 En $n$ dimensions, l'état est $x_1,\ldots,x_{n+1}$ (sommets d'un simplexe) tel que
 \[
@@ -361,7 +360,7 @@ En $n$ dimensions, l'état est $x_1,\ldots,x_{n+1}$ (sommets d'un simplexe) tel 
 Autres points d'intérêt :
 
 - $x_0$, le centroïde des points $x_1,x_2,\ldots,x_n$,
-- $x_r = x_0 + \alpha (x_0 - x_{n+1})$, $\alpha > 0$, un point de reflection (r).
+- $x_r = x_0 + \alpha (x_0 - x_{n+1})$, $\alpha > 0$, un point de réflexion (r).
 - $x_r = x_0 + \gamma (x_0 - x_{n+1})$, $\gamma > \alpha$, un point d'expansion (e).
 
 Une étape donne une autre ensemble de $n+1$ points, qu'il faut trier.
@@ -436,7 +435,7 @@ Dans les graphiques suivantes,
 - Le point du départ ($x^k$) et le gradient sont normalisés :
     - $x^k = (0,0)$ (vert)
     - $\nabla f(x^k) = (-1,-1)$ (direction en vert)
-- La matrice hessienne est spécifié en termes de la décomposition en éléments propres $H = QDQ^\top$ où $Q$ est la matrice de rotation pour une angle $\theta$, $D = \mathrm{diag}(\lambda)$
+- La matrice hessienne est spécifié en termes de la décomposition en éléments propres $H = QDQ^\top$ où $Q$ est la matrice de rotation pour un angle $\theta$, $D = \mathrm{diag}(\lambda)$
 - En noir :
     - le point $x^{k+1}$ après un pas de Newton
     - la courbe de niveau de l'approximation quadratique qui passe par $x^k = (0,0)$
