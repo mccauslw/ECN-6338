@@ -1,4 +1,5 @@
 library(conics)
+library(fields)
 
 # Construire une matrice hessienne H = QDQ' à partir d'une décomposition
 # en éléments propres
@@ -41,5 +42,7 @@ Newton_plot <- function(gradient, nc)
   
   # Direction des axes des ordonnèes (bleu)
   abline(h=0, col='blue')
-  abline(v=0, col='blue')  
+  abline(v=0, col='blue')
+  
+  #quiver.plot(x, y, U, V, scale = 0.1, col = "steelblue")
 }

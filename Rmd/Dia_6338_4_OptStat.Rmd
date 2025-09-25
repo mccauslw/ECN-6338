@@ -72,7 +72,7 @@ Les étapes pour trouver un état $(a',b',c')$, $a' < b' < c'$ où $f(b') < \min
 
 ## Méthode de dichotomie (graphique)
 
-![Méthode de dichotomie pour trouver un minimum](./Figures/Dichotomie.png)
+![Méthode de dichotomie pour trouver un minimum](../Figures/Dichotomie.png)
 
 ## Notes sur la méthode de dichotomie
 
@@ -220,7 +220,7 @@ où
 ## Comment faire les graphiques en R
 
 ```{r trois-D_setup, warning=FALSE}
-source('pi.R')
+source('../pi.R')
 C = c(0.62, 0.60)         # Coûts marginaux
 alpha = 0.98; eta = 0.85  # Paramètres de l'utilité
 
@@ -368,7 +368,7 @@ Une étape donne une autre ensemble de $n+1$ points, qu'il faut trier.
 
 ## Nelder-Mead, graphiques
 
-![Nelder Mead en deux dimensions](./Figures/Nelder_Mead.png)
+![Nelder Mead en deux dimensions](../Figures/Nelder_Mead.png)
 
 ## Notes sur la méthode Nelder-Mead
 
@@ -439,14 +439,14 @@ Dans les graphiques suivantes,
 - La matrice hessienne est spécifié en termes de la décomposition en éléments propres $H = QDQ^\top$ où $Q$ est la matrice de rotation pour une angle $\theta$, $D = \mathrm{diag}(\lambda)$
 - En noir :
     - le point $x^{k+1}$ après un pas de Newton
-    - la courbe de niveau de l'approximation quadratique
+    - la courbe de niveau de l'approximation quadratique qui passe par $x^k = (0,0)$
     - les vecteurs propres (directions de courbature maximale et minimale)
 - En rouge : la direction de Newton
 
 ## Exemple 1
 
 ```{r Newton1}
-source('conic.R'); grad <- c(-1, -1)
+source('../conic.R'); grad <- c(-1, -1)
 nc <- Newton_conic(grad, theta=pi/8, lambda=c(1, 4))
 Newton_plot(grad, nc)
 ```
@@ -461,7 +461,6 @@ Newton_plot(grad, nc)
 ## Exemple 3
 
 ```{r Newton3}
-source('conic.R')
 nc <- Newton_conic(grad, theta=pi/8, lambda=c(-0.25, 4))
 Newton_plot(grad, nc)
 ```
@@ -509,7 +508,7 @@ Calculer $b_k = A_k^{-1} y_k$ prend $O(n^2)$ opération ; La mise à jour, $O(n^
 ## Résultats, Nelder-Mead
 
 ```{r Nelder-Mead}
-source('pi.R')
+source('../pi.R')
 optim(c(1,1), pi_minus, gr=pi_grad_minus, C, alpha, eta,
       method='Nelder-Mead')
 ```
@@ -533,4 +532,4 @@ Le problème canonique est
 
 ## Méthodes par points intérieurs (crédit, Wikipédia)
 
-![Interior methods](Karmarkar.png)
+![Interior methods](../Karmarkar.png)
