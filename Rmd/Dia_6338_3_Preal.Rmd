@@ -279,9 +279,9 @@ Le problème de maximisation est plus naturel pour les économistes mais les log
 
 Le problème :
 
-- Une économie a 300 unités de $L$ (main d'oeuvre) et 450 unités de $T$ (terrain), pour la production de blé et de boeuf.
-- Produire une unité de blé prend 2 unités de $L$, 1 unité de $T$.
-- Produire une unité de boeuf prend 1 unité de $L$, 2 unités de $T$.
+- Une économie a 300 unités de $L$ (travail) et 450 unités de $T$ (terre), pour la production de blé et de boeuf.
+- Produire une unité de blé ($x$) prend 2 unités de $L$, 1 unité de $T$.
+- Produire une unité de boeuf ($y$) prend 1 unité de $L$, 2 unités de $T$.
 - On veut maximiser $W(x,y) = (1-\beta) \ln x + \beta \ln y$, où $x$ et $y$ sont les quantités de blé et de boeuf.
 - On écarte d'emblée la possibilité des solutions où $x^* < 0$ ou $y^* < 0$, alors pas besoin des contraintes $x,y \geq 0$.
 
