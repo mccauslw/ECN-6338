@@ -9,27 +9,27 @@ urlcolor: blue
 
 ## Survol du cours 4
 
-### Optimisation univariée
+Optimisation univariée
 
 1. méthode de dichotomie (bracketing)
 1. méthode de Newton (ou de Newton-Raphson)
 
-### Exemple, maximisation du profit d'un monopole
+Exemple, maximisation du profit d'un monopole
 
 1. valeur, gradient et matrice hessienne du profit
 1. code pour les évaluations
 
-### Optimisation multivariée
+Optimisation multivariée
 
 1. méthode de Nelder-Mead
 1. méthode de Newton
 1. méthode de "direction set"
     a. direction des axes de coordonnées
-    a. direction de descente (opposée au gradient)
+    a. direction de la plus forte pente (steepest descent)
     a. direction Newton
     a. direction BFGS
 
-### Mise en oeuvre en R et résultats
+Mise en oeuvre en R et résultats
 
 ## Notes sur l'optimisation univariée
 
@@ -160,6 +160,27 @@ où
 - $h_k$ est la pente d'une corde qui approxime la pente de la tangente de $f'(x)$ à $x=x^k$.
 - Attention : en plusieurs dimensions l'équation analogue $H_k (x^k - x^{k-1}) = \nabla f(x^k) - \nabla f(x^{k-1})$ donne $n$ équations, pas assez pour déterminer $H_k$, $n \times n$ et symétrique.
 
+## Maximisation d'utilité avec un terme linéaire
+
+Fonction de Lagrange :
+\[
+  {\cal L}(X,Y,Z,\lambda) = X + U(Y,Z) + \lambda(I - p_xX - p_yY - p_zZ).
+\]
+
+Conditions nécessaires de première ordre :
+
+\[
+  1 - \lambda p_x = 0,
+\]
+\[
+  U_Y - \lambda p_y = 0, \quad U_Z - \lambda p_z = 0.
+\]
+
+Si le bien $X$ est numéraire ($p_X = 1$), alors $\lambda = 1$ et
+\[
+  U_Y = p_y, \quad U_Z = p_z.
+\]
+
 ## Problème du monopole (Judd, page 105)
 
 - Un monopole produit deux biens, en quantités $Y$ et $Z$.
@@ -279,7 +300,7 @@ Matrice hessienne :
 
 ## Une formule plus générale
 
-- Soit $f \colon \mathbb{R} \to \mathbb{R}$ et $g \colon \mathbb{R} \to \mathbb{R}^n$.
+- Soit $f \colon \mathbb{R} \to \mathbb{R}$ et $g \colon \mathbb{R}^n \to \mathbb{R}$.
 
 - Alors
 \[
@@ -294,6 +315,8 @@ Matrice hessienne :
     + f'(g(x))
     \frac{\partial^2 g(x)}{\partial x \partial x^\top}
 \]
+- Dans l'exemple, utiliser $x = (y,z)$, $g(x) = e^{\alpha y} + e^{\alpha z}$,
+$f(g) = \eta g^{\eta/\alpha}$.
 
 ## Le calcul du gradient et de la matrice hessienne
 
@@ -413,7 +436,7 @@ Si $\|\nabla f(x^k)\| < \delta (1+|f(x^k)|)$, réclamer le succès ; sinon, indi
 ### Directions possibles
 
 1. direction des axes de coordonnées : $s^k = e_{(k\,\mathrm{mod}\, n + 1)}$
-1. direction opposée au gradient : $s^k = -\nabla f(x^k)$
+1. direction de la plus forte pente : $s^k = -\nabla f(x^k)$
 1. direction Newton : $s^k = -H(x^k)^{-1} \nabla f(x^k)$ 
 1. direction BFGS : $s^k = -H_k^{-1} \nabla f(x^k)$ ($H_k$ décrit plus tard)
 

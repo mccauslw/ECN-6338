@@ -1,5 +1,4 @@
 library(conics)
-library(fields)
 
 # Construire une matrice hessienne H = QDQ' à partir d'une décomposition
 # en éléments propres
