@@ -17,10 +17,10 @@ urlcolor: blue
 
 ### Méthodes pour problèmes univariés
 
-1. Newton
-1. Interpolation linéaire
-1. Méthode de dichotomie
-1. Méthodes de type Dekker-Brent
+1. Méthode de dichotomie (sans dérivées)
+1. Méthodes de type Dekker-Brent (sans dérivées)
+1. Newton (dérivées)
+1. Interpolation linéaire (approximation des dérivées)
 
 ### Méthodes pour problèmes multivariés
 
@@ -30,14 +30,17 @@ urlcolor: blue
 
 ## Systèmes d'équations en économie
 
-1. Optimisation statique de l'individu (consommateurs, firmes, économètres)
-    - conditions de premier ordre
-    - contraintes (ressources)
-1. Calcul des équilibres généraux
-    - équations d'offre et de demande, en prix
-    - conditions d'équilibre
-1. Calcul des équilibres de Nash (oligopoles, principal-agent)
-    - meilleurs réponses de chaque joueur
+Équations en économie
+
+1. Contraintes
+    - de ressources physiques, de technologies, de temps
+    - de budget, de participation, d'incitation
+1. Autres conditions de premier ordre pour l'optimisation
+    - consommateurs, firmes, joueurs
+    - économètres
+1. Conditions d'équilibre
+    - offre et demande
+    - équilibres de Nash
 
 ## Les problèmes univariés et multivariés
 
@@ -45,7 +48,7 @@ urlcolor: blue
 \[
   f(x) = 0,
 \]
-où $f \colon \mathbb{R} \to \mathbb{R}$.
+où $f \colon \mathbb{R} \to \mathbb{R}$. (En d'autres termes, trouver une racine de $f(x) = 0$.)
 
 - Problème multivarié : trouvez $x \in \mathbb{R}^n$ qui vérifie
 \[
@@ -74,8 +77,10 @@ où $f \colon \mathbb{R}^n \to \mathbb{R}$ et $f \in C^2$, est aussi une solutio
 \]
 Toutefois, la résolution du système $g(x) = 0$, où $g \in C^1$, est plus générale, car :
 
-- la matrice jacobienne de $g$ n'est pas forcément symmétrique et
-- la matrice jacobienne de $\frac{\partial f(x)}{\partial x^\top}$ est la matrice hessienne symmétrique de $f$.
+- la matrice jacobienne de $g$ n'est pas forcément symmétrique,
+- tandis que la matrice jacobienne de $\frac{\partial f(x)}{\partial x^\top}$ correspond à la matrice hessienne symmétrique de $f$.
+
+Aussi, l'ordre des éléments de $g$ est arbitraire en général.
 
 ## Systèmes non-linéaires et le nombre de solutions
 
@@ -98,7 +103,7 @@ ou il y a un nombre infini de solutions :
 Dans le cas général, il peut y avoir
 
 - aucune solution, même pour les fonctions $f^i$ très différentes,
-- un nombre fini arbitraire de solutions,
+- un nombre fini quelconque de solutions,
 - un nombre infini de solutions.
 
 ## Exemple : absence d'une solution
@@ -144,7 +149,7 @@ et la firme 2 produit un bien en quantité $Z$.
   c_Y(Y) = C_Y Y, \quad c_Z(Z) = C_Z Z,
 \]
 où $C_Y = 0.07$ et $C_Z = 0.08$.
-- La demande est celle d'un consommateur avec utilité
+- La demande provient d'un consommateur dont la fonction d'utilité est
 \[
   U(Y,Z) = u(Y,Z) + M = (1 + Y^\alpha + Z^\alpha)^{\eta/\alpha} + M,
 \]
@@ -160,7 +165,7 @@ où $p_Y$ et $p_Z$ sont les prix de $Y$ et $Z$.
 - On cherche un équilibre de Nash $(Y^*, Z^*)$ où
     - $Y^*$ maximise le profit de la firme 1, pour $Z^*$ donnée,
     - $Z^*$ maximise le profit de la firme 2, pour $Y^*$ donnée.
-- La meilleure réponse $Y$ à $Z$ maximise le profit :
+- Le profit de la firme 1 (producteur de $Y$) est :
 \[
   \begin{aligned}
     \Pi^Y(Y,Z) &= Yu_Y(Y,Z) - C_Y Y \\
@@ -169,7 +174,7 @@ où $p_Y$ et $p_Z$ sont les prix de $Y$ et $Z$.
   \end{aligned}
 \]
 où $y = \log Y$, $z = \log Z$.
-- Une condition de première ordre nécessaire pour la firme 1 :
+- Une condition de premier ordre nécessaire pour un maximum :
 \[
   \begin{aligned}
     \Pi^Y_1(Y,Z) &= \alpha \eta (\tfrac{\eta}{\alpha} - 1)
@@ -180,13 +185,14 @@ où $y = \log Y$, $z = \log Z$.
 \]
 - La même démarche pour la firme 2 donne une expression analogue $\Pi^Z_2(Y,Z) = 0$.
 
-## Le problème de calcul pour le jeu du monopole
+## Le problème de calcul pour le jeu du duopole
 
-L'équilibre du jeu du monopole est
+Chaque firme choisit sa quantité en fonction de celle de l'autre.
+L'équilibre du jeu du monopole est la paire
 \[
   (Y^*, Z^*) = (e^{x_1^*}, e^{x_2^*}),
 \]
-où $x^* = (x_1^*, x_2^*)$ est la solution du système $f(x) = 0$, où
+où aucune n'a intérêt à dévier : $x^* = (x_1^*, x_2^*)$ est la solution du système $f(x) = 0$, où
 \[
   f^1(x_1, x_2) = \Pi^Y_1(e^{x_1}, e^{x_2}), \qquad f^2(x_1, x_2) = \Pi^Z_2(e^{x_1}, e^{x_2}).
 \]
@@ -241,7 +247,7 @@ un peu plus loin de la racine, mais trouvé sans évaluation de la dérivée $f'
 ## Illustration (Newton et interpolation linéaire)
 
 ```{r NewtonSecant}
-source('root_uni.R')
+source('../root_uni.R')
 ```
 
 ## Méthode de dichotomie
@@ -256,7 +262,7 @@ tels que
 
 1. Calculer $m = \frac{1}{2}(a_k + b_k)$.
 1. Évaluer $f(m)$, si $f(m) = 0$, terminer avec la racine $m$.
-1. Si $f(m)$ a la même signe que $a_k$,
+1. Si $f(m)$ a le même signe que $a_k$,
 \[
   a_{k+1} = m, \quad b_{k+1} = b_k.
 \]
@@ -276,20 +282,23 @@ abline(h=0)
 
 ## Discussion, méthode de dichotomie
 
-- On évalue seulement la fonction et non les dérivées.
+- On évalue seulement la fonction et non la dérivée.
 - La fonction doit être continue, pas forcément différentiable.
 - On gagne 1 bit de précision à chaque itération (pas beaucoup, mais sûr),
 - On sait à l'avance combien d'itérations il faut pour atteindre
     ces deux conditions : $b_k - a_k < \delta$, $[a_k,b_k]$ contient une racine.
-- Considérez des jeux zéro-somme entre
+- Mais la méthode de dichotomie est très sous-optimale pour les fonctions rencontrées en pratique, même parmi les méthodes qui évaluent la fonction seulement.
+- On veut accélérer la convergence et en même temps garantir un intervalle court en un nombre borné d'itérations.
+
+## Un jeu zéro-somme
+
+- Considérez un jeu zéro-somme entre
     - joueur 1, qui choisit une fonction continue $f(x)$ avec $f(a_0)f(b_0) < 0$,
     et veut maximiser le nombre d'itérations pour trouver un intervalle $[a,a+\delta]$
     qui contient une racine ; et
     - joueur 2, qui choisit un algorithme pour trouver un intervalle $[a,a+\delta]$
     contenant une racine.
 - Conjecture : Si joueur 2 joue en premier, la méthode de dichotomie est optimale (minmax) pour lui.
-- Mais la méthode de dichotomie est très sous-optimale pour les fonctions rencontrées en pratique.
-- On veut accélérer la convergence et en même temps garantir un intervalle court en un nombre borné d'itérations.
 
 ## Méthodes du type Dekker-Brent
 
@@ -300,8 +309,8 @@ Intrants à l'itération $k+1$ : points $a_k$, $b_k$, $b_{k-1}$ ($b_{-1} = a_0$)
 
 À l'itération $k+1$ :
 
-1. Calculer $m = \frac{1}{2}(a_k + b_k)$.
-1. Calculer $s$ comme fonction de $a_k$, $b_k$, $f(a_k)$, $f(b_k)$, $b_{k-1}$, $f(b_{k-1})$. (deux façons, détails à venir)
+1. Calculer une proposition prometteuse $s$ pour $b_{k+1}$ comme fonction de $a_k$, $b_k$, $f(a_k)$, $f(b_k)$, $b_{k-1}$, $f(b_{k-1})$. (deux façons, détails à venir)
+1. Calculer une proposition de repli $m = \frac{1}{2}(a_k + b_k)$.
 1. Choisir entre $b_{k+1} = s$ et $b_{k+1} = m$. (détails à venir)
 1. Évaluer $f(b_{k+1})$, si $f(b_{k+1}) = 0$, terminer avec $b_{k+1}$.
 1. Choisir entre $a_{k+1} = a_k$ et $a_{k+1} = b_k$ tel que $f(a_{k+1})f(b_{k+1}) < 0$. (Condition 2.)
@@ -310,7 +319,7 @@ Intrants à l'itération $k+1$ : points $a_k$, $b_k$, $b_{k-1}$ ($b_{-1} = a_0$)
 
 ## Une itération de Dekker-Brent
 
-![De $(a_k, b_k, b_{k-1})$ à $(a_{k+1},b_{k+1},b_k)$](./Figures/Dekker_Brent.png)
+![De $(a_k, b_k, b_{k-1})$ à $(a_{k+1},b_{k+1},b_k)$](../Figures/Dekker_Brent.png)
 
 ## Calculer $s$ (étape 2) par interpolation linéaire (droite sécante)
 
@@ -387,7 +396,7 @@ de Seidel :
   x_1^{k+1} = x_1^k - \frac{f^1(x_1^k, x_2^k)}{f_1^1(x_1^k, x_2^k)}
   = x_1^k - \frac{(x_1^k)^2 + (x_2^k)^2 - 1}{2x_1^k},
 \]
-et $x_2^{k+1}$ comme dans la version non-linéaire.
+et $x_2^{k+1} = 2(x_1^{k+1})^2 - 1$ comme dans la version non-linéaire.
 
 ## La Méthode de Gauss-Seidel avec une permutation
 
@@ -406,42 +415,42 @@ et $x_2^{k+1}$ comme dans la version non-linéaire.
 
 ```{r seidel}
 x0 = c(0.6, -0.6); name = 'seidel'
-source('cerc_parab.R')
+source('../cerc_parab.R')
 ```
 
 ## Illustration Gauss-Seidel linéaire
 
 ```{r seidel_lin}
 x0 = c(0.6, -0.6); name = 'seidel_lin'
-source('cerc_parab.R')
+source('../cerc_parab.R')
 ```
 
 ## Illustration Gauss-Seidel (permutation, $+,+$)
 
 ```{r perm_seidel}
 x0 = c(0.6, -0.6); name = 'perm_seidel'
-source('cerc_parab.R')
+source('../cerc_parab.R')
 ```
 
 ## Illustration Gauss-Seidel (permutation, $+,-$)
 
 ```{r perm_seidel+-}
 x0 = c(0.6, -0.6); name = 'perm_seidel+-'
-source('cerc_parab.R')
+source('../cerc_parab.R')
 ```
 
 ## Illustration Gauss-Seidel (permutation, $-,+$)
 
 ```{r perm_seidel-+}
 x0 = c(0.6, -0.6); name = 'perm_seidel-+'
-source('cerc_parab.R')
+source('../cerc_parab.R')
 ```
 
 ## Illustration Gauss-Seidel (permutation, $-,-$)
 
 ```{r perm_seidel--}
 x0 = c(0.6, -0.6); name = 'perm_seidel--'
-source('cerc_parab.R')
+source('../cerc_parab.R')
 ```
 
 ## Méthode de Newton
@@ -480,8 +489,14 @@ un pas $s^k$ :
 \[
   A_{k+1} s^k = A_k s^k + (y_k - A_k s^k) = y_k = f(x^{k+1}) - f(x^k).
 \]
-- La mise à jour $A_k \to A_{k+1}$ étant de rang 1 permet la mise à jour simultanée $A_k^{-1} \to A_{k+1}^{-1}$ en
-$O(n^2)$ opérations avec le formule Sherman-Morrison.
+- $A_{k+1}$ et $A_k$ font la même chose dans les directions perpendiculaires à $s_k$ : si $s_k^\top \delta = 0$, 
+\[
+  A_{k+1} \delta = A_k \delta.
+\]
+
+## Méthode de Broyden (suite)
+
+La mise à jour $A_k \to A_{k+1}$ étant de rang 1 permet la mise à jour simultanée $A_k^{-1} \to A_{k+1}^{-1}$ en $O(n^2)$ opérations avec le formule Sherman-Morrison.
 
 ## Illustration, méthodes de Newton et Broyden
 
