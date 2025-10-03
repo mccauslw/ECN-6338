@@ -48,7 +48,7 @@ urlcolor: blue
 \[
   f(x) = 0,
 \]
-où $f \colon \mathbb{R} \to \mathbb{R}$. (En d'autres termes, trouver une racine de $f(x) = 0$.)
+où $f \colon \mathbb{R} \to \mathbb{R}$. En d'autres termes, trouver une racine de $f(x)$.
 
 - Problème multivarié : trouvez $x \in \mathbb{R}^n$ qui vérifie
 \[
@@ -188,9 +188,9 @@ où $y = \log Y$, $z = \log Z$.
 ## Le problème de calcul pour le jeu du duopole
 
 Chaque firme choisit sa quantité en fonction de celle de l'autre.
-L'équilibre du jeu du monopole est la paire
+L'équilibre (à la Cournot) du jeu du duopole est la paire
 \[
-  (Y^*, Z^*) = (e^{x_1^*}, e^{x_2^*}),
+  (Y^*, Z^*) = (e^{y^*}, e^{z^*}) \equiv (e^{x_1^*}, e^{x_2^*}),
 \]
 où aucune n'a intérêt à dévier : $x^* = (x_1^*, x_2^*)$ est la solution du système $f(x) = 0$, où
 \[
@@ -242,7 +242,7 @@ entre $(x_0, f(x_0))$ et $(x_1, f(x_1))$ :
 \[
   s = x_0 + \frac{(x_1 - x_0)}{f(x_1) - f(x_0)} f(x_0) \approx 0.3120053,
 \]
-un peu plus loin de la racine, mais trouvé sans évaluation de la dérivée $f'(x_0)$.
+un peu plus loin de la racine que $x_2$ (Newton, 2ième itération), mais trouvé sans évaluation de la dérivée $f'(x_0)$.
 
 ## Illustration (Newton et interpolation linéaire)
 
@@ -262,7 +262,7 @@ tels que
 
 1. Calculer $m = \frac{1}{2}(a_k + b_k)$.
 1. Évaluer $f(m)$, si $f(m) = 0$, terminer avec la racine $m$.
-1. Si $f(m)$ a le même signe que $a_k$,
+1. Si $f(m)$ a le même signe que $f(a_k)$,
 \[
   a_{k+1} = m, \quad b_{k+1} = b_k.
 \]
@@ -283,7 +283,7 @@ abline(h=0)
 ## Discussion, méthode de dichotomie
 
 - On évalue seulement la fonction et non la dérivée.
-- La fonction doit être continue, pas forcément différentiable.
+- Pour garantir la convergence, la fonction doit être continue, mais pas forcément différentiable.
 - On gagne 1 bit de précision à chaque itération (pas beaucoup, mais sûr),
 - On sait à l'avance combien d'itérations il faut pour atteindre
     ces deux conditions : $b_k - a_k < \delta$, $[a_k,b_k]$ contient une racine.
@@ -292,13 +292,14 @@ abline(h=0)
 
 ## Un jeu zéro-somme
 
-- Considérez un jeu zéro-somme entre
+- Considérez le jeu zéro-somme entre
     - joueur 1, qui choisit une fonction continue $f(x)$ avec $f(a_0)f(b_0) < 0$,
     et veut maximiser le nombre d'itérations pour trouver un intervalle $[a,a+\delta]$
     qui contient une racine ; et
     - joueur 2, qui choisit un algorithme pour trouver un intervalle $[a,a+\delta]$
-    contenant une racine.
-- Conjecture : Si joueur 2 joue en premier, la méthode de dichotomie est optimale (minmax) pour lui.
+    contenant une racine, et veut minimiser le nombre d'itérations ;
+    - où joueur 2 joue en premier.
+- Conjecture : La méthode de dichotomie est optimale (minmax) pour le joueur 2.
 
 ## Méthodes du type Dekker-Brent
 
@@ -386,7 +387,7 @@ nécessaires pour la méthode de dichotomie.
 \[
   f^1(x_1, x_2) = x_1^2 + x_2^2 - 1, \quad f^2(x_1, x_2) = 2x_1^2 - x_2 - 1.
 \]
-- Résoudre $f_i(x_1, x_2) = 0$ pour $x_i$, $i=1,2$, donne une mise à jour possible
+- Résoudre $f^i(x_1, x_2) = 0$ pour $x_i$, $i=1,2$, donne une mise à jour possible
 de Seidel :
 \[
   x_1^{k+1} = \pm \sqrt{1-(x_2^k)^2}, \qquad x_2^{k+1} = 2(x_1^{k+1})^2 - 1
@@ -401,7 +402,7 @@ et $x_2^{k+1} = 2(x_1^{k+1})^2 - 1$ comme dans la version non-linéaire.
 ## La Méthode de Gauss-Seidel avec une permutation
 
 - L'ordre des variables et l'ordre des équations importent.
-- Résoudre $f_1(x_1, x_2) = 0$ pour $x_2$ et $f_2(x_1, x_2) = 0$ pour $x_1$ donne une autre mise à jour de Seidel :
+- Résoudre $f^1(x_1, x_2) = 0$ pour $x_2$ et $f^2(x_1, x_2) = 0$ pour $x_1$ donne une autre mise à jour de Seidel :
 \[
   x_1^{k+1} = \pm \sqrt{\tfrac{1}{2}(1+x_2^k)}, \quad x_2^{k+1} = \pm \sqrt{1-(x_1^k)^2}.
 \]
@@ -489,7 +490,7 @@ un pas $s^k$ :
 \[
   A_{k+1} s^k = A_k s^k + (y_k - A_k s^k) = y_k = f(x^{k+1}) - f(x^k).
 \]
-- $A_{k+1}$ et $A_k$ font la même chose dans les directions perpendiculaires à $s_k$ : si $s_k^\top \delta = 0$, 
+- $A_{k+1}$ et $A_k$ font la même chose dans les directions perpendiculaires à $s_k$ : si un vecteur $\delta$ vérifie $s_k^\top \delta = 0$, 
 \[
   A_{k+1} \delta = A_k \delta.
 \]
