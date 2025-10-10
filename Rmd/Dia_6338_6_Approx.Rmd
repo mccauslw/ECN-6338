@@ -34,7 +34,7 @@ urlcolor: blue
 \]
 - Les valeurs de $\hat{f}$ et de ses $n$ premières dérivées coïncident avec celles de $f$
 au point $x_0$.
-- Peu importe l'ordre $n$, l'approximation est locale : il existe une fonction $h_n(x)$ telle que
+- Quel que soit l'ordre $n$, l'approximation demeure locale : il existe une fonction $h_n(x)$ telle que
 \[
   f(x) - \hat{f}(x) = h_n(x-x_0) \cdot (x-x_0)^n\,\mbox{et}\,\lim_{x\to x_0} h_n(x) = 0.
 \]
@@ -45,7 +45,7 @@ au point $x_0$.
 - L'approximation Padé $\hat f$ de $f$, comme celle de Taylor,
     - utilise la valeur de $f$ et de ses premières $n$ dérivées à $x_0$,
     - concorde avec $f$ sur ces valeurs,
-    - a $n+1$ coefficients libres.
+    - comporte $n+1$ coefficients libres.
 - L'approximation est une fonction rationnelle, un ratio de polynômes :
 \[
   f(x) \approx r(x) \equiv \frac{p(x)}{q(x)}
@@ -59,17 +59,12 @@ où $m + d = n$ et souvent $m = d$ ou $m = d+1$.
 $n+1$ équations pour trouver $n+1 = (m+1) + d$ coefficients.
 
 
-## Notes sur l'approximation Padé
-
-- L'approximation est souvent meilleure que l'approximation de Taylor en pratique.
-- Il convient de prêter attention aux zéros de $q(x)$ où l'approximation n'est pas bien définie.
-
-
 ## Calcul de l'approximation Padé (2,1) de $e^x$ autour de $x=0$
 
 - L'approximation $r(x)$ est
 \[
-  r(x) = \frac{p_0 + p_1x + p_2x^2}{1 + q_1x}.
+  r(x) = \frac{p_0 + p_1x + p_2x^2}{1 + q_1x}
+  = \frac{1 + \tfrac{2}{3} x + \tfrac{1}{6} x^2}{1 - \tfrac{1}{3}x}.
 \]
 - Les coefficients $p_0$, $p_1$, $p_2$ et $q_1$ sont donnés par
 \[
@@ -88,64 +83,77 @@ $n+1$ équations pour trouver $n+1 = (m+1) + d$ coefficients.
 - Ensuite, la deuxième équation donne $p_1 = 1 + q_1 = \tfrac{2}{3}$;
 la troisième, $p_2 = \tfrac{1}{2} + q_1 = \tfrac{1}{6}$.
 
+## Notes sur l'approximation Padé
+
+- L'approximation est souvent meilleure que l'approximation de Taylor en pratique.
+- Il convient de prêter attention aux zéros de $q(x)$ où l'approximation n'est pas bien définie. Dans l'exemple, $q(x)$ n'est pas bien définie à $x = 3$.
+
+
 ## Exemple I, Taylor et Padé, $f(x) = e^x$, $x_0 = 0$.
 
 Approx. de Taylor (ordres 3, 4, 5, rouge), de Padé ((2,1), vert) :
 ```{r Taylor_Pade_exp}
-source('Taylor_Pade_exp.R')
+source('../Taylor_Pade_exp.R')
 ```
 
 ## Exemple I, erreurs d'approximation
 
 ```{r Taylor_Pade_exp_error}
-source('Taylor_Pade_exp_error.R')
+source('../Taylor_Pade_exp_error.R')
 ```
+
+## Exemple II, approximation de $f(x) = \log x$ à $x_0 = 1$
+
+L'approximation Padé d'ordre (2,1) est
+\[
+  r(x) = \frac{-\tfrac{5}{2} + 2x + \tfrac{1}{2} x^2}{1 + 2x}.
+\]
 
 ## Exemple II, Taylor et Padé, $f(x) = \log x$, $x_0 = 1$.
 
 ```{r Taylor_Pade_log}
-source('Taylor_Pade_log.R')
+source('../Taylor_Pade_log.R')
 ```
 
 ## Exemple II, erreurs d'approximation
 
 ```{r Taylor_Pade_log_error}
-source('Taylor_Pade_log_error.R')
+source('../Taylor_Pade_log_error.R')
 ```
 
-## Les approximations basées sur les évaluations sur une grille
+## Les approximations fondée sur des évaluations en une grille
 
-- Abordons maintenant les expansions basées sur les évaluations sur une grille :
+- Nous abordons maintenant les approximations fondées sur des évaluations en une grille de points :
     - approximation constante par morceaux
     - approximation linéaire par morceaux
-    - approximation de Bernstein (pas une interpolation)
+    - approximation de Bernstein (non interpolante)
     - approximation par spline cubique d'hermite
 
 - Les trois premiers utilisent les évaluations $f(x_1),\ldots,f(x_n)$ sur une grille $x_1,\ldots,x_n$ et les approximations $\hat{f}(x)$ sur $[x_1,x_n]$ prennent la forme
 \[
-  \hat{f}(x) = \sum_{i=1}^n f(x_i) \phi_i(x).
+  \hat{f}(x) = \sum_{i=1}^n f(x_i) \varphi_i(x).
 \]
 - Deux propriétés possibles :
-    - partition d'unité : $\sum_{i=1} \phi_i(x) = 1$ pour $x \in [x_1,x_n)$
+    - partition d'unité : $\sum_{i=1} \varphi_i(x) = 1$ pour $x \in [x_1,x_n)$
     - interpolation : $\hat{f}(x_i) = f(x_i)$ pour $i=1,\ldots,n$.
 
 ## Approx. constante par morceaux et linéaire par morceaux
 
-![](./Figures/const_lineaire.pdf)
+![](../Figures/const_lineaire.pdf)
 
 ## Approximations par morceaux
 
-![](./Figures/Par_morceaux.png)
+![](../Figures/Par_morceaux.png)
 
 ## Polynômes de Bernstein d'ordre $n=10$
 
 ```{r Bernstein, warning=FALSE}
-source('Bernstein.R')
+source('../Bernstein.R')
 ```
 
 ## Approximation de Bernstein
 
-- Approximation d'une fonction $g \colon [a,b] \to \mathbb{R}$.
+- Approximation d'une fonction continue $g \colon [a,b] \to \mathbb{R}$.
 - On normalise à $f \colon [0,1] \to \mathbb{R}$ avec $f(x) \equiv g(a+x(b-a))$.
 - L'approximation d'ordre $n$ utilise les évaluations de $f$ sur une grille
 $(0,\frac{1}{n},\ldots,\frac{n-1}{n},1)$.
@@ -153,29 +161,32 @@ $(0,\frac{1}{n},\ldots,\frac{n-1}{n},1)$.
 \[
   \hat{f}_n(x) = \sum_{i=0}^n f(\tfrac{i}{n}) b_{i,n}(x),
 \]
-où $b_{i,n}$ est le i-ième polynôme de Bernstein de degré $n$ :
+où $b_{i,n}(x)$ est le i-ième polynôme de Bernstein de degré $n$ :
 \[
   b_{i,n}(x) = {n \choose i} x^i (1-x)^{n-i}.
 \]
+
+## Propriétés des approximation de Bernstein
+
+- $b_{i,n}(x)$, $i=0,1,\ldots,n$ est une partition d'unité sur $[0,1]$.
 - Convergence uniforme : $\lim_{n\to \infty} \sup_{x \in [0,1]} |f(x) - \hat{f}_n(x)| = 0$.
 - $\hat f$ n'est pas une interpolation de $f$ : $\hat f(\tfrac{i}{n}) \neq f(\tfrac{i}{n})$
 en général.
+- La convergence est lente, mais les dérivées continues existantes convergent également.
 
-## Autres notes sur l'approximation de Bernstein
+## Interprétations probabilistes
 
-- La convergence est lente, mais les dérivées existantes convergent également.
 - $(n+1) b_{i,n}(x)$ est la densité $\mathrm{Beta}(i+1, n-i+1)$ sur $[0,1]$.
 - Pour $\pi_i \geq 0$, $i=0,1,\ldots,n$, $\sum_{i=0}^n \pi_i = 1$, la fonction
 suivante est une densité, un mélange de densités Beta :
 \[
-  g(x) = \sum_{i=0}^n \pi_i b_{i,n}(x).
+  g(x) = (n+1) \sum_{i=0}^n \pi_i b_{i,n}(x).
 \]
 - Soit $G(x) = \int_0^x g(t)\, dt$, la fonction de répartition, un polynôme d'ordre $n+1$.
 - Pour une fonction de répartition parmétrique $F(x)$ sur $(-\infty, \infty)$,
 $H(x) = G(F(x))$ est une autre fonction de répartition sur $(-\infty, \infty)$.
 - La densité est $h(x) = g(F(x)) f(x)$.
-- Spécifier $F$ et $G$ est une façon de spécifier une loi non-paramétrique, comme une
-perturbation de $F(x)$.
+- Spécifier $F$ et $G$ revient à définir une loi non paramétrique, une perturbation flexible de la loi avec fonction de répartition $F(x)$.
 
 ## Approximation de $g(x) = e^x$ sur l'intervalle $[-2,2]$
 
@@ -204,6 +215,8 @@ lines(x, bernstein(f, 20, t), col='red')
 
 ## Splines cubiques d'hermite
 
+Les splines d’Hermite permettent une interpolation lisse tenant compte des dérivées.
+
 Quatre fonctions cubiques sur l'intervalle $[0,1]$ :
 \[
   \varphi_1(t) = 2t^3 - 3t^2 + 1, \quad \varphi_2(t) = t^3 - 2t^2 + t,
@@ -223,7 +236,7 @@ Quatre fonctions cubiques sur l'intervalle $[0,1]$ :
 ## Graphique, spline cubiques d'hermite
 
 ```{r Hermite_4}
-source('Hermite_piece.R')
+source('../Hermite_piece.R')
 ```
 
 ## Notes, splines cubiques d'hermite
@@ -238,7 +251,7 @@ source('Hermite_piece.R')
     - cubique par morceaux $[x_i,x_{i+1}]$, (piecewise cubic function)
     - $C^1$ dans l'intervalle $[x_1, x_n]$,
     - ayant une deuxième dérivée discontinue à chaque $x_i$.
-- Il faut transformer les fonctions $\varphi_j \colon [0,1] \to \mathbb{R}$, $j=1,2,3,4$, pour obtenir les fonctions $\varphi_j \colon [x_i, x_{i+1}] \to \mathbb{R}$.
+- Il faut adapter les fonctions $\varphi_j \colon [0,1] \to \mathbb{R}$, $j=1,2,3,4$, pour obtenir les fonctions $\varphi_j \colon [x_i, x_{i+1}] \to \mathbb{R}$.
 - Il y a une version (rarement utilisée) avec six fonctions quintiques d'hermite
 qui donne une fonction $C^2$ à partir des valeurs, des premières dérivées et des deuxième
 dérivées à un ensemble de points.
@@ -280,11 +293,10 @@ plot(x, f_approx - exp(2*x), 'l', col='black')
 ## Aparté sur MCO
 
 - Moindres carrées ordinaire (MCO), rappel :
-    - Soit $X$ une matrice $n \times K$ de rang $K$, $y$ un vecteur $n \times 1$.
-    - Problème MCO : choisir $\beta$ qui minimise la somme de carrés
-$(y-X\beta)^\top(y-X\beta)$.
+    - $X$ est $n \times K$, $y$ est $n \times 1$.
+    - Problème MCO : $b = \arg\min_\beta (y-X\beta)^\top(y-X\beta)$.
     - Solution : $b = (X^\top X)^{-1}(X^\top y)$.
-    - La vecteur $\hat{y} \equiv Xb = (X(X^\top X)^{-1}X^\top) y$ est la combinaison linéaire des colonnes de $X$ le plus près de $y$.
+    - $\hat{y} \equiv Xb = (X(X^\top X)^{-1}X^\top) y$ approxime $y$ ($\hat y$ est la combinaison linéaire des colonnes de $X$ le plus près de $y$.
 
 - La matrice $M = X(X^\top X)^{-1}X^\top$ de "projection" :
     - Prenons une combinaison linéaire $Xa$ des colonnes de $X$.
@@ -292,7 +304,7 @@ $(y-X\beta)^\top(y-X\beta)$.
 \[
   M(Xa) = X(X^\top X)^{-1}X^\top Xa = Xa.
 \]
-    - Prenons $u$, $n\times 1$, perpendiculaire à toutes les colonnes de $X$.
+    - Prenons $u \in \mathbb{R}^n$ perpendiculaire à toutes les colonnes de $X$ :
 \[
   Mu = X(X^\top X)^{-1}X^\top u = X(X^\top X)^{-1} 0 = 0.
 \]
@@ -301,7 +313,7 @@ $(y-X\beta)^\top(y-X\beta)$.
 
 ## $X$ avec colonnes orthogonales
 
-- Supposons que les colonnes de $X$ sont orthogonales. (Pas réaliste pour les données observées, possible dans le cas où $X$ est une matrice de conception pour une expérience.)
+- Supposons que les colonnes de $X$ soient orthogonales. (Pas réaliste pour les données observées, possible dans le cas où $X$ est une matrice de conception pour une expérience.)
 - Alors,
 \[
   X^\top X =
@@ -325,7 +337,7 @@ $(y-X\beta)^\top(y-X\beta)$.
   \hat{y} = Xb = \sum_{k=1}^K \frac{x_k^\top y}{x_k^\top x_k} x_k.
 \]
 - Chaque $\frac{x_k^\top y}{x_k^\top x} x_k$ est la projection de $y$ sur $x_k$.  
-- Notez bien les produits intérieurs.
+- Notez bien les produits intérieurs $x_k^\top y$, $x_k\top x_k$.
 
 ## MCO avec colonnes orthogales et l'approximation par projection
 
@@ -340,60 +352,51 @@ $(y-X\beta)^\top(y-X\beta)$.
 
 ## Familles de polynômes orthogonaux : produits intérieurs
 
-- Il y a plusieurs produits intérieurs possibles pour les espace des fonctions,
+- Il y a plusieurs produits intérieurs pour les fonctions,
 y compris
 \[
   \langle f, g \rangle \equiv \int_a^b f(x) g(x) w(x) \, dx,
 \]
 pour plusieurs choix de $(a,b)$ et $w \colon [a,b] \to \mathbb{R}$.
 
-- Trois cas classiques
+- Cas courants
 
 | Nom | $(a,b)$ | $w(x)$ |
-|-----|---------|--------|
+|-----|---|--------|
 | Jacobi   | $(-1,1)$           | $(1-x)^\alpha (1+x)^\beta$, $\alpha, \beta > -1$ |
+| Legendre | $(-1,1)$           | 1 |
+| Tchebyshev | $(-1,1)$         | $1/\sqrt{1-x^2}$ |
 | Laguerre | $(0,\infty)$       | $e^{-x}$ |
 | Hermite  | $(-\infty,\infty)$ | $e^{-x^2}$ | 
 
-- Pour quelles valeurs de $\alpha$, $\beta$ est-ce que les fonctions $w(x)$ des cas
-Legendre et Tchebyshev sont des cas spécial de $w(x) = (1-x)^\alpha (1+x)^\beta$?
+- Legendre et Tchebyshev : cas spéciaux de Jacobi.
 
 ## Importance de l'orthogonalité
 
-- Un problème de moindres carré : choisir un polynôme d'ordre $n$ pour minimiser
-la distance carrée (selon le produit intérieur spécifié par $(a,b)$ et $w(\cdot)$) entre
-le polynôme et une fonction $f \colon (a,b) \to \mathbb{R}$ donnée :
+- Un problème de moindres carré : trouver le polynôme d'ordre $n$ qui minimise la distance (selon le produit intérieur spécifié) à une fonction $f \colon (a,b) \to \mathbb{R}$ donnée :
 \[
   \min_{p \in {\cal P}_n} \langle f-p, f-p \rangle = \min_{p \in {\cal P}_n} \int_a^b (f(x) - p(x))^2 w(x)\; dx.
 \]
 - Si on a une famille $\{\varphi_k(x)\}_{k=0}^\infty$ de polynômes orthogonaux
-(toujours par rapport à $(a,b)$ et $w(\cdot)$) la solution du problème de moindres carrés
-est
+(par rapport à $(a,b)$ et $w(\cdot)$) la solution est
 \[
   p(x) = \sum_{k=0}^n
   \frac{\langle f, \varphi_k \rangle}{\langle \varphi_k, \varphi_k \rangle} \varphi_k(x).
 \]
-- les monômes, $1, x, x^2, \ldots$ ne sont pas orthogonaux, peu importe le choix de produit intérieur.
 
-## L'orthogonalisation de polynômes
 
-- Pour un ensemble de vecteurs d'un espace pré-hilbertien
-(inner product space), l'algorithme de Gram-Schmidt crée un ensemble de
-vecteurs orthogonaux engendrant le même espace.
-- L'application de l'algorithme à l'ensemble des monômes donne les formules
-de récursion relativement simples.
-- Par exemple, les polynômes de Tchebyshev ($(a,b) = (-1,1)$, $w(x) = (1-x^2)^{-1/2}$)
-sont définie par $T_0 = 1$, $T_1 = x$, $T_{n+1}(x) = 2xT_n(x) - T_{n-1}(x)$, alors
+## Trouver des polynomes orthogonaux
+
+- Les monômes, $1, x, x^2, \ldots$ ne sont jamais orthogonaux.
+- L'algorithme de Gram-Schmidt génère des polynômes orthogonaux (voir Annexe).
+- Par example, un choix de produit intérieur donne le système de polynômes orthogonaux Tchebyshev sur $[-1,1]$ :
 \[
-  T_2(x) = 2xT_1(x) - T_0(x) = 2x^2 - 1,
+  T_0 = 1, \quad T_1 = x, \quad T_2 = 2x^2 - 1, \quad T_3 = 4x^3 - 3x, \quad \ldots
 \]
-\[
-  T_3(x) = 2xT_2(x) - T_1(x) = 4x^3 - 2x - x = 4x^3 - 3x.
-\]
-- Pour $n$ pair (impair), $T_n(x)$ est une fonction pair (impair).
-- La solution, en forme réduite, est $T_n(x) = \cos(n\cos^{-1} x)$.
-- Pour évaluer une expansion $\sum_{k=1}^n a_k T_k(x)$ à un point, on peut
-évaluer dans un premier temps, les $T_k(x)$ avec la récursion.
+- Les polynomes d'ordre pair (impair) sont pairs (impairs).
+- Les exercices et les questions d'examen sont plus faciles si on utilise les faits suivants :
+    - l'intégral sur $[-a, a]$ d'une fonction impaire est zéro.
+    - Le produit d'une fonction paire et une fonction impaire est impair.
 
 ## Notes sur les polynômes
 
@@ -411,7 +414,7 @@ est difficile, mais une solution moindres carrés est souvent près du minimum.
 
 - Trouvez $p_n(x)$ qui minimise $\langle f - p_n, f - p_n \rangle$ est facile en
 principe, mais
-    - les produits intérieurs sont rarement faisable de façon analytique
+    - les produits intérieurs sont rarement faisables de façon analytique
     - les intégrales numériques sont coûteux
 
 ## Approximation moindres carrés de $x^3$
@@ -442,7 +445,7 @@ lines(x, 0.6*x, col='green') # Meilleur approx. MC
 lines(x, 0.75*x, col='red')  # Meilleur approx. uniforme
 ```
 
-## Meilleures approximations de $x^3$, cont.
+## Meilleures approximations de $x^3$ (suite)
 
 ```{r x_cube_error}
 x = seq(-1, 1, by=0.001)
@@ -450,4 +453,24 @@ plot(x, x^3 - 0.6*x, type='l', col='green') # Meilleur approx. MC
 lines(x, x^3 - 0.75*x, col='red')  # Meilleur approx. uniforme
 abline(h=-0.25, lty='dashed', col='grey')
 ```
+
+## Annexe : l'orthogonalisation de polynômes
+
+- Pour un ensemble de vecteurs d'un espace pré-hilbertien
+(inner product space), l'algorithme de Gram-Schmidt crée un ensemble de
+vecteurs orthogonaux engendrant le même espace.
+- L'application de l'algorithme à l'ensemble des monômes donne les formules
+de récursion relativement simples.
+- Par exemple, les polynômes de Tchebyshev ($(a,b) = (-1,1)$, $w(x) = (1-x^2)^{-1/2}$)
+sont définie par $T_0 = 1$, $T_1 = x$, $T_{n+1}(x) = 2xT_n(x) - T_{n-1}(x)$, alors
+\[
+  T_2(x) = 2xT_1(x) - T_0(x) = 2x^2 - 1,
+\]
+\[
+  T_3(x) = 2xT_2(x) - T_1(x) = 4x^3 - 2x - x = 4x^3 - 3x.
+\]
+- Pour $n$ pair (impair), $T_n(x)$ est une fonction pair (impair).
+- La solution, en forme réduite, est $T_n(x) = \cos(n\cos^{-1} x)$.
+- Pour évaluer une expansion $\sum_{k=1}^n a_k T_k(x)$ à un point, on peut
+évaluer dans un premier temps, les $T_k(x)$ avec la récursion.
 
