@@ -166,7 +166,7 @@ où $b_{i,n}(x)$ est le i-ième polynôme de Bernstein de degré $n$ :
   b_{i,n}(x) = {n \choose i} x^i (1-x)^{n-i}.
 \]
 
-## Propriétés des approximation de Bernstein
+## Propriétés de l'approximation de Bernstein
 
 - $b_{i,n}(x)$, $i=0,1,\ldots,n$ est une partition d'unité sur $[0,1]$.
 - Convergence uniforme : $\lim_{n\to \infty} \sup_{x \in [0,1]} |f(x) - \hat{f}_n(x)| = 0$.
