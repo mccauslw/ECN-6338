@@ -15,9 +15,9 @@ urlcolor: blue
     - Règle de trapèze
     - Règle de Simpson
 - Formules (ou règles) de Gauss pour l'intégration univariée
-    - Règle de Gauss-Legendre et les enchères
-    - Règle de Gauss-Laguerre et l'utilité actualisée
-    - Règle de Gauss-Hermite et les espérances gaussiennes
+    - Règle de Gauss-Legendre, application aux enchères
+    - Règle de Gauss-Laguerre, application à l'utilité actualisée
+    - Règle de Gauss-Hermite, application aux espérances gaussiennes
 - Intégration multivariée par intégration univariée répétée (et ses limites)
 - Dérivation numérique
 
@@ -50,8 +50,8 @@ x <- seq(0, 1, length=1000)
 ## Graphiques de $F$, $f$ pour les valeurs privées
 
 ```{r FenchereGraph}
-plot(x, fv(x), type='l')
-lines(x, Fv(x), col='blue')
+plot(x, fv(x), type='l')    # densité en noir
+lines(x, Fv(x), col='blue') # fct de répartition en bleu
 ```
 
 ## Formules de Newton-Cotes pour l'intégration univarié
@@ -96,14 +96,14 @@ lines(x, Fv(x), col='blue')
 - Le premier terme est l'approximation de l'intégrale par la méthode du point médian.
 - Le deuxième terme est l'erreur.
 
-## La version composite de règle du point médian
+## La version composite de la règle du point médian
 
 - Décomposer l'intervalle $[a,b]$ en $n$ sous-intervalles de longueur $h = \tfrac{b-a}{n}$.
 - Les points médians des sous-intervalles sont
 \[
   x_j = a + (j-\tfrac{1}{2})h, \quad j=1,2,\ldots,n.
 \]
-- Décomposer l'intégral par intervalle et utiliser la règle du point médian, intervalle par intervalle, donne, pour un $\xi \in [a,b]$,
+- Décomposer l'intégrale par intervalle et utiliser la règle du point médian, intervalle par intervalle, donne, pour un $\xi \in [a,b]$,
 \[
   \int_a^b f(x)\,dx = h \sum_{j=1}^n f(x_j) + \frac{h^2(b-a)}{24}f''(\xi).
 \]
@@ -115,7 +115,7 @@ lines(x, Fv(x), col='blue')
   \int_a^b f(x)\,dx = \tfrac{b-a}{2} [f(a) + f(b)] - \tfrac{(b-a)^3}{12} f''(\xi).
 \]
 - Pour la version composite,
-    - toutes les points d'évaluation, sauf deux, sont des points extrèmes de deux intervalles.
+    - tous les points d'évaluation, sauf les extrémités, servent à deux intervalles.
     - décomposer l'intervalle $[a,b]$ en $n$ sous-intervalles de longueur $h = \tfrac{b-a}{n}$.
     - les points extrêmes sont $x_i = a + ih$, $i=0,\ldots,n$.
     - le résultat est, pour $\xi \in [a,b]$,
@@ -144,8 +144,8 @@ points(c(0, 0.5, 1), c(3, 4.25, 5), pty=18)
 
 ## La règle de Simpson (suite)
 
-- La règle de Simpson simple donne l'intégral exacte d'une approximation quadratique
-- La version composite donne, avec les mêmes $n$ évaluations que la version composite de le règle de trapèze
+- La règle de Simpson simple donne l'intégrale exacte d'une approximation quadratique
+- La version composite donne, avec les mêmes $n$ évaluations que la version composite de la règle de trapèze
 (mais $n/2$ intervalles de longueur $2h$ et $n$ doit être pair),
 \[
   \begin{aligned}
@@ -166,10 +166,10 @@ où $f_i \equiv f(x_i)$.
 | `v2` | vecteur | bornes des intervalles $(0, \tfrac{1}{n}, \tfrac{2}{n}, \ldots, 1)$ |
 | `f1`, `f2` | vecteur | valeurs de $F(v)^{n-1}$ sur les grilles `v1` et `v2` |
 | `v_me` | vecteur | grille de valeurs de $v$ pour évaluer $b(v)$, méthode de médiane |
-| `I_me` | vecteur | l'intégrale $\int_{v_{\min}}^v F(x)^{n-1}\,dx$ sur la grille `v_me` |
+| `I_me` | scalaire | l'intégrale cumulé $\int_{v_{\min}}^v F(x)^{n-1}\,dx$ au point actuel de la grille `v_me` |
 | `b_me` | vecteur | valeurs de $b(v)$ sur le grille `v_me` |
-| `I_tr`, \&c | vecteur | Comme `I_me`, méthode de trapezoïde |
-| `I_S`, \&c | vecteur | Comme `I_S`, méthode de Simpson |
+| `I_tr`, \&c |  | Comme `I_me`, méthode de trapéze |
+| `I_S`, \&c |  | Comme `I_S`, méthode de Simpson |
 
 
 ## Trouver la fonction d'enchère $b(v)$
@@ -207,13 +207,13 @@ lines(NC32$v_S, NC32$b_S, col='blue')
 
 ## Règles gaussiennes
 
-- Comme les règles de Newton-Cotes, les règles gaussienne donnent des approximations
+- Comme les règles de Newton-Cotes, les règles gaussiennes donnent des approximations
 de la forme
 \[
   \int_a^b w(x) f(x)\, dx \approx \sum_{i=1}^N \omega_i f(x_i),
 \]
 pour une collection de paires $(\omega_i,x_i)$.
-- Résultat théorique  (Judd, théorème 7.2.1) : avec $N$ poids et $N$ noeuds les règles standards donnent la valeur exacte de l'intégral pour les polynômes d'ordre
+- Résultat théorique  (Judd, théorème 7.2.1) : avec $N$ poids et $N$ noeuds les règles standards donnent la valeur exacte de l'intégrale pour les polynômes d'ordre
 $2N-1$ et des formules pour le termes résiduels.
 - Différences, par rapport aux règles de Newton-Cotes :
     - les règles gaussiennes donnent les intégrales pondérées
@@ -283,7 +283,7 @@ de l'actualisation du consommateur donne
 \[
   \frac{1}{\rho} \int_0^\infty e^{-s} u(c(s/\rho)) \, ds,
 \]
-un intégral de la forme $\int_0^\infty e^{-x} g(x)\, dx$ (c.-à-d. $(a,b) = (0,\infty)$ et $w(x) = e^{-x}$), et donc disposé à approximation avec la règle Gauss-Laguerre.
+une intégrale de la forme $\int_0^\infty e^{-x} g(x)\, dx$ (c.-à-d. $(a,b) = (0,\infty)$ et $w(x) = e^{-x}$), et donc disposé à approximation avec la règle Gauss-Laguerre.
 
 ## Exercice 5, chapitre 7 de Judd
 
@@ -336,7 +336,7 @@ tbl <- tibble(Noeuds=nw$nodes, Poids=nw$weights)
 kable(tbl)
 ```
 
-## Valeurs de l'intégral pour $N=3, 5, 10$
+## Valeurs de l'intégrale pour $N=3, 5, 10$
 
 ```{r int-u-3-5-10}
 nw <- createNIGrid(d=1, type='GLa', level=3)
@@ -356,7 +356,7 @@ I10
 
 - Problème : évaluer $E[f(Y)]$ pour $Y \sim N(\mu, \sigma^2)$.
 
-- L'intégral est
+- L'intégrale est
 \[
   E[f(Y)] = (2\pi\sigma^2)^{-1/2} \int_{-\infty}^\infty e^{-\tfrac{1}{2\sigma^2}(y-\mu)^2} f(y)\,dy.
 \]
@@ -366,7 +366,7 @@ I10
   e^{-x^2}
   f(\mu + \sqrt{2}\sigma x)\, dx,
 \]
-un intégral de la forme $\int_{-\infty}^\infty e^{-x^2} g(x)\, dx$ (c.-à-d. $(a,b) = (-\infty,\infty)$ et $w(x) = e^{-x^2}$), et donc disposé à approximation avec la règle Gauss-Hermite.
+une intégrale de la forme $\int_{-\infty}^\infty e^{-x^2} g(x)\, dx$ (c.-à-d. $(a,b) = (-\infty,\infty)$ et $w(x) = e^{-x^2}$), et donc disposé à approximation avec la règle Gauss-Hermite.
 
 ## Exemple, Section 7.6 de Judd
 
@@ -448,7 +448,7 @@ optimise(Eu_x_minus, interval=c(0,2),
 ## Règles de produit pour l'intégration multivariée
 
 - L'intégration multivariée est difficile.
-- Les règles de produit sont des solutions de force brute qui marche quand
+- Les règles de produit sont des solutions de force brute qui fonctionnent lorsque
     - la région d'intégration est un espace produit, et
     - la dimension est basse (2-5)
 - Illustration de l'intégration sur $[-1,1]^d$ :
@@ -477,7 +477,7 @@ plot(nw$nodes[,1], nw$nodes[,2], cex=36*nw$weights, asp=1)
 \]
 exacte pour les polynômes multivariés jusqu'à l'ordre $2m-1$, dimension par dimension.
 - $m^d$ points pour $d$ dimensions!
-- Le théorème de Mysovskikh promet l'intégration exacte des polynôme d'ordre *total* $m$ avec un nombre comparable de points, mais ce n'est pas constructif.
+- Le théorème de Mysovskikh garantit l'intégration exacte des polynôme d'ordre *total* $m$ avec un nombre comparable de points, mais ce n'est pas constructif.
 - Il y a des formules pour les hyper-rectangles, les hypersphères, les simplexes, etc.
 
 ## Dérivation numérique
