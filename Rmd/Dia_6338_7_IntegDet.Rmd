@@ -145,15 +145,15 @@ points(c(0, 0.5, 1), c(3, 4.25, 5), pty=18)
 ## La règle de Simpson (suite)
 
 - La règle de Simpson simple donne l'intégrale exacte d'une approximation quadratique
-- La version composite donne, avec les mêmes $n$ évaluations que la version composite de la règle de trapèze
-(mais $n/2$ intervalles de longueur $2h$ et $n$ doit être pair),
+- La version composite donne, avec les mêmes $n+1$ évaluations que la version composite de la règle de trapèze avec $n$ intervalles de longueur $h$.
+- La règle comparable d Simpson utilise $n/2$ intervalles de longueur $2h$ et $n$ doit être pair) et donne :
 \[
   \begin{aligned}
   \int_a^b f(x)\, dx &= \tfrac{h}{3} [f_0 + 4f_1 + 2f_2 + 4f_3 + \cdots + 4f_{n-1} + f_n] \\
   &- \tfrac{h^4(b-a)}{180} f^{(4)}(\xi).
   \end{aligned}
 \]
-où $f_i \equiv f(x_i)$.
+où $f_i \equiv f(x_i) = f(a + ih)$.
 
 ## Notes pour comprendre le code pour $b(v)$
 
