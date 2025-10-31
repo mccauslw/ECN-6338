@@ -246,10 +246,10 @@ Vous pouvez utiliser le code de mes diapos.
 
 ### Exercices préliminaires
 
-Si vous avez besoin d'aide pour ces exercices, je suggère le site Wikipédia [ici](https://en.wikipedia.org/wiki/Inverse_transform_sampling).
+Si vous avez besoin d'aide pour ces exercices, je suggère le site Wikipédia [ici](https://en.wikipedia.org/wiki/Inverse_transform_sampling) sur la méthode .
 Sous "References" il y a un lien au livre célèbre et gratuit de [Devroye](http://www.eirene.de/Devroye.pdf) (1986) qui donne plus de détail 
 
-1. Soit $U \sim U([0,1])$ une variable aléatoire uniforme sur l'intervalle $[0,1]$.
+1. Soit $\lambda > 0$. Soit $U \sim U([0,1])$ une variable aléatoire uniforme sur l'intervalle $[0,1]$.
 Trouvez la densité de la variable aléatoire $X \equiv -(\log U)/\lambda$.
 Je suggère les étapes suivantes :
     a. Exprimez $F_X(x)$, la fonction de répartition de $X$ évaluée à $x$, comme la probabilité de l'évènement $X \leq x$.

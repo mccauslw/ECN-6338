@@ -35,10 +35,12 @@ par la moyenne
 \]
 où $\mu$ est la mesure de Lebesgue (volume) de $D$.
 
-## Deux types de suites
+## Deux types de suites : quasi- et pseudo-aléatoires
 
-- Une suite *quasi-aléatoire* est justifiée par ses propriétés de convergence en théorie des nombres.
-- Une suite *pseudo-aléatoire* est justifiée par la théorie de probabilité et la démonstration qu'elle se comporte comme une suite de variables aléatoires uniformes et indépéndentes.
+- Les suites de base sont des suites sur $[0,1]$.
+- De la flexibilité vient avec des transformations de ces suites.
+- Une suite *quasi-aléatoire* est justifiée par ses propriétés exactes de convergence en théorie des nombres.
+- Une suite *pseudo-aléatoire* est justifiée par la démonstration qu'elle se comporte comme une suite de variables aléatoires uniformes et indépéndentes. La théorie de probabilité suggère plusieurs implications qu'on peut tester.
 - En réalité, les deux types de suites sont déterministes.
 
 ## 400 points pseudo-aléatoire, 400 points quasi-aléatoire
@@ -77,7 +79,11 @@ abline(h=seq(0.0, 1.0, by=0.1), col='grey'); abline(v=seq(0.0, 1.0, by=0.1), col
 \]
 Pour la fonction $f(x) = x$ sur $[0,1]$,
 \[
-  \frac{1}{n} \sum_{i=1}^n f(x_i) = \frac{1}{n} \sum_{i=1}^n x_i \not\to \int_0^1 f(x)\, dx = \int_0^1 x\,dx = \tfrac{1}{2}.
+  \int_0^1 f(x)\, dx = \int_0^1 x\,dx = \tfrac{1}{2}.
+\]
+mais
+\[
+  \frac{1}{n} \sum_{i=1}^n f(x_i) = \frac{1}{n} \sum_{i=1}^n x_i \not\to \tfrac{1}{2}.
 \]
 
 ## Suites équidistribuées sur $D = [0,1]$
@@ -123,13 +129,15 @@ où $p_j$ est le $j$-ième nombre premier.
 
 - Une suite pseudo-aléatoire est une suite $\{u_i\}_{i=1}^\infty$ en $\mathbb{R}$ pour laquelle le modèle $u_i \sim \mathrm{iid}\, U([0,1])$ est "bonne".
 - R et d'autres langages ont des fonctions pour tirer des variables aléatoires de loi gamma (`rgamma`), beta (`rbeta`), gaussienne (`rnorm`) et plusieurs autres.
-- Tous les tirages sont construit à partir de suites pseudo-aléatoires uniformes.
+- Tous les tirages sont construits à partir de suites pseudo-aléatoires uniformes.
 - Une telle construction est toujours appuyée par un résultat qui dit que si $u_i \sim \mathrm{iid}\, U([0,1])$, les éléments (par exemple) du vecteur `rnorm(100)` sont iid $N(0,1)$.
 - L'hypothèse selon laquelle $X_i \sim \mathrm{iid}\,N(0,1)$, $i=1,2,\ldots$ a de nombreuses implications testables.
 
 ## Quelques implications de l'hypothèse $U_i \sim \mathrm{iid}\,U([0,1])$
 
-- Admettons qu'on peut prouver que si $U_i \sim \mathrm{iid}\,U([0,1])$, la suite construite $\{X_i\}_{i=1}^\infty$ est iid avec la même loi que la variable aléatoire $X$.
+- Soit $X$ une variable aléatoire qu'on veut simuler.
+
+- Admettons qu'on peut prouver que si $U_i \sim \mathrm{iid}\,U([0,1])$, la suite construite $\{X_i\}_{i=1}^\infty$ est iid avec la même loi que $X$.
 
 - D'autres implications de l'hypothèse : pour chaque $f\colon \mathbb{R}^d \to \mathbb{R}$ telle que $E[f(X)]$ et $\mathrm{Var}[f(X)]$ existent,
 \[
@@ -249,7 +257,7 @@ Preuve de 2 :
 | Loi      | $F(x)$    | $F^{-1}(u)$ |
 |----------|-----------|-------------|
 | Exponentiel            | $1-e^{-\lambda x}$ | $\frac{1}{\lambda}\log(1-u)$ | 
-| Cauchy                 | $\tfrac{1}{2} + \tfrac{1}{\pi}\tan^{-1}\left(\tfrac{x-\bar{x}}{\sigma}\right)$ | $\bar{x} + \tan\left(\pi\left(u-\tfrac{1}{2}\right)\right)$ |
+| Cauchy                 | $\tfrac{1}{2} + \tfrac{1}{\pi}\tan^{-1}\left(\tfrac{x-\bar{x}}{\sigma}\right)$ | $\bar{x} + \sigma \tan\left(\pi\left(u-\tfrac{1}{2}\right)\right)$ |
 | Pareto, $x \geq b > 0$ | $1-\left(\tfrac{b}{x}\right)^a$ | $\tfrac{b}{(1-u)^{1/a}}$ | 
 | Weibull, $x \geq 0$    | $1 - e^{(x/\lambda)^k}$ | ? | ? |
 
@@ -402,7 +410,7 @@ si $U \leq 1-\frac{(x-\lambda)^2}{2}$, sans évaluer la fonction exponentielle.
 
 ## La méthode Ziggurat
 
-![](./Figures/My_Ziggurat.pdf)
+![](../Figures/My_Ziggurat.pdf)
 
 ## Commentaires sur la construction de la Ziggurat
 
@@ -431,13 +439,13 @@ si $U \leq 1-\frac{(x-\lambda)^2}{2}$, sans évaluer la fonction exponentielle.
 
 ## Une Ziggurat (édifice religieux mésopotamien)
 
-![Ziggurat](./Figures/Ziggurat.jpg){width=80%}
+![Ziggurat](../Figures/Ziggurat.jpg){width=80%}
 
 ## Ziggurat de neige
 
-![Ziggurat de neige](./Figures/Snow_Ziggurat.pdf){width=80%}
+![Ziggurat de neige](../Figures/Snow_Ziggurat.pdf){width=80%}
 
-## Variables (pseudo)-aléatoires multivariée "faisables"
+## Variables (pseudo)-aléatoires multivariées "faisables"
 
 1. de la loi gaussienne multivariée (généralisation de la loi gaussienne)
 1. de la loi Dirichlet (généralisation de la loi beta)
