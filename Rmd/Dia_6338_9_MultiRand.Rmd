@@ -9,11 +9,11 @@ urlcolor: blue
 
 ## Survol du cours 9
 
-1. L'idée de l'exercice Monte Carlo, Monte Carlo avec chaînes markoviennes (MCMC)
+1. L'idée de l'exercice Monte Carlo, Monte Carlo avec chaînes de Markov (MCMC)
 1. MCMC avec le marche aléatoire de Metropolis
 1. Un modèle à deux paramètres
 1. Marche aléatoire pour le modèle à deux paramètres
-1. Échantillonage de Gibbs
+1. Échantillonnage de Gibbs
 1. Exemple probit, participation des femmes dans la population active
 1. Augmentation des données (data augmentation)
 
@@ -38,7 +38,7 @@ et un théorème central limite s'applique.
 
 ## Monte Carlo avec chaînes markoviennes (MCMC)
 
-- Le simple fait qu'on peut écrire la densité cible $p(\theta|y)$ ne veux pas dire qu'il est facile de tirer un échantillon iid de $\theta|y$.
+- Le simple fait qu'on peut écrire la densité cible $p(\theta|y)$ ne veut pas dire qu'il est facile de tirer un échantillon iid de $\theta|y$.
 - En fait, les tirages iid sont infaisables pour tous les modèles sauf les plus simples.
 - En pratique, on se contente de simuler une chaîne markovienne dont la loi cible est la loi stationnaire de la chaîne :
     - Une chaîne markovienne sur $\Theta$ a une loi de transition $\theta^{(m+1)}|\theta^{(m)}$.
@@ -56,14 +56,14 @@ et un théorème central limite s'applique.
 - La loi cible $\theta|y$ est l'unique loi invariante de la transition de Markov suivante, de $\theta^{(m)}$ à $\theta^{(m+1)}$, où $\Sigma$ est n'importe quelle matrice définie positive :
     1. Tirer $\theta^* \sim N(\theta^{(m)}, \Sigma)$
     1. Tirer $U$ de la loi uniform sur $[0,1]$.
-    1. Si $U \leq \frac{k(\theta^*)}{k(\theta^{(m)})}$ fixe $\theta^{(m+1)} = \theta^*$, sinon fixe $\theta^{(m+1)} = \theta^{(m)}$.
+    1. Si $U \leq \frac{k(\theta^*)}{k(\theta^{(m)})}$ on fixe $\theta^{(m+1)} = \theta^*$, sinon on fixe $\theta^{(m+1)} = \theta^{(m)}$.
 
 - La loi normale de l'étape 1 peut être remplacée par n'importe quelle loi symétrique autour de zéro.
 
-- Elle peut être remplacé par une loi asymétrique, avec une modification appropriée du seuil à l'étape 3.
+- Elle peut être remplacée par une loi asymétrique, avec une modification appropriée du seuil à l'étape 3.
 (Mise à jour Metropolis-Hastings)
 
-- Notez que le *ratio de Hastings* $k(\theta^*)/k(\theta^{(m)})$ égale à $p(\theta^*|y)/p(\theta^{(m)}|y)$ pour la densité cible normalisée $p(\theta|y)$.
+- Remarquez que le *ratio de Hastings* $k(\theta^*)/k(\theta^{(m)})$ égale à $p(\theta^*|y)/p(\theta^{(m)}|y)$ pour la densité cible normalisée $p(\theta|y)$.
 
 ## Metropolis, $N(0,1)$ target, $\sqrt{\Sigma}=0.24, 2.4, 24$
 
@@ -101,7 +101,7 @@ for (i in 1:3) {
 - Il y a un théorème central limite pour $M^{-1} \sum_{m=1}^M g(\theta^{(m)})$.
 - Le paquet \texttt{mcmcse} calcule l'écart-type de cette moyenne.
 - L'efficacité numérique relative donne le nombre de tirages iid qui équivaut à chaque tirage MCMC.
-- Voici les calcules pour $M^{-1} \sum_{m=1}^M \theta^{(m)}$ (pour $g(\theta) = \theta$)
+- Voici les calculs pour $M^{-1} \sum_{m=1}^M \theta^{(m)}$ (pour $g(\theta) = \theta$)
 ```{r mcmcse, warning=FALSE, message=FALSE}
 library(mcmcse); library(tidyverse); library(knitr)
 mn <- rep(0, 3); sd <- rep(0, 3); nse <- rep(0, 3); rne <- rep(0, 3)
@@ -201,7 +201,7 @@ Ainsi
 ## Données artificielles pour le modèle à deux paramètres
 
 ```{r don.art}
-# Vraies valeurs des paramètres
+# Valeurs vraies des paramètres
 vrai_mu <- 6
 vrai_h <- 0.04
 vrai_sigma <- 1/sqrt(vrai_h)
@@ -220,16 +220,16 @@ mu_bar <- 10
 omega_bar <- 0.01
 ```
 
-## Fonctions de log densité
+## Fonctions de log-densité
 
 ```{r lnf}
-# Log densité des données
+# Log-densité des données
 lnp_y__mu_h = function(mu,h) {
   lnp <- (n/2)*(log(h) - log(2*pi)) -
 	  0.5*h*n*(y2_bar - 2*y_bar*mu + mu^2)	
 }
 
-# Log densités a priori de (mu, h)
+# Log-densités a priori de (mu, h)
 lnp_mu <- function(mu, mu_bar=10, omega_bar=0.01) {
   lnp <- dnorm(mu, mu_bar, 1/sqrt(omega_bar), log=T)
 }
@@ -237,7 +237,7 @@ lnp_h <- function(h, nu_bar=4, s2_bar=0.01) {
   lnp <- log(s2_bar) + dchisq(h*s2_bar, nu_bar, log=T)
 }
 
-# Log densité a posteriori de (mu, h)|y, pas normalisée
+# Log-densité a posteriori de (mu, h)|y, pas normalisée
 lnp_mu_h__y <- function(mu, h) {
   lnp <- lnp_mu(mu) + lnp_h(h) + lnp_y__mu_h(mu, h)
 }
@@ -246,7 +246,7 @@ lnp_mu_h__y <- function(mu, h) {
 ## La densité a posteriori, code pour un graphique
 
 ```{r graph_post_code}
-# Faire la graphique de la log densité a posteriori,
+# Faire le graphique de la log-densité a posteriori,
 # comme fonction de (mu, h)
 lnp_post <- function() {
 	mu <- seq(0, 12, by=0.01)
@@ -294,7 +294,7 @@ Metro.sim = function(M) {
 lnp_post(); set.seed(123); sim <- Metro.sim(100); lines(sim$mu, sim$h, col='red')
 ```
 
-## Échantillonage de Gibbs
+## Échantillonnage de Gibbs
 
 - Décomposer le vecteur $\theta$ en blocs : $\theta = (\theta_1,\ldots,\theta_J)$
 - L'idée de base : une mise à jour de $\theta_i$ à $\theta_i'$ qui préserve la distribution conditionnelle $\theta_i|\theta_{-i},y$ préserve la distribution $\theta|y$.
@@ -309,7 +309,7 @@ lnp_post(); set.seed(123); sim <- Metro.sim(100); lines(sim$mu, sim$h, col='red'
 - On répète le balayage $M$ fois pour obtenir un échantillon $\theta^{(m)}$, $m=1,\ldots,M$.
 - "Diviser pour vaincre", si l'ensemble d'étapes est plus facile que le problème entier.
 
-## Échantillonage de Gibbs, modèle à deux paramètres
+## Échantillonnage de Gibbs, modèle à deux paramètres
 
 Si on connaissait $\textcolor{red}{h}$, tirer $\textcolor{blue}{\mu}$ de la loi $\textcolor{blue}{\mu}|\textcolor{red}{h},y$ serait simple :
 \[
@@ -357,7 +357,7 @@ où $\bar{\bar{\omega}} = \bar{\omega} + \textcolor{red}{h}n$ et
   \bar{\bar{\omega}}^{-1} (\bar{\omega}\bar{\mu} + \textcolor{red}{h}n\bar{y}).
 \]
 
-## Échantillonage de Gibbs, tirage de $\textcolor{red}{h}$
+## Échantillonnage de Gibbs, tirage de $\textcolor{red}{h}$
 
 Si on connaissait $\textcolor{blue}{\mu}$, tirer $\textcolor{red}{h}$ de $\textcolor{red}{h}|\textcolor{blue}{\mu},y$ serait simple :
 \[
@@ -366,7 +366,7 @@ Si on connaissait $\textcolor{blue}{\mu}$, tirer $\textcolor{red}{h}$ de $\textc
    	-\frac{\textcolor{red}{h}}{2}\left[\bar{s}^2 + \sum_{t=1}^n (y_t-\textcolor{blue}{\mu})^2\right]
  	\right\}.
 \]
-Rapellons que $\bar{s}^2 \textcolor{red}{h} \sim \chi^2(\bar{\nu})$ et
+Rappelons que $\bar{s}^2 \textcolor{red}{h} \sim \chi^2(\bar{\nu})$ et
 \[
   p(\textcolor{red}{h}) = [2^{\bar{\nu}/2} \Gamma(\bar{\nu}/2)]^{-1}
   (\bar{s}^2)^{\bar{\nu}/2}
@@ -380,7 +380,7 @@ Alors
 où $\bar{\bar{s}}^2 = \bar{s}^2 + \sum_{t=1}^n (y_t - \textcolor{blue}{\mu})^2$
 et $\bar{\bar{\nu}} = \bar{\nu} + n$.
 
-## Code pour l'échantillonage, modèle à deux paramètres
+## Code pour l'échantillonnage, modèle à deux paramètres
 
 ```{r muh_Gibbs}
 Gibbs.sim <- function(M) {
@@ -406,6 +406,7 @@ Gibbs.sim <- function(M) {
 ## Résultats, trace
 
 ```{r Gibbs resultat, echo=FALSE}
+set.seed(1234567)
 sim_G <- Gibbs.sim(1000)
 par(mfrow = c(2, 1), mar = c(4, 4, 0.5, 0.5))
 plot(sim_G$mu, col='blue'); plot(sim_G$h, col='red')
@@ -420,18 +421,23 @@ hist(sim_G$mu, 50, col='blue'); hist(sim_G$h, 50, col='red')
 
 ## Résultats, écarts-types numériques pour $\textcolor{blue}{\mu}$
 
-```{r nsemu, message=FALSE, warning=FALSE}
+```{r nsemu, message=FALSE, results='asis', warning=FALSE}
 library(mcmcse)
-mcse(sim_G$mu)
-sd(sim_G$mu)
+se <- mcse(sim_G$mu, size='sqroot', method="obm")
+se
+std <- sd(sim_G$mu)
+rne <- (std/se$se)^2/M
+fmt <- "moy = %f, std = %f, se = %f, rne = %f\n"
+cat(sprintf(fmt, se$est, std, se$se, rne))
 ```
 
 ## Résultats, écarts-types numériques pour $h$
 
-```{r nseh, message=FALSE, warning=FALSE}
-library(mcmcse)
-mcse(sim_G$h)
-sd(sim_G$h)
+```{r nseh, message=FALSE, results='asis', warning=FALSE}
+se <- mcse(sim_G$h, size='sqroot', method="obm")
+std <- sd(sim_G$h)
+rne <- (std/se$se)^2/M
+cat(sprintf(fmt, se$est, std, se$se, rne))
 ```
 
 ## Exemple économétrique (Exemple 17.1 de Wooldridge)
@@ -453,17 +459,17 @@ sd(sim_G$h)
 - Toutefois, il y a une variable aléatoire $z$ telle que on peut simuler facilement
     - $\theta|z,y$,
     - $z|\theta,y$.
-- On utilise l'échantillonage de Gibbs pour tirer un échantillon de $\theta,z|y$.
-- On peut toujours ignorer $z$, mais $z$ peut être utile.
+- On utilise l'échantillonnage de Gibbs pour tirer un échantillon de $\theta,z|y$.
+- On peut toujours ignorer $z$, mais quelquefois $z$ est intéresant en soi.
 
 ## Augmentation des données
 
-- La densité *a posteriori* non-normalisé pour le modèle Probit :
+- La densité *a posteriori* non-normalisée pour le modèle Probit :
 \[
   f(\beta|y) \propto \exp\left[-\tfrac{1}{2}(\beta - \bar{\beta})^\top \bar{H} (\beta - \bar\beta)\right]
   \prod_{i=1}^n \Phi(x_i \beta)^{y_i} (1-\Phi(x_i \beta))^{1-y_i}.
 \]
-- Un modèle d'utilité aléatoire où pour chaque femme $i$ :
+- Un modèle d'utilité aléatoire : pour chaque femme $i$,
     - $y_i^*$ est la différence d'utilité entre participer dans la population active et ne pas participer.
     - Sachant $x_i$ et $\beta$, $y_i^* = x_i \beta - u_i$ où $u_i \sim N(0, 1)$.
     - $y_i = 1$ si $y_i^* \geq 0$.
@@ -502,7 +508,7 @@ sd(sim_G$h)
     &\cdot [y_i 1_{[0,\infty)}(y_i^*) + (1-y_i) 1_{(-\infty,0)}(y_i^*)]
   \end{aligned}
 \]
-- La loi conditionnelle *a posteriori* est $N(x_i\beta, 1)$ tronquée à
+- La loi conditionnelle *a posteriori* suit une $N(x_i\beta, 1)$ tronquée à
     - $[0,\infty)$ si $y_i = 1$,
     - $(-\infty,0)$ si $y_i = 0$.
 
@@ -556,15 +562,15 @@ où $b = (X^\top X)^{-1} X^\top y^*$.
 
 ## Quatre femmes de l'échantillon
 
-- Les 2 premières femmes ci-bas sont dans la population active
+- Les 2 premières femmes ci-dessous font partie de la population active
     - la décision de la femme 26 est relativement attendue
     - la décision de la femme 119 est relativement inattendue
-- Les 2 dernières ne sont pas dans la population active
+- Les 2 dernières ne font pas partie de la population active
     - la décision de la femme 502 est relativement inattendue
     - la décision de la femme 715 est relativement attendue
 
 ```{r pop_active, warning=FALSE}
-source('pop_active.R')
+source('../pop_active.R')
 X_tbl[c(26, 119, 502, 715),]
 ```
 
