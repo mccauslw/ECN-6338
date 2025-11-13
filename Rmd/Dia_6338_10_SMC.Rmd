@@ -11,7 +11,7 @@ urlcolor: blue
 
 1. Échantillonnage préférentiel
 1. Ré-échantillonnage
-1. SMC (Monte Carlo séquentiel)
+1. SMC (Monte Carlo Séquentiel)
     a. Séquence de densités
     a. L'algorithme SMC
     a. Détails
@@ -116,17 +116,17 @@ la densité $p(x)$).
 où $w^{(m)} \equiv h(x^{(m)})/p(x^{(m)})$.
 - Et alors (par le théorème Mann-Wald ou continuous mapping theorem)
 \[
-  \frac{\sum_{m=1}^M w^{(m)} g(x^{(m)})}{\sum_{m=1}^M w^{(m)}} \overset{p}{\to} E_f[g(x)].
+  r \equiv \frac{n}{d} \equiv \frac{\sum_{m=1}^M w^{(m)} g(x^{(m)})}{\sum_{m=1}^M w^{(m)}} \overset{p}{\to} E_f[g(x)].
 \]
 
 ## Autres notes sur l'échantillonnage préférentiel
 
 - Les $w^{(m)}$ sont pareilles pour chaque choix de $g(\cdot)$ : une seule simulation, même pour plusieurs $g(\cdot)$.
-- Dans un sens, l'échantillon pondéré $(w^{(m)}, x^{(m)})$ représente la loi cible.
+- Dans un sens, l'échantillon pondéré $(w^{(m)}, x^{(m)})$ *représente* la loi cible : il y a une loi de grands nombres et un théorème central limite.
 - On peut faire les simulations de $p(x)$ par
     - tirages iid,
-    - méthodes de réduction de variance,
     - nombres quasi-aléatoires aléatorisés,
+    - autres méthodes de réduction de variance,
     - méthodes MCMC.
 - L'interprétation de l'intégration par l'échantillonnage préférentiel comme un changement de variables (Judd, pages 294-5) est très intéressante.
 
@@ -216,7 +216,8 @@ points(x_rnd, cex=2*sqrt(w2))
 $k^{(0)}(\theta),\, k^{(1)}(\theta),\, \ldots k^{(L)}(\theta)$, où
 $k^{(0)}(\theta) = f^{(0)}(\theta)$ est normalisée.
 
-* Il est facile de simuler la loi avec densité $f^{(0)}(\theta)$.
+* Il faut simuler la loi avec densité $f^{(0)}(\theta)$.
+    - Normalement, cette simulation est facile.
 
 * Le dernier noyau de densité $k^{(L)}(\theta)$ est de la loi cible.
 
@@ -267,7 +268,7 @@ lines(x, target_fcn(x, 0.8), col='green')
 \[
   k^{(l)}(\theta) = p_0(\theta) [p(y|\theta)]^{\gamma_l}, \quad 0 = \gamma_0 < \gamma_1 < \ldots
 \]
-1. Problème de filtrage, où $x_t$ est une suite d'états latente
+1. Problème de filtrage, où $x_t$ est une suite d'états latents
 \[
   p(x_t|y_{1:t}), \quad t=1,\ldots,T.
 \]
@@ -279,6 +280,8 @@ Les lois intermédiares peuvent être de l'intérêt dans les cas 2 et 4.
 ### Initialisation
 
 Tirer $\theta_n^{(0)} \sim f^{(0)}(\theta)$, $n=1,\ldots,N$, pour avoir un échantillon $(N^{-1}, \theta_n^{(0)})$ qui représente $f^{(0)}(\theta)$.
+
+## L'algorithme SMC (suite)
 
 ### Itération pour $l=1,\ldots,L$
 
@@ -301,7 +304,7 @@ Tirer $\theta_n^{(0)} \sim f^{(0)}(\theta)$, $n=1,\ldots,N$, pour avoir un écha
 
 ```{r cycle_two, echo=FALSE, message=FALSE, warning=FALSE}
 library(ggplot2)
-source('SMC.R')
+source('../SMC.R')
 SMC_plot <- ggplot(data=wx[wx$t<=15,], aes(x=t, y=x, size=w)) + geom_point(aes(colour=k)) + geom_line(aes(x=t, y=xs, group=m), size=0.5, alpha=0.2) + labs(y="x", x="stage") + ggtitle(NULL) + scale_size_continuous(range=c(0.5, 4))
 
 SMC_plot
@@ -386,4 +389,4 @@ La solution :
 
 ## Exemple empirque de Geweke et Durham (2019)
 
-![](DurhamGeweke.png)
+![](../DurhamGeweke.png)
