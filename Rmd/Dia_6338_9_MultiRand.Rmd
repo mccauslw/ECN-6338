@@ -21,7 +21,7 @@ urlcolor: blue
 
 Situations où l'intégration par Monte Carlo est convenable :
 
-- problèmes de haute dimension ($>20$)
+- problèmes de haute dimension ($>10$)
 - problèmes où on veut calculer plusieurs intégrales de la forme
 \[
   E_p[g_i(\theta)] = \int_D p(\theta) g_i(\theta)\, d\theta, \quad i=1,\ldots,J,
