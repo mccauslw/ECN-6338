@@ -9,7 +9,7 @@ urlcolor: blue
 
 ## Un problème d'optimisation dynamique déterministe à horizon fini
 
-- Objectif :
+- Objectif : choisir $(u_1,\ldots,u_T)$ pour maximiser
 \[
   \sum_{t=1}^T \pi(x_t, u_t, t) + W(x_{T+1}),
 \]
@@ -66,9 +66,9 @@ où
     - le flux de valeur est le dividende versé durant une période
 
 - Problème d'inventaire agricole (Judd, page 428)
-    - la décision est le choix d'intrants de production agricole
+    - la décision est la quantité d'un intrant de production agricole et la quantité du produit à consommmer
     - l'état est l'inventaire agricole
-    - l'état prochain est la production moins la consommation
+    - l'état prochain est l'état actuel plus la production moins la consommation
     - le flux de valeur est l'utilité de la consommation d'une période
     
 - Problème de gestion d'un forêt
@@ -112,7 +112,8 @@ Notes :
 \[
   U(x,t) = \arg\max_{u \in D(x,t)} \pi(x,u,t) + V(F(x, u, t), t+1).
 \]
-- $U(x,t)$, $V(x,t)$ sans mémoire, fonctions seulement de $x$ et $t$.
+- $U(x,t)$, $V(x,t)$ sont des fonctions seulement de $x$ et $t$.
+- La valeur de $x$ résume toute la mémoire du passé.
 
 ## Trouver la fonction de valeur $V(x, 1)$
 
@@ -122,8 +123,8 @@ défini par
 \[
   V(x,t) = \sup_{u \in D(x,t)} \pi(x,u,t) + V(F(x, u, t), t+1).
 \]
-- Attention : l'opérateur prend une fonction de $x$ et donne une fonction de $x$.
-La valeur de $t$ est fixe.
+- Attention : l'opérateur prend une fonction de $x$, $V(x,t+1)$, et donne une fonction de $x$, $V(x,t)$.
+La valeur de $t$ est fixe et les fonctions $\pi(\cdot)$ et $F(\cdot)$ sont primitives.
 
 ## Le problème déterministe à horizon infinie
 
@@ -141,10 +142,10 @@ ou $V = TV$; $V$ est une fonction de $x \in X$, $T$ est un opérateur.
 ## Le théorème des applications contractantes et l'itération de la fonction de valeur
 
 - Le théorème des applications contractantes (contraction mapping theorem) :
-si $0 < \beta < 1$, $\pi(x,u)$ est borné et $X$ est compacte,
-    - $T$ est monotone ($y_1 \geq y_2 \Rightarrow Ty_1 \geq Ty_2$)
+si $0 < \beta < 1$, $\pi(x,u)$ est borné et $X$ est compacte, alors
+    - $T$ est monotone ($V_1 \geq V_2 \Rightarrow TV_1 \geq TV_2$)
     - $T$ est une contraction de module $\beta$
-    ($\|Ty_1 - Ty_2\| \leq \beta \|y_1 - y_2\|$)
+    ($\|TV_1 - TV_2\| \leq \beta \|V_1 - V_2\|$)
     - $V = TV$ a une solution ($T$ a un point fixe) unique.
 - L'itération de la fonction de valeur donne une suite de fonctions de valeur $V^l$ qui converge vers $V$ : $V^{l+1} = TV^l$, ou
 \[
@@ -175,9 +176,9 @@ comme la variable de décision.
 \]
 - L'équation Bellman avec $V \colon K \to K$ au lieu de $V \colon \mathbb{R}_+ \to \mathbb{R}_+$ :
 \[
-  V(k) = \max_{k^+ \in K} u(F(k) - k^+) + \beta V(k^+).
+  V(k) = \max_{k^+ \in K,\,k^+ \leq F(k)} u(F(k) - k^+) + \beta V(k^+).
 \]
-- Elle est un système d'équations non-linéaire ; la solution est un vecteur.
+- Elle est un système d'équations non-linéaire ; la solution est un vecteur $(V(k^m),\ldots,V(k^M))$ qui vérifie les $|K|$ équations.
 
 ## Exemple (page 425)
 
@@ -193,7 +194,7 @@ Prenons :
 
 Notes :
 
-- $k^{ss}$ est un état stationnaire si $k^{ss} + f(k^{ss}) - U(k^{ss}) = k^{ss}$,
+- $k^{ss}$ est un état *stationnaire* si $k^{ss} + f(k^{ss}) - U(k^{ss}) = k^{ss}$,
 où $U(\cdot)$ est la fonction de décision optimale.
 - $\beta$ dans la fonction de production est étrange, le coefficient $(1-\beta)/(\alpha\beta)$ fait en sorte que $k^{ss} = 1$.
 
@@ -202,14 +203,14 @@ où $U(\cdot)$ est la fonction de décision optimale.
 - Distinguez $U_c(k)$, la fonction de décision qui donne la consommation actuelle, et $U_k(k)$, celle qui donne le capital prochain.
 - Notez que $U_c(k) = f(k)$ donne $k^+ = k$ ou $U_k(k) = k$.
 - Cette stratégie est faisable mais généralement sous-optimale lorsque $k \neq k^{ss} = 1$.
-- Autour de $k=k^{ss}$, $U_c(k)$ et $U_k(k)$ devraient être près de les fonctions de décision optimales.
+- Autour de $k=k^{ss}$, $U_c(k)$ et $U_k(k)$ devraient être près des fonctions de décision optimales.
 - La fonction de valeur (non-optimale) $V^c(k)$ associée à $U_c(k) = f(k)$ (non-optimale) vérifie
 \[
   V^c(k) = u(f(k)) + \beta V^c(k), \; \text{ou} \; V^c(k) = u(f(k))/(1-\beta).
 \]
 - Notez que $V^c(k) \leq V(k)$, où $V(k)$ est la fonction de valeur associée à la fonction de décision optimale.
 - Considérez aussi $V_z(k) = 0$ comme fonction de valeur initiale.
-- Dans le code suivant, $U$ signifie $U_k$.
+- Dans le code suivant, $U$ signifie $U_k$, le choix de capital comme fonction de capital.
 
 ## Code initial : préférences et technologies
 
@@ -244,10 +245,10 @@ u_k <- function(k, kplus) {
 }
 u_tab <- outer(k, k, u_k)
 
-# Fonction de valeur initial, épargne zéro
+# Fonction de valeur initiale, épargne zéro
 V_c <- u(f(k))/(1-beta)
 
-# Fonction de valeur initial, zéro
+# Fonction de valeur initiale, zéro
 V_z <- rep(0, N)
 ```
 
@@ -396,7 +397,7 @@ sous les contraintes décrites en termes de $F(\cdot)$, $D(\cdot)$ et $x_0$.
 
 ## Structure intertemporelle avec incertitude
 
-![Deux structures avec autosimilarité](./Figures/line_tree.png)
+![Deux structures avec autosimilarité](../Figures/line_tree.png)
 
 ## Les équations de Bellman dans le cas stochastique
 
