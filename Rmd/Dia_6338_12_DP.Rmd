@@ -44,7 +44,7 @@ où
 
 - Le modèle :
 \[
-  \max_{c_t} \sum_{t=0}^\infty \beta^t u(c_t) \quad \text{s.c.} \quad k_{t+1} = F(k_t) - c_t,
+  \max_{c_t} \sum_{t=0}^\infty \beta^t u(c_t) \quad \text{s.c.} \quad 0 \leq c_t \leq F(k_t), \; k_{t+1} = F(k_t) - c_t,
   \; k_0 \; \text{donné},
 \]
 
@@ -77,9 +77,9 @@ où
     - l'état prochain est déterminé par la croissance des arbres et les quantités récoltées,
     - le flux de valeur est le profit apporté par la récolte d'une période
     
-## La fonction de valeur
+## La fonction valeur
 
-La fonction de valeur est comme une fonction d'utilité indirecte :
+La fonction valeur est comme une fonction d'utilité indirecte :
 
 - Soit $u(x,y)$ la fonction d'utilité pour deux biens, en quantités $x$ et $y$.
 - La contrainte budgétaire est $p_x x + p_y y = m$.
@@ -88,7 +88,7 @@ La fonction de valeur est comme une fonction d'utilité indirecte :
   v(p_x, p_y, m) = \max_{x,y} u(x,y) \quad \text{s.c.} \quad p_x x + p_y y = m.
 \]
 
-La fonction de valeur pour le problème à horizon fini est
+La fonction valeur pour le problème à horizon fini est
 \[
   V(x,t) = \sup_{u_t,\ldots,u_T} \sum_{s=t}^T \pi(x_s, u_s, s) + W(x_{T+1}),
 \]
@@ -104,18 +104,18 @@ sous les contraintes
 
 Notes :
 
-- Une relation entre fonctions de valeur de différentes périodes :
+- Une relation entre fonctions valeur de différentes périodes :
 \[
   V(x,t) = \sup_{u \in D(x,t)} \pi(x,u,t) + V(F(x, u, t), t+1).
 \]
-- Si $u \in D(x,t)$ atteint le sup, la fonction de décision est
+- Si $u \in D(x,t)$ atteint le sup, la fonction politique est
 \[
   U(x,t) = \arg\max_{u \in D(x,t)} \pi(x,u,t) + V(F(x, u, t), t+1).
 \]
 - $U(x,t)$, $V(x,t)$ sont des fonctions seulement de $x$ et $t$.
 - La valeur de $x$ résume toute la mémoire du passé.
 
-## Trouver la fonction de valeur $V(x, 1)$
+## Trouver la fonction valeur $V(x, 1)$
 
 - Une condition terminal : $V(x,T+1) = W(x)$, une fonction connue.
 - Les autres $V(\cdot,t)$ par raisonnement à rebours : l'application de l'opérateur
@@ -128,18 +128,18 @@ La valeur de $t$ est fixe et les fonctions $\pi(\cdot)$ et $F(\cdot)$ sont primi
 
 ## Le problème déterministe à horizon infinie
 
-- La fonction de valeur est maintenant définie de façon récursive :
+- La fonction valeur est maintenant définie de façon récursive :
 \[
   V(x) = \sup_{u \in D(x)} \pi(x,u) + \beta V(F(x, u)),
 \]
 ou $V = TV$; $V$ est une fonction de $x \in X$, $T$ est un opérateur.
-- L'équation est une équation *fonctionnelle*, sa solution est $V$, la *fonction* de valeur.
-- Une fonction de décision est maintenant une fonction $U(x)$ qui vérifie
+- L'équation est une équation *fonctionnelle*, sa solution est $V$, la *fonction* valeur.
+- Une fonction politique est maintenant une fonction $U(x)$ qui vérifie
 \[
   U(x) \in \arg\max_{u \in D(x)} \pi(x,u) + \beta V(F(x, u)).
 \]
 
-## Le théorème des applications contractantes et l'itération de la fonction de valeur
+## Le théorème des applications contractantes et l'itération de la fonction valeur
 
 - Le théorème des applications contractantes (contraction mapping theorem) :
 si $0 < \beta < 1$, $\pi(x,u)$ est borné et $X$ est compacte, alors
@@ -147,11 +147,11 @@ si $0 < \beta < 1$, $\pi(x,u)$ est borné et $X$ est compacte, alors
     - $T$ est une contraction de module $\beta$
     ($\|TV_1 - TV_2\| \leq \beta \|V_1 - V_2\|$)
     - $V = TV$ a une solution ($T$ a un point fixe) unique.
-- L'itération de la fonction de valeur donne une suite de fonctions de valeur $V^l$ qui converge vers $V$ : $V^{l+1} = TV^l$, ou
+- L'itération de la fonction valeur donne une suite de fonctions valeur $V^l$ qui converge vers $V$ : $V^{l+1} = TV^l$, ou
 \[
   V^{l+1}(x) = \sup_{u \in D(x)} \pi(x,u) + \beta V^l(F(x, u)).
 \]
-- Un sous-produit est une suite de fonctions de décision $U^l$ correspondantes:
+- Un sous-produit est une suite de fonctions politiques $U^l$ correspondantes:
 \[
   U^{l+1}(x) \in \arg\max_{u \in D(x)} \pi(x,u) + \beta V^l(F(x, u)).
 \]
@@ -161,7 +161,7 @@ si $0 < \beta < 1$, $\pi(x,u)$ est borné et $X$ est compacte, alors
 ## Comment appliquer l'opérateur en pratique
 
 - Prenons l'exemple de l'accumulation de richesse.
-- La fonction de valeur est un point fixe de l'opérateur $T$, où
+- La fonction valeur est un point fixe de l'opérateur $T$, où
 \[
   (TV)(k) \equiv \max_{0 \leq c \leq F(k)} u(c) + \beta V(F(k) - c).
 \]
@@ -195,21 +195,21 @@ Prenons :
 Notes :
 
 - $k^{ss}$ est un état *stationnaire* si $k^{ss} + f(k^{ss}) - U(k^{ss}) = k^{ss}$,
-où $U(\cdot)$ est la fonction de décision optimale.
+où $U(\cdot)$ est la fonction politique optimale.
 - $\beta$ dans la fonction de production est étrange, le coefficient $(1-\beta)/(\alpha\beta)$ fait en sorte que $k^{ss} = 1$.
 
-## Choisir une fonction de valeur initiale
+## Choisir une fonction valeur initiale
 
-- Distinguez $U_c(k)$, la fonction de décision qui donne la consommation actuelle, et $U_k(k)$, celle qui donne le capital prochain.
+- Distinguez $U_c(k)$, la fonction politique qui donne la consommation actuelle, et $U_k(k)$, celle qui donne le capital prochain.
 - Notez que $U_c(k) = f(k)$ donne $k^+ = k$ ou $U_k(k) = k$.
 - Cette stratégie est faisable mais généralement sous-optimale lorsque $k \neq k^{ss} = 1$.
-- Autour de $k=k^{ss}$, $U_c(k)$ et $U_k(k)$ devraient être près des fonctions de décision optimales.
-- La fonction de valeur (non-optimale) $V^c(k)$ associée à $U_c(k) = f(k)$ (non-optimale) vérifie
+- Autour de $k=k^{ss}$, $U_c(k)$ et $U_k(k)$ devraient être près des fonctions politique optimales.
+- La fonction valeur (non-optimale) $V^c(k)$ associée à $U_c(k) = f(k)$ (non-optimale) vérifie
 \[
   V^c(k) = u(f(k)) + \beta V^c(k), \; \text{ou} \; V^c(k) = u(f(k))/(1-\beta).
 \]
-- Notez que $V^c(k) \leq V(k)$, où $V(k)$ est la fonction de valeur associée à la fonction de décision optimale.
-- Considérez aussi $V_z(k) = 0$ comme fonction de valeur initiale.
+- Notez que $V^c(k) \leq V(k)$, où $V(k)$ est la fonction valeur associée à la fonction politique optimale.
+- Considérez aussi $V_z(k) = 0$ comme fonction valeur initiale.
 - Dans le code suivant, $U$ signifie $U_k$, le choix de capital comme fonction de capital.
 
 ## Code initial : préférences et technologies
@@ -245,17 +245,17 @@ u_k <- function(k, kplus) {
 }
 u_tab <- outer(k, k, u_k)
 
-# Fonction de valeur initiale, épargne zéro
+# Fonction valeur initiale, épargne zéro
 V_c <- u(f(k))/(1-beta)
 
-# Fonction de valeur initiale, zéro
+# Fonction valeur initiale, zéro
 V_z <- rep(0, N)
 ```
 
-## Code, itération de la fonction de valeur 
+## Code, itération de la fonction valeur 
 
 ```{r VF_iteration, message=FALSE, warning=FALSE}
-# Iteration de la fonction de valeur
+# Iteration de la fonction valeur
 VU_suiv <- function(V) {
   V_suiv <- rep(0, N);
   U_suiv <- rep(0, N); U_suiv_i <- vector('integer', N)
@@ -273,21 +273,21 @@ VU_suiv <- function(V) {
 VUs_c <- VU_suiv(V_c); VUss_c <- VU_suiv(VUs_c$V)
 ```
 
-## La fonction de valeur $TV_c(k)$ (deux itérations)
+## La fonction valeur $TV_c(k)$ (deux itérations)
 
 ```{r graphique_val_c}
 plot(k, V_c, type='l')
 lines(k, VUs_c$V, col='green'); lines(k, VUss_c$V, col='blue')
 ```
 
-## La fonction de décision après deux itération de $V_c(k)$
+## La fonction politique après deux itération de $V_c(k)$
 
 ```{r graphique_pol_c}
 plot(k, VUs_c$U, type='l', col='green'); lines(k, VUss_c$U, col='blue')
 lines(k, k, lty='dashed', col='grey');
 ```
 
-## Les fonctions de valeur $T^{i}V_z(k)$, $i=1,2,3$
+## Les fonctions valeur $T^{i}V_z(k)$, $i=1,2,3$
 
 ```{r graphique_val_z}
 plot(k, V_z, type='l', ylim = c(-180, 0)); V = V_z
@@ -300,24 +300,24 @@ lines(k, VUss_c$V, col='blue')
 
 Les deux types d'itération :
 
-1. Itération de la fonction de valeur : ce qu'on a déjà vu
-1. Itération de la fonction de décision : la matière prochaine
+1. Itération de la fonction valeur : ce qu'on a déjà vu
+1. Itération de la fonction politique : la matière prochaine
 
-Pour faire l'itération de la fonction de décision, il faut pouvoir calculer une approximation de la valeur de cette fonction de décision comme fonction de l'état : pour une fonction de décision $U \colon K \to \mathbb{R}$ donnée, il faut approximer sa valeur $V^U \colon K \to \mathbb{R}$.
+Pour faire l'itération de la fonction politique, il faut pouvoir calculer une approximation de la valeur de cette fonction politique comme fonction de l'état : pour une fonction politique $U \colon K \to \mathbb{R}$ donnée, il faut approximer sa valeur $V^U \colon K \to \mathbb{R}$.
 
 ## Approximation de $V^U$ pour $U_k$ donnée
 
-- Pour une fonction de décision $k^+ = U_k(k)$, pas forcément optimale,
+- Pour une fonction politique $k^+ = U_k(k)$, pas forcément optimale,
 on peut calculer, pour chaque $k_0 \in K$, la suite d'état
 \[
-  k_0, U_k(k_0), U_k^{(2)}(k_0), U_k^{(3)}(k_0), \ldots,
+  k_0, k_1 \equiv U_k(k_0), k_2 \equiv U_k^{(2)}(k_0), k_3 \equiv U_k^{(3)}(k_0), \ldots,
 \]
 où $U_k^{(0)}(k_0) = k_0$, $U_k^{(i+1)}(k_0) = U_k(U_k^{(i)}(k_0))$.
-- On peut approximer la fonction de valeur correspondante, le vecteur $V^U(k_0)$, $k_0 \in K$ par $\hat{V}^U(k_0)$ défini comme
+- On peut approximer la fonction valeur correspondante, le vecteur $V^U(k_0)$, $k_0 \in K$ par $\hat{V}^U(k_0)$ défini comme
 \[
-  \sum_{t=0}^T \beta^t u(U^{(t)}(k_0) + f(U^{(t)}(k_0)) - U^{(t+1)}(k_0)) + \beta^{T+1}\tilde{V}(U^{(T+1)}(k_0)),
+  \sum_{t=0}^T \beta^t u(k_t + f(k_t) - k_{t+1}) + \beta^{T+1}\tilde{V}(k_{(T+1)}),
 \]
-où $\tilde{V}$ est une approximation de la fonction de valeur optimale.
+où $\tilde{V}$ est une approximation de la fonction valeur optimale.
 - Si on fait ce calcul direct pour chaque $k_0$ il peut y avoir des calculs redondants; pire, le calcul direct ne fonctionne pas pour les problèmes analogues stochastiques.
 
 ## La version rétrograde de l'approximation de $V^U$
@@ -334,12 +334,12 @@ Cette version rétrograde évite des calculs redondants et se généralise aux p
 
 ```{r PF_iteration}
 # Approximation de V^U, version rétrograde
-VdeU <- function(VU, n_iter) {
+VdeU <- function(VU, T) {
   # VU$V est W0
-  # VU$U est la fonction de décision qui donne k+
+  # VU$U est la fonction politique qui donne k+
   # VU$Ui donne l'index de k+
   V <- VU$V; V_suiv = rep(0, N);
-  for (i in 1:n_iter) {
+  for (j in 1:T) {
     for (i in 1:N) {
       Ui = VU$U_i[i]
       V_suiv[i] = u_tab[i, Ui] + beta*V[Ui]
@@ -350,17 +350,17 @@ VdeU <- function(VU, n_iter) {
 }
 ```
 
-## Itération de la fonction de décision
+## Itération de la fonction politique
 
 Itérez les étapes suivantes jusqu'à ce que $\|V^{l+1} - V^l\| < \epsilon$ :
 
-1. Utilisez $V^l$ pour calculer $U^{l+1}$, la fonction de décision obtenue comme sous-produit de l'itération de la fonction de valeur.
+1. Utilisez $V^l$ pour calculer $U^{l+1}$, la fonction politique obtenue comme sous-produit de l'itération de la fonction valeur.
 1. Utilisez $U^{l+1}$ et $V^l$ (pour la valeur résiduelle à $t=T+1$) pour calculer $V^{l+1}$ comme
 \[
   V^{l+1} \equiv \hat{V}^{U^{l+1}}
 \]
 
-## Iteration de la fonction de décision (graphique)
+## Iteration de la fonction politique (graphique)
 
 ```{r graphique_policy_c}
 plot(k, V_z, type='l', ylim = c(-180, 0)); V <- V_z
@@ -391,7 +391,7 @@ lines(k, VUss_c$V, col='blue')
   \right].
 \]
 sous les contraintes décrites en termes de $F(\cdot)$, $D(\cdot)$ et $x_0$.
-- Notez la séparabilité et la linéarité :
+- Notez la séparabilité additive de l'objectif :
     - temporelle dans les problèmes déterministes et stochastiques,
     - l'espérance dans les problèmes stochastiques.
 
@@ -476,10 +476,10 @@ q <- exp(lnq)
 plot(w, q, type='p')
 ```
 
-## L'itération de la fonction de valeur
+## L'itération de la fonction valeur
 
 - Dans un premier temps, on ne profite pas de la structure du problème.
-- On commence par la fonction de valeur qui correspond à la fonction de décision $\sigma_0(w) = 1$, selon laquelle on accepte chaque offre :
+- On commence par la fonction valeur qui correspond à la fonction politique $\sigma_0(w) = 1$, selon laquelle on accepte chaque offre :
 \[
   V^{\sigma_0}(w) = \frac{w}{1-\beta}.
 \]
@@ -493,7 +493,7 @@ V0 <- w/(1-beta)
 T <- function(V) {pmax(w/(1-beta), c+beta*dot(V, q))}
 ```
 
-## L'iteration de la fonction de valeur (graphique)
+## L'iteration de la fonction valeur (graphique)
 
 ```{r Titer}
 V = V0; plot(w, V, type='l')
@@ -683,7 +683,7 @@ solve_model <- function(tol=1e-5, max_iter=2000) {
 vd <- solve_model()
 ```
 
-## Graphique de la fonction de valeur $v(w)$ et de $u(c) + \beta d$
+## Graphique de la fonction valeur $v(w)$ et de $u(c) + \beta d$
 
 ```{r graphique2}
 plot(w, vd$v, type='l', xlab='w', ylab='v, u(c) + beta d')
